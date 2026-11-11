@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darpan Jiyani Portfolio</title>
+<meta name="description" content="Darpan Jiyani, Data Engineer. Data pipelines, lakehouses and LLM tools: 13 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
+<meta property="og:title" content="Darpan Jiyani, Data Engineer + AI">
+<meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 13 projects with code.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layout: a results ledger. Everything left-aligned on one 200px + fluid grid;
+     each entry carries a figure in the left column. One amber highlighter marks
+     the "after" value of every before -> after pair, and nothing else. */
+  --ground: #f4ecdc;
+  --panel: #fbf6ea;
+  --ink: #1b1a17;
+  --muted: #453f33;
+  --rule: #d9cdb4;
+  --accent: #123a9e;
+  --mark: #ffbf1f;
+  --mark-ink: #1b1a17;
+  --font-display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue Condensed", "Roboto Condensed", Impact, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --col: 200px;
+  --gap: 40px;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17.5px;
+  line-height: 1.6;
+}
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+strong { font-weight: 600; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.mono, .label { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+
+/* Top bar */
+.top { position: sticky; top: 0; z-index: 10; background: var(--ground); border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; flex-wrap: wrap; }
+.top-name { font-family: var(--font-mono); font-size: 14.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); text-decoration: none; font-weight: 500; }
+.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.top nav a { font-size: 16px; font-weight: 500; color: var(--ink); text-decoration: none; padding: 6px 0; }
+.top nav a:hover { color: var(--accent); text-decoration: underline; }
+
+/* Hero */
+.hero { padding-block: 56px 64px; }
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(64px, 14.2vw, 184px);
+  line-height: .84;
+  letter-spacing: -.005em;
+  margin: 14px 0 28px -.03em;
+  text-wrap: balance;
+}
+.hero-cols { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 64px; align-items: start; }
+.lede { font-size: 20px; line-height: 1.5; max-width: 58ch; }
+.lede + .lede { margin-top: 12px; font-size: 18px; }
+.reach { display: grid; gap: 8px; font-size: 17px; }
+.reach li { display: flex; gap: 12px; align-items: baseline; }
+.reach .k { font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); width: 78px; flex: none; }
+
+.ledger-wrap { margin-top: 56px; border-top: 2px solid var(--ink); }
+.ledger-wrap > .label { padding: 10px 0 0; }
+.l-row {
+  display: grid;
+  grid-template-columns: var(--col) minmax(0, 1fr) minmax(0, 250px);
+  gap: 8px var(--gap);
+  align-items: baseline;
+  padding: 18px 0 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.l-what { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+.l-where { font-size: 16.5px; color: var(--ink); }
+.l-diff {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(38px, 5.4vw, 64px);
+  line-height: 1;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .08em .32em;
+  font-variant-numeric: tabular-nums;
+}
+.l-diff s { color: #6a6252; text-decoration-thickness: .06em; font-weight: 700; }
+.l-arrow { color: var(--accent); font-family: var(--font-body); font-weight: 400; font-size: .62em; }
+.after { position: relative; display: inline-block; isolation: isolate; padding: 0 .14em; color: var(--mark-ink); white-space: nowrap; font-weight: 800; }
+.after::before { content: ""; position: absolute; inset: .04em 0 0; background: var(--mark); z-index: -1; transform-origin: left center; }
+@media (prefers-reduced-motion: no-preference) {
+  .after { animation: ink .45s var(--d, 0ms) both; }
+  .after::before { animation: sweep .45s var(--d, 0ms) cubic-bezier(.2, .7, .2, 1) both; }
+}
+@keyframes sweep { from { transform: scaleX(0); } }
+@keyframes ink { from { color: var(--ink); } }
+
+/* Sections */
+section { padding: 24px 0 72px; }
+.sec-head { border-top: 2px solid var(--ink); padding-top: 12px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; flex-wrap: wrap; }
+.sec-head h2 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: clamp(40px, 6vw, 60px); line-height: .95; letter-spacing: .005em; }
+.sec-head p { font-size: 17px; color: var(--ink); max-width: 52ch; }
+
+/* Filters */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 6px; align-items: center; }
+.chip {
+  font: 500 16px/1 var(--font-body);
+  color: var(--ink); background: transparent;
+  border: 1px solid var(--ink); border-radius: 0;
+  padding: 9px 12px; cursor: pointer;
+}
+.chip:hover { background: var(--panel); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
+.chip-n { font-family: var(--font-mono); font-size: 13.5px; opacity: .8; margin-left: 4px; }
+.showing { font-family: var(--font-mono); font-size: 14px; color: var(--muted); margin-left: 6px; }
+
+/* Entries share one grid */
+.project, .job, .s-row {
+  display: grid;
+  grid-template-columns: var(--col) minmax(0, 1fr);
+  gap: 12px var(--gap);
+  border-bottom: 1px solid var(--rule);
+}
+.project { padding: 34px 0 36px; }
+.project[hidden] { display: none; }
+.p-fig { display: flex; flex-direction: column; gap: 8px; }
+.p-num { font-family: var(--font-display); font-weight: 800; font-size: 68px; line-height: .86; font-variant-numeric: tabular-nums; }
+.p-cap { font-size: 15.5px; line-height: 1.4; color: var(--ink); max-width: 22ch; }
+.p-kind { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.project h3, .job h3 { font-size: 25px; line-height: 1.25; font-weight: 600; margin-top: 4px; text-wrap: balance; }
+.p-sum { margin-top: 8px; max-width: 64ch; font-size: 18.5px; }
+.flow {
+  margin-top: 14px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
+  font-family: var(--font-mono); font-size: 15px; font-weight: 500; line-height: 1.55;
+  background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--ink);
+  padding: 9px 12px;
+}
+.f-arrow { color: var(--accent); }
+.bul { margin-top: 16px; display: grid; gap: 10px; max-width: 68ch; }
+.bul li { position: relative; padding-left: 20px; font-size: 17.5px; }
+.bul li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 7px; height: 7px; background: var(--ink); }
+.p-note { margin-top: 14px; font-size: 16px; color: var(--ink); max-width: 68ch; font-style: italic; }
+.p-stack { margin-top: 16px; font-size: 16px; color: var(--ink); max-width: 70ch; }
+.lab { font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; margin-right: 6px; color: var(--muted); }
+.p-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px 24px; font-weight: 600; font-size: 17px; }
+
+/* Experience and education */
+.job { padding: 28px 0 30px; }
+.j-meta { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); font-size: 15px; font-weight: 500; color: var(--muted); padding-top: 9px; }
+.j-when { color: var(--ink); }
+.j-org { font-weight: 400; color: var(--muted); }
+.j-org::before { content: "/ "; opacity: .6; }
+.j-about { margin-top: 4px; color: var(--muted); font-size: 17px; max-width: 68ch; }
+
+/* Skills */
+.s-row { padding: 14px 0; align-items: baseline; }
+.s-row dt { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+.s-row dd { max-width: 70ch; }
+
+/* Contact */
+.contact-big { margin-top: 26px; display: grid; gap: 22px; }
+.mail-line { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.mail { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 6vw, 64px); line-height: 1; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; text-transform: uppercase; }
+.mail:hover { color: var(--accent); }
+.copy { font: 600 16px/1 var(--font-body); color: var(--ink); background: var(--mark); color: var(--mark-ink); border: 0; padding: 10px 14px; cursor: pointer; }
+.copy:hover { filter: brightness(.95); }
+.c-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
+.c-grid li { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 2px; }
+.c-grid .k { font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.c-grid a, .c-grid span.v { font-size: 17.5px; overflow-wrap: anywhere; }
+footer { padding: 0 0 48px; }
+footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
+
+@media (max-width: 820px) {
+  :root { --gap: 24px; }
+  .hero { padding-block: 36px 48px; }
+  .hero-cols { grid-template-columns: minmax(0, 1fr); }
+  .l-row { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 16px 0 14px; }
+  .project, .job, .s-row { grid-template-columns: minmax(0, 1fr); }
+  .p-fig { flex-direction: row; align-items: baseline; gap: 14px; }
+  .p-num { font-size: 52px; }
+  .p-cap { max-width: none; }
+  .j-meta { flex-direction: row; gap: 14px; padding-top: 0; flex-wrap: wrap; }
+  .s-row { gap: 4px; }
+  .c-grid { grid-template-columns: minmax(0, 1fr); }
+  .top nav { gap: 16px; }
+}
+@media (max-width: 420px) {
+  .wrap { padding-inline: 18px; }
+  .lede { font-size: 18.5px; }
+  .top-name { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top-name" href="#top">Darpan Jiyani</a>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <p class="label">Data Engineer + AI / San Jose, CA</p>
+    <h1>Darpan Jiyani</h1>
+    <div class="hero-cols">
+      <div>
+        <p class="lede">I build data pipelines and the AI tools that run on top of them. Right now I'm a Data Engineer at UL Solutions, turning RF test data into Delta tables, dashboards and a review app.</p>
+        <p class="lede">Before that I worked on wafer monitoring at Keysight and boiler sensor telemetry at Cerebulb. MS in Applied Data Intelligence, San Jose State University.</p>
+      </div>
+      <ul class="reach">
+        <li><span class="k">Email</span><a href="mailto:darpanjiyani78@gmail.com">darpanjiyani78@gmail.com</a></li>
+        <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">linkedin.com/in/darpanjiyani</a></li>
+        <li><span class="k">GitHub</span><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">github.com/Darpanjiyani</a></li>
+        <li><span class="k">Phone</span><a href="tel:+14085908885">+1 408-590-8885</a></li>
+      </ul>
+    </div>
+
+    <div class="ledger-wrap">
+      <p class="label">What changed after I shipped it</p>
+      <ol class="ledger">
+        <li class="l-row">
+          <span class="l-what">Test-cycle analysis</span>
+          <span class="l-diff" aria-label="from 2 days to 30 min">
+            <s aria-hidden="true">2 days</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:250ms">30 min</b>
+          </span>
+          <span class="l-where">UL Solutions, across 60+ RF test stations</span>
+        </li>
+        <li class="l-row">
+          <span class="l-what">Power BI refresh</span>
+          <span class="l-diff" aria-label="from 15 min to under 15 sec">
+            <s aria-hidden="true">15 min</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:390ms">under 15 sec</b>
+          </span>
+          <span class="l-where">Keysight, on 2M+ records</span>
+        </li>
+        <li class="l-row">
+          <span class="l-what">Manual test review</span>
+          <span class="l-diff" aria-label="from ~30 min to ~5 sec">
+            <s aria-hidden="true">~30 min</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:530ms">~5 sec</b>
+          </span>
+          <span class="l-where">UL Solutions, on 1M+ RF test records</span>
+        </li>
+        <li class="l-row">
+          <span class="l-what">Text-to-SQL accuracy</span>
+          <span class="l-diff" aria-label="from 89.4% to 99.3%">
+            <s aria-hidden="true">89.4%</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:670ms">99.3%</b>
+          </span>
+          <span class="l-where">AI Data Agent, 47 questions, average of 3 runs</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Projects</h2>
+        <p>13 projects. Each one shows how the data moves, what I built and where the code lives.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter projects by type">
+        <button type="button" class="chip" id="filter-all" data-filter="all" aria-pressed="true">All <span class="chip-n">13</span></button><button type="button" class="chip" id="filter-de" data-filter="de" aria-pressed="false">Data engineering <span class="chip-n">6</span></button><button type="button" class="chip" id="filter-ai" data-filter="ai" aria-pressed="false">AI and ML <span class="chip-n">5</span></button><button type="button" class="chip" id="filter-an" data-filter="an" aria-pressed="false">Analytics <span class="chip-n">3</span></button><button type="button" class="chip" id="filter-sw" data-filter="sw" aria-pressed="false">Software <span class="chip-n">2</span></button>
+        <span class="showing" id="showing" aria-live="polite">Showing 13 of 13</span>
+      </div>
+      <div id="project-list">
+      <article class="project" data-cats="ai">
+        <div class="p-fig">
+          <span class="p-num">99.3%</span>
+          <span class="p-cap">text-to-SQL execution accuracy, up from 89.4%</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Multi-agent text-to-SQL</p>
+          <h3>AI Data Agent</h3>
+          <p class="p-sum">Ask a question in plain English. Claude routes it to a SQL agent or a pandas ETL agent, and three layers of checks keep the database read-only.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">question</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Claude router</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">SQL agent or pandas ETL agent</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">sqlglot guard + LLM judge</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">PostgreSQL (read-only)</span></p>
+          <ul class="bul"><li>Built a LangGraph multi-agent system where Claude routes plain-English questions to a SQL agent or a pandas ETL agent</li><li>Raised text-to-SQL execution accuracy from 89.4% to <strong>99.3%</strong> on 47 questions, and scored <strong>100%</strong> on 2 held-out sets of 20</li><li>Blocked unsafe SQL with a sqlglot guard, an LLM judge and a read-only PostgreSQL user. <strong>0 of 17</strong> requests to change data ran</li><li>Cut billed input tokens per question by <strong>~59%</strong> with prompt caching, with no drop in held-out or follow-up accuracy</li><li>Wrote a 59-question eval harness that scores execution accuracy and LLM-as-a-Judge answers, plus 32 follow-up chats</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Python, LangGraph, LangChain, Claude, PostgreSQL, sqlglot, pandas, Pydantic, Streamlit</p>
+          <p class="p-links"><a href="https://ai-data-agent-darpan.streamlit.app/" target="_blank" rel="noopener">Live demo <span aria-hidden="true">&nearr;</span></a><a href="https://github.com/Darpanjiyani/AI-Data-Agent" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="de">
+        <div class="p-fig">
+          <span class="p-num">10</span>
+          <span class="p-cap">cities of live ride events, merged with a 2,000-ride backfill</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Streaming lakehouse</p>
+          <h3>Real-Time Ride Analytics</h3>
+          <p class="p-sum">Ride events stream from a FastAPI app into a Databricks lakehouse, with quality rules, a quarantine table, tests and CI around the pipeline.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">FastAPI producer</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Azure Event Hubs (Kafka)</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Lakeflow pipeline</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">bronze, silver, gold Delta</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">hourly city KPI view</span></p>
+          <ul class="bul"><li>Streamed ride events from a FastAPI app through Azure Event Hubs into a Databricks Lakeflow pipeline over Kafka</li><li>Added data quality rules that drop bad rides and a quarantine table that keeps unparseable events with their Kafka offset</li><li>Built SCD Type 1 and 2 dimensions with Auto CDC, ordered by event time so late events never overwrite newer rows</li><li>Merged a 2,000-ride backfill and the live stream into one table, and added pytest tests and GitHub Actions CI</li></ul>
+          <p class="p-note">Started from Ansh Lamba's Uber data engineering tutorial. The CDC sequencing fixes, quality rules, quarantine table, tests, CI and Databricks Asset Bundle deploy are my additions.</p>
+          <p class="p-stack"><span class="lab">Stack</span> Python, FastAPI, Azure Event Hubs, Spark Structured Streaming, Lakeflow Declarative Pipelines, Delta Lake, Unity Catalog, Auto CDC, pytest, GitHub Actions</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/real-time-ride-analytics" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="ai">
+        <div class="p-fig">
+          <span class="p-num">70%</span>
+          <span class="p-cap">pass@1 on DS-1000 for the fine-tuned code model, 60% on HumanEval</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">MS capstone, San Jose State, Dec 2025</p>
+          <h3>Simulation of Domain Expert in LLM Models</h3>
+          <p class="p-sum">Five fine-tuned specialist LLMs for math, code and theory questions, served behind a router that sends each question to the right one.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">15 LLMs benchmarked</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">5 fine-tuned with QLoRA on GCP</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">FastAPI service on Cloud Run</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">router picks the specialist</span></p>
+          <ul class="bul"><li>Benchmarked <strong>15 LLMs</strong> on GSM8K, MATH, HumanEval and DS-1000 to pick specialist models for math, code and theory</li><li>Fine-tuned 5 specialist LLMs with QLoRA on GCP. The code model reached <strong>60% pass@1</strong> on HumanEval and <strong>70%</strong> on DS-1000</li><li>Deployed the models behind a FastAPI service on Cloud Run with a router that sends each question to the right specialist</li><li>Created held-out evaluation datasets and scored fine-tuned models against zero-shot baselines with LLM-as-a-Judge</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Python, QLoRA, GCP, Cloud Run, Google Cloud Storage, FastAPI, React</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Simulation-of-Domain-Expert-in-LLM-Models" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="de">
+        <div class="p-fig">
+          <span class="p-num">10</span>
+          <span class="p-cap">city-level views feeding Databricks dashboards and Genie</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Streaming ingestion and CDC</p>
+          <h3>Transportation Analytics Lakehouse Pipeline</h3>
+          <p class="p-sum">Trip data for 10 cities lands in Delta tables as a stream, passes quality checks and CDC upserts, then feeds views for each city team.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">AWS S3</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Auto Loader</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Lakeflow pipeline</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Delta + Change Data Feed</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold fact view</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">dashboards + Genie</span></p>
+          <ul class="bul"><li>Ingested trip data from S3 as a stream with Databricks Auto Loader and Lakeflow into Delta tables with Change Data Feed</li><li>Added data quality checks and automatic CDC upserts into an SCD Type 1 trips table, plus a holiday-flagged calendar table</li><li>Published a gold trips fact view and <strong>10 city-level views</strong> feeding Databricks dashboards and Genie</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Databricks, Auto Loader, Lakeflow Declarative Pipelines, Delta Lake, Unity Catalog, Change Data Feed, AWS S3</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Transportation-Analytics-Lakehouse-Pipeline" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="ai">
+        <div class="p-fig">
+          <span class="p-num">0.96</span>
+          <span class="p-cap">ROC-AUC with LoRA, training under 5% of the parameters</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">RAG and LoRA on public tissue images</p>
+          <h3>Multimodal LLM for Cancer Pathology Classification</h3>
+          <p class="p-sum">Classifies four tissue types two ways: a RAG pipeline over image captions, and a fused image-plus-text model tuned with LoRA.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">tissue image</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">BLIP caption</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">FAISS index</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">GPT-3.5 names the tissue type</span></p>
+          <ul class="bul"><li>Built a RAG pipeline that captions tissue images with BLIP, indexes them in FAISS and classifies 4 tissue types with GPT-3.5</li><li>Fused MobileNetV2 image features with caption embeddings in TensorFlow. LoRA reached <strong>~80% accuracy</strong>, ROC-AUC <strong>0.96</strong></li><li>Matched full fine-tuning within ~1 point with <strong>24× fewer</strong> trainable parameters, vs 19% zero-shot and 49% chain-of-thought GPT</li></ul>
+          <p class="p-note">Uses the public PCam and MHIST datasets. This is not clinical work.</p>
+          <p class="p-stack"><span class="lab">Stack</span> Python, TensorFlow, BLIP, MiniLM, FAISS, GPT-3.5, MobileNetV2, LoRA</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Multimodel-LLM-for-Cancer-Pathology-Classification" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="de">
+        <div class="p-fig">
+          <span class="p-num">7</span>
+          <span class="p-cap">currencies converted to INR for one BI view</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Lakehouse migration</p>
+          <h3>E-Commerce Analytics Platform</h3>
+          <p class="p-sum">A legacy on-premises reporting flow rebuilt as a Databricks lakehouse that ends in a single BI view of sales.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">AWS S3</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">bronze</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">silver (cleaned)</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold Delta</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">one denormalized BI view</span></p>
+          <ul class="bul"><li>Moved a legacy on-premises e-commerce reporting flow to a Databricks lakehouse with bronze, silver and gold Delta tables</li><li>Cleaned duplicate orders, mixed date formats, "$" and "%" symbols and misspelled values with PySpark and Spark SQL</li><li>Converted revenue in <strong>7 currencies</strong> to INR and published one BI view of sales by hour, weekday, brand and category</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Databricks, PySpark, Spark SQL, Delta Lake, Unity Catalog, AWS S3</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/E-Commerce-Analytics-Platform" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="de ai">
+        <div class="p-fig">
+          <span class="p-num">60 s</span>
+          <span class="p-cap">pull interval for the top 10 coins by market cap</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Streaming and data mining</p>
+          <h3>Real-Time Cryptocurrency Trend Analysis</h3>
+          <p class="p-sum">Coin prices flow through Kafka into S3 and HDFS, where streaming algorithms dedupe them and a Random Forest explained with SHAP flags price moves.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">CoinGecko API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kafka</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">S3 + HDFS</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">MapReduce and PySpark on EMR</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">price alerts</span></p>
+          <ul class="bul"><li>Streamed the top 10 coins from the CoinGecko API every <strong>60 seconds</strong> through Kafka into S3 and HDFS on EMR</li><li>Implemented Bloom Filter, Flajolet-Martin, Reservoir Sampling and PySpark LSH to dedupe streaming crypto data and find similar coins</li><li>Explained a Random Forest model with SHAP, added Laplace-noise differential privacy, and flagged ≥5% gains and &gt;3% drops</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Python, PySpark, Confluent Kafka, AWS S3, HDFS, AWS EMR, MapReduce, SHAP</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Real-Time-Cryptocurrency-Trend-Analysis" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="de an">
+        <div class="p-fig">
+          <span class="p-num">60K+</span>
+          <span class="p-cap">games across 400 clubs and 30K players</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Data modeling across three databases</p>
+          <h3>Football Data Analytics</h3>
+          <p class="p-sum">Match, club and player data modeled in MySQL, Snowflake and MongoDB, then turned into dashboards for transfer strategy and coaching reviews.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">MySQL schema, 9 dimension tables</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Snowflake star schema</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Power BI and Atlas Charts dashboards</span></p>
+          <ul class="bul"><li>Modeled <strong>60K+ games</strong>, 400 clubs and 30K players into a MySQL schema with 9 dimension tables, then a Snowflake star schema</li><li>Analyzed transfer valuations, manager win rates and late-game goals in Snowflake, MySQL and MongoDB aggregation pipelines</li><li>Delivered Power BI and MongoDB Atlas Charts dashboards for transfer strategy and coaching reviews</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> MySQL, Snowflake, MongoDB, PyMongo, Power BI, MongoDB Atlas Charts, AWS S3, Azure DevOps</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Football-Data-Analytics" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="ai">
+        <div class="p-fig">
+          <span class="p-num">~75%</span>
+          <span class="p-cap">top-1 accuracy across 345 classes, in under 100 ms</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Deep Learning course project, San Jose State</p>
+          <h3>Doodle Recognition Using Deep Learning</h3>
+          <p class="p-sum">Draw a sketch and a classifier names it in under 100 ms, then GPT-4 replies with drawing tips.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">~345K Quick, Draw! sketches</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">EfficientNetV2-B0</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Streamlit drawing app</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">GPT-4 tips</span></p>
+          <ul class="bul"><li>Trained EfficientNetV2-B0 on ~345K Quick, Draw! sketches across 345 classes to <strong>~75% top-1 accuracy</strong> with under 100 ms responses</li><li>Compared EfficientNetV2-B0 with a Vision Transformer and dropped the ViT after it overfit on unseen sketches</li><li>Wrote a Streamlit drawing app that classifies sketches live and sends each prediction to GPT-4 for drawing tips</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Python, EfficientNetV2-B0, Vision Transformer, GPT-4, Streamlit, Google Colab</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Doodle" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="de an">
+        <div class="p-fig">
+          <span class="p-num">8</span>
+          <span class="p-cap">dbt models across bronze, silver and gold, plus an SCD Type 2 snapshot</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">dbt on Databricks, tutorial-based build</p>
+          <h3>Retail Sales Analytics Platform</h3>
+          <p class="p-sum">A bronze, silver and gold dbt project on Databricks with data tests, a snapshot, and separate dev and prod catalogs.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">6 source tables</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">6 bronze models</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">silver</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">revenue by category and gender</span></p>
+          <ul class="bul"><li>Set up a bronze-silver-gold dbt project on Databricks with separate dev and prod catalogs and a custom schema macro</li><li>Added dbt tests (unique, not_null, accepted_values, custom non-negative) and an SCD Type 2 snapshot to track product history</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> dbt, Databricks, Unity Catalog, Spark SQL, Jinja</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Retail-Sales-Analytics-Platform---dbt" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="an">
+        <div class="p-fig">
+          <span class="p-num">2,640</span>
+          <span class="p-cap">billionaires across 78 countries and 18 industries</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Exploratory analysis and dashboards</p>
+          <h3>Comprehensive Analysis of Billionaires' Wealth</h3>
+          <p class="p-sum">Who holds $12.2T of wealth, joined with GDP, CPI, tax and education indicators for each country.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">billionaire records + country indicators</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Python joins</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">exploratory analysis</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Power BI and Tableau</span></p>
+          <ul class="bul"><li>Joined data on <strong>2,640 billionaires</strong> across 78 countries with GDP, CPI, tax and education indicators using Python</li><li>Found that <strong>69%</strong> are self-made and Technology holds the largest wealth share (15.4%), ahead of Fashion &amp; Retail and Finance</li><li>Designed Power BI views (world bubble map, net worth vs. GDP, industry breakdowns) for policy and investment analysis</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Python, Tableau, Power BI</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Comprehensive-Analysis-of-Billionaire-s-Wealth" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="sw">
+        <div class="p-fig">
+          <span class="p-num">K8s</span>
+          <span class="p-cap">app, Kafka and Zookeeper deployed with Helm</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">UberEats-style course lab</p>
+          <h3>Food Delivery Platform</h3>
+          <p class="p-sum">A Django REST and React food-delivery app with Kafka events, containerized and deployed on Kubernetes.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">React + Redux</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Django REST API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kafka producers and consumers</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Docker</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kubernetes with Helm</span></p>
+          <ul class="bul"><li>Added Kafka producer and consumer services for event-driven order and user events in a Django REST food-delivery app</li><li>Containerized the app and deployed it with Kafka and Zookeeper on Kubernetes using Deployments, Services and Helm</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Django REST Framework, React 18, Redux, Kafka, Zookeeper, Docker, Kubernetes, Helm, Swagger</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/Lab_1_UberEats" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      <article class="project" data-cats="sw">
+        <div class="p-fig">
+          <span class="p-num">JWT</span>
+          <span class="p-cap">login with token blacklisting, for rider and driver roles</span>
+        </div>
+        <div class="p-body">
+          <p class="p-kind">Full-stack web app</p>
+          <h3>Taxi Booking Web App</h3>
+          <p class="p-sum">A ride-booking app with separate rider and driver roles, JWT login, and an API that ships with tests and OpenAPI docs.</p>
+          <p class="flow" aria-label="Data flow"><span class="f-step">React (Vite) + Tailwind + Mapbox</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Django REST API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">SimpleJWT auth</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">pytest + OpenAPI docs</span></p>
+          <ul class="bul"><li>Built a ride-booking platform with Django REST Framework and React, with separate rider and driver roles</li><li>Secured the API with JWT login and token blacklisting, and added OpenAPI docs and pytest tests</li></ul>
+          
+          <p class="p-stack"><span class="lab">Stack</span> Django REST Framework, React (Vite), Tailwind CSS, SimpleJWT, drf-spectacular, pytest, Mapbox</p>
+          <p class="p-links"><a href="https://github.com/Darpanjiyani/taxi-booking" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Experience</h2>
+        <p>RF test data, semiconductor manufacturing and industrial IoT.</p>
+      </div>
+      
+      <article class="job">
+        <div class="j-meta">
+          <span class="j-when">May 2026 to present</span>
+          <span class="j-where">Fremont, CA</span>
+        </div>
+        <div class="j-body">
+          <h3>Data Engineer <span class="j-org">UL Solutions</span></h3>
+          <p class="j-about">RF test data for hardware compliance testing</p>
+          <ul class="bul"><li>Cut end-to-end test-cycle analysis from 2 days of Excel work to <strong>30 minutes</strong> by automating RF test-data collection and visualization with Python across <strong>60+ test stations</strong></li><li>Built and shipped a full-stack app in Python and React that validates <strong>1M+ RF test records</strong> and 1,000+ plots per test, so manual review dropped from ~30 minutes to <strong>~5 seconds</strong></li><li>Developed <strong>5+ Tableau dashboards</strong> on Delta tables that 3 client teams and 20+ internal engineers use to review RF test results</li><li>Unified <strong>12+ RF test formats</strong> into one Delta table, handling schema drift with mergeSchema</li></ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="j-meta">
+          <span class="j-when">May 2025 to Dec 2025</span>
+          <span class="j-where">Santa Rosa, CA</span>
+        </div>
+        <div class="j-body">
+          <h3>Data Science Intern <span class="j-org">Keysight Technologies</span></h3>
+          <p class="j-about">Wafer monitoring and shift reporting for a production line</p>
+          <ul class="bul"><li>Reduced Power BI refresh time from 15 min to <strong>under 15 sec</strong> on <strong>2M+ records</strong> with incremental ETL and timestamp-based change detection, so a 30-person team could monitor wafers in near real time</li><li>Cut equipment status detection for operators from 2 to 3 hours down to <strong>under 5 minutes</strong> with a Python and SQL alerting framework</li><li>Deployed Dockerized Airflow DAGs on 15-minute schedules with task retries and email failure alerts</li><li>Saved <strong>30+ minutes per shift</strong> for 50+ supervisors by automating shift reports with Power Automate</li><li>Shipped a Power BI (DAX) dashboard that flags underperforming shifts against rolling baselines, which replaced manual review</li></ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="j-meta">
+          <span class="j-when">Jan 2022 to Dec 2023</span>
+          <span class="j-where">Gujarat, India</span>
+        </div>
+        <div class="j-body">
+          <h3>Data Engineer <span class="j-org">Cerebulb</span></h3>
+          <p class="j-about">Industrial IoT telemetry from boiler sensors</p>
+          <ul class="bul"><li>Designed an event-driven ingestion pipeline (AWS EventBridge + Lambda to S3) that collects 30-second telemetry from <strong>100+ boiler sensors</strong></li><li>Transformed <strong>500GB+</strong> of raw sensor data from S3 to Redshift with daily PySpark jobs on EMR for analyst dashboards</li><li>Modeled boiler KPIs into a star schema in Amazon Redshift for analytical queries</li><li>Built Tableau monitoring dashboards with plant managers that flagged failures earlier</li></ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Skills</h2>
+        <p>Tools I have used at work or in the projects above.</p>
+      </div>
+      <dl><div class="s-row"><dt>Languages</dt><dd>Python, SQL, Java, JavaScript</dd></div><div class="s-row"><dt>Data engineering</dt><dd>ETL/ELT, PySpark, Spark SQL, Spark Structured Streaming, Kafka, Airflow, Databricks, Delta Lake, dbt</dd></div><div class="s-row"><dt>Cloud and databases</dt><dd>AWS (S3, EMR, Redshift, Lambda, EventBridge), Azure Event Hubs, GCP Cloud Run, Snowflake, PostgreSQL, MySQL, SQL Server, MongoDB</dd></div><div class="s-row"><dt>Modeling and quality</dt><dd>Star schema, medallion architecture, SCD Type 1 and 2, CDC, schema evolution, data quality checks, dbt tests</dd></div><div class="s-row"><dt>AI and LLMs</dt><dd>LangGraph, LangChain, Claude API, OpenAI API, text-to-SQL, RAG, MCP, QLoRA fine-tuning, LLM evaluation, LLM-as-a-Judge</dd></div><div class="s-row"><dt>BI and DevOps</dt><dd>Power BI (DAX), Tableau, Streamlit, Power Automate, Git, Docker, GitHub Actions, pytest</dd></div><div class="s-row"><dt>Learning now</dt><dd>Airflow 3 (12 practice DAGs with the TaskFlow API and assets), MCP servers with FastMCP, RAG notebooks with LangChain and Chroma</dd></div></dl>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Education</h2>
+      </div>
+      
+      <article class="job">
+        <div class="j-meta"><span class="j-when">Jan 2024 to Dec 2025</span></div>
+        <div class="j-body"><h3>MS, Applied Data Intelligence <span class="j-org">San Jose State University</span></h3><p class="j-about">Coursework: Big Data Technology, Machine Learning, Deep Learning, Generative AI, Data Visualization</p><p class="p-links"><a href="https://www.michaelsutter.com/ediploma?fn=diplomastatuscheck&amp;key=02000000e5b66b425faecd908223fbee2cd5aab5997ab361e9768663e926a9fbefd372c7627f70348c27368b1951fd2583e8423b2f65386df912f4815b420b27944caec4" target="_blank" rel="noopener">Verify this degree <span aria-hidden="true">&nearr;</span></a></p></div>
+      </article>
+      <article class="job">
+        <div class="j-meta"><span class="j-when">Jul 2019 to May 2023</span></div>
+        <div class="j-body"><h3>BE, Computer Engineering <span class="j-org">LDRP-ITR, Gujarat, India</span></h3><p class="j-about">Coursework: Data Structures and Algorithms, Python Programming, Object-Oriented Programming (Java)</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Contact</h2>
+        <p>Email is the fastest way to reach me.</p>
+      </div>
+      <div class="contact-big">
+        <div class="mail-line">
+          <a class="mail" href="mailto:darpanjiyani78@gmail.com" id="mail">darpanjiyani78@gmail.com</a>
+          <button type="button" class="copy" id="copy-mail">Copy email</button>
+        </div>
+        <ul class="c-grid">
+          <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">linkedin.com/in/darpanjiyani</a></li>
+          <li><span class="k">GitHub</span><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">github.com/Darpanjiyani</a></li>
+          <li><span class="k">Phone</span><a href="tel:+14085908885">+1 408-590-8885</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><p>Darpan Jiyani / San Jose, CA / Updated November 2026</p></div>
+</footer>
+
+<script>
+(function () {
+  var chips = document.querySelectorAll('.chip');
+  var rows = document.querySelectorAll('.project');
+  var showing = document.getElementById('showing');
+  function apply(key) {
+    var n = 0;
+    rows.forEach(function (r) {
+      var on = key === 'all' || r.getAttribute('data-cats').split(' ').indexOf(key) !== -1;
+      r.hidden = !on;
+      if (on) n++;
+    });
+    chips.forEach(function (c) { c.setAttribute('aria-pressed', c.getAttribute('data-filter') === key ? 'true' : 'false'); });
+    showing.textContent = 'Showing ' + n + ' of ' + rows.length;
+  }
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () { apply(c.getAttribute('data-filter')); });
+  });
+
+  var btn = document.getElementById('copy-mail');
+  var mail = document.getElementById('mail').textContent;
+  btn.addEventListener('click', function () {
+    function done(ok) {
+      btn.textContent = ok ? 'Copied' : 'Select the address to copy';
+      setTimeout(function () { btn.textContent = 'Copy email'; }, 2200);
+    }
+    try {
+      navigator.clipboard.writeText(mail).then(function () { done(true); }, function () { done(false); });
+    } catch (err) { done(false); }
+  });
+})();
+</script>
+</body>
+</html>
