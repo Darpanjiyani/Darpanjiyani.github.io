@@ -207,6 +207,7 @@ details[open] > summary .more-close { display: inline; }
 .j-when { color: var(--ink); }
 .j-org { font-weight: 400; color: var(--muted); }
 .j-org::before { content: "/ "; opacity: .6; }
+.j-org a { font-weight: 500; }
 .j-about { margin-top: 4px; color: var(--muted); font-size: 17px; max-width: 68ch; }
 
 /* Skills */
@@ -336,7 +337,7 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
           <span class="j-where">Fremont, CA</span>
         </div>
         <div class="j-body">
-          <h3>Data Engineer <span class="j-org">UL Solutions</span></h3>
+          <h3>Data Engineer <span class="j-org"><a href="https://www.ul.com/" target="_blank" rel="noopener" title="Open the UL Solutions website">UL Solutions <span aria-hidden="true">&nearr;</span></a></span></h3>
           <p class="j-about">RF test data for hardware compliance testing</p>
           <ul class="bul"><li>Cut end-to-end test-cycle analysis from 2 days of Excel work to <strong>30 minutes</strong> by automating RF test-data collection and visualization with Python across <strong>60+ test stations</strong></li><li>Delivered a Python and React validation app that analyzes <strong>1M+ RF test records</strong> and 1,000+ plots per test, cutting manual review from ~30 minutes to <strong>~5 seconds</strong></li><li>Unified <strong>12+ RF test-case formats</strong> with different column sets into one queryable Delta table using Delta Lake mergeSchema, so new test types don't break the pipeline</li><li>Wrote PySpark transformations and Spark SQL with joins and window functions. Date partitioning cut RF query time by <strong>20%</strong></li><li>Developed <strong>5+ Tableau dashboards</strong> on Delta tables that show RF test results to 3 client teams and 20+ internal engineers</li></ul>
         </div>
@@ -347,7 +348,7 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
           <span class="j-where">Santa Rosa, CA</span>
         </div>
         <div class="j-body">
-          <h3>Data Science Intern <span class="j-org">Keysight Technologies</span></h3>
+          <h3>Data Science Intern <span class="j-org"><a href="https://www.keysight.com/" target="_blank" rel="noopener" title="Open the Keysight Technologies website">Keysight Technologies <span aria-hidden="true">&nearr;</span></a></span></h3>
           <p class="j-about">Wafer monitoring and shift reporting across three production lines</p>
           <ul class="bul"><li>Reduced Power BI refresh time from 15 min to <strong>under 15 sec</strong> on <strong>2M+ records</strong> with incremental ETL and timestamp-based change detection, so a 30-person team could monitor wafers in near real time</li><li>Implemented SQL status-change detection with Python alerts, cutting operator notification from 2 to 3 hours down to <strong>under 5 minutes</strong></li><li>Deployed Dockerized Airflow DAGs on 15-minute schedules with task retries and email failure alerts</li><li>Designed a Power BI monitoring dashboard showing tool status (up, down, at limit) across <strong>three production lines</strong>, so operators could spot at-limit equipment before downtime</li><li>Saved <strong>30+ minutes per shift</strong> for 50+ supervisors by automating shift reports with Power Automate, which also removed formatting errors</li><li>Shipped a Power BI (DAX) dashboard that flags underperforming shifts against rolling baselines, replacing manual review with targeted root-cause investigation</li></ul>
         </div>
@@ -358,7 +359,7 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
           <span class="j-where">Gujarat, India</span>
         </div>
         <div class="j-body">
-          <h3>Data Engineer <span class="j-org">Cerebulb</span></h3>
+          <h3>Data Engineer <span class="j-org"><a href="https://www.cerebulb.com/" target="_blank" rel="noopener" title="Open the Cerebulb website">Cerebulb <span aria-hidden="true">&nearr;</span></a></span></h3>
           <p class="j-about">Industrial IoT telemetry from boiler sensors</p>
           <ul class="bul"><li>Engineered an EventBridge-scheduled Lambda pipeline that fetches telemetry from <strong>100+ boiler sensor APIs</strong> every minute and stores it in S3 for near real-time monitoring</li><li>Transformed <strong>500GB+</strong> of raw sensor data from S3 to Redshift with daily PySpark jobs on EMR for analyst dashboards</li><li>Modeled boiler KPIs into a Redshift star schema with fact and dimension tables for Tableau reporting</li><li>Partnered with plant managers on Tableau monitoring dashboards that flagged failures earlier and cut unplanned downtime</li></ul>
         </div>
