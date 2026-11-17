@@ -415,14 +415,19 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 .s-hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(56px, 9vw, 112px); line-height: 1; letter-spacing: -.025em; margin: 16px 0 24px -.03em; }
 .s-hero h1 em { font-style: italic; color: var(--gold-ink); }
 .s-hero .lede { max-width: 40ch; }
+.s-quote { margin: 0 0 30px; padding: 4px 0 4px 24px; border-left: 2px solid var(--gold); max-width: 760px; }
+.s-quote p { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.4; color: var(--gold-ink); letter-spacing: -.005em; }
+
 
 /* Photo with hotspots */
 .desk { position: relative; margin: 0; border-radius: 8px; overflow: hidden; background: #120e08; box-shadow: 0 30px 70px -36px rgba(40, 25, 5, .7); border: 1px solid var(--rule); }
 .desk img { display: block; width: 100%; height: auto; aspect-ratio: 1800 / 1013; object-fit: cover; }
 .spot { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); width: 36px; height: 36px; border-radius: 50%; border: 2px solid #fff6e0; background: var(--gold); color: #1d1913; font: 700 15px/1 var(--font-body); cursor: pointer; display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0, 0, 0, .45); transition: transform .25s var(--ease), background .2s; z-index: 2; padding: 0; }
 .spot::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(255, 230, 170, .7); opacity: 0; }
-.spot:hover, .spot.on { transform: translate(-50%, -50%) scale(1.18); background: #f2d48a; }
-.tip { position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%) translateY(6px); white-space: nowrap; background: var(--ground); color: var(--ink); border: 1px solid var(--rule); border-top: 2px solid var(--gold); padding: 8px 12px; font: 600 15px/1.3 var(--font-body); text-align: left; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s var(--ease); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .5); }
+.spot:hover, .spot.on { --sc: 1.7; transform: translate(-50%, -50%) scale(1.7); background: transparent; color: transparent; border-color: #f2d48a; box-shadow: 0 0 0 1px rgba(0, 0, 0, .35), 0 0 18px rgba(242, 212, 138, .45); }
+.spot:hover::after, .spot.on::after { animation: none; opacity: 0; }
+.spot:hover .tip, .spot.on .tip { color: var(--ink); }
+.tip { position: absolute; left: 50%; bottom: calc(100% + 12px); scale: calc(1 / var(--sc, 1)); transform: translateX(-50%) translateY(6px); white-space: nowrap; background: var(--ground); color: var(--ink); border: 1px solid var(--rule); border-top: 2px solid var(--gold); padding: 8px 12px; font: 600 15px/1.3 var(--font-body); text-align: left; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s var(--ease); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .5); }
 .tip small { display: block; font-weight: 500; font-size: 13.5px; color: var(--muted); margin-top: 2px; }
 .spot:hover .tip, .spot.on .tip, .spot:focus-visible .tip { opacity: 1; transform: translateX(-50%) translateY(0); }
 .spot[data-edge="right"] .tip { left: auto; right: -6px; transform: translateY(6px); }
@@ -490,6 +495,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
   <div class="wrap s-hero">
     <p class="label rise">The workspace</p>
     <h1 class="rise" style="--d:120ms">Where I <em>build</em></h1>
+    <blockquote class="s-quote rise" style="--d:200ms"><p>Your workspace is a quiet résumé. It shows who you are and what you can do before you say a word.</p></blockquote>
     <p class="lede rise" style="--d:260ms">Every pipeline, dashboard and AI tool on my portfolio was built at this desk. A curved ultrawide in the middle, a second screen turned on its side, and the laptop doing the heavy lifting.</p>
   </div>
 
@@ -503,6 +509,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       <button type="button" class="spot" data-k="keys" style="--x:46.9%;--y:77.4%;--i:3;--pd:1.05s" aria-label="4: Logitech MX Keys Mini">4<span class="tip" aria-hidden="true">Logitech MX Keys Mini<small>Keyboard</small></span></button>
       <button type="button" class="spot" data-k="mouse" style="--x:58.2%;--y:76.5%;--i:4;--pd:1.40s" aria-label="5: ProtoArc mouse">5<span class="tip" aria-hidden="true">ProtoArc mouse<small>Mouse</small></span></button>
       <button type="button" class="spot" data-k="phones" style="--x:28.4%;--y:79.8%;--i:5;--pd:1.75s" aria-label="6: SoundPEATS headphones">6<span class="tip" aria-hidden="true">SoundPEATS headphones<small>Headphones</small></span></button>
+      <button type="button" class="spot" data-k="desk" style="--x:66.0%;--y:87.5%;--i:6;--pd:2.10s" aria-label="7: Arionna 63&quot; Dual Motor Adjustable Height Standing Desk">7<span class="tip" aria-hidden="true">Arionna 63&quot; Dual Motor Adjustable Height Standing Desk<small>Desk</small></span></button>
       <figcaption>Point at a dot to see what it is</figcaption>
     </figure>
   </div>
@@ -563,6 +570,14 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="g-why">On for focus during long builds and debugging, and for calls.</p>
           </div>
         </li>
+        <li class="g-item" data-k="desk">
+          <div class="g-num"><b>07</b><span>Desk</span></div>
+          <div>
+            <h3>Arionna 63&quot; Dual Motor Adjustable Height Standing Desk</h3>
+            <p class="g-spec">By Inbox Zero, 46&quot; H x 63&quot; W x 30&quot; D, dual motor, adjustable height</p>
+            <p class="g-why">Lets me switch between sitting and standing through long days, and holds all three screens.</p>
+          </div>
+        </li>
       </ol>
     </div>
   </section>
@@ -597,6 +612,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <div class="tool"><p class="t-name">YouTube</p><p class="t-what">Tech talks, tutorials and the occasional rabbit hole.</p></div>
         <div class="tool"><p class="t-name">Spotify</p><p class="t-what">Music on while I work.</p></div>
         <div class="tool"><p class="t-name">Netflix</p><p class="t-what">For chilling at the end of the day.</p></div>
+        <div class="tool"><p class="t-name">TED Talks</p><p class="t-what">Big ideas from people outside tech, a talk or two at a time.</p></div>
       </div>
     </div>
   </section>
