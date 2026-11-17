@@ -72,6 +72,7 @@ body::before {
 @media (max-width: 820px) {
   body::before { width: calc(100vw - 16px); background: none; }
 }
+
 h1, h2, h3, p, ul, ol, dl, dd { margin: 0; padding: 0; }
 ul, ol { list-style: none; }
 a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 4px; text-decoration-thickness: 1.5px; transition: color .2s, text-decoration-color .2s; }
@@ -138,7 +139,22 @@ strong { font-weight: 700; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
 
 .ledger-wrap { margin-top: 64px; border-top: 1px solid var(--gold); }
-.ledger-wrap > .label { padding: 14px 0 0; }
+.ledger-head { display: grid; grid-template-columns: 180px minmax(0, 1fr) minmax(0, 220px); gap: 8px var(--gap); align-items: end; padding-top: 14px; }
+.ledger-head .label { grid-column: 1 / 3; }
+.spark { display: block; overflow: visible; grid-column: 3; width: 100%; height: auto; }
+@media (max-width: 820px) {
+  .ledger-head { display: flex; justify-content: space-between; gap: 16px; }
+  .spark { width: 140px; flex: none; }
+}
+.spark-base { stroke: var(--rule); stroke-width: 1; }
+.spark-area { fill: url(#spark-fill); }
+.spark-line { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.spark-dot { fill: var(--gold-ink); }
+.spark-ring { fill: none; stroke: var(--gold); stroke-width: 1.5; opacity: 0; transform-box: fill-box; transform-origin: center; }
+/* The sparkline draws itself slowly when the results section comes into view (see script) */
+.spark.live .spark-ring { animation: sparkPing 2.4s ease-out infinite; }
+@keyframes sparkPing { 0% { opacity: .8; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(3.2); } }
+@media (max-width: 520px) { .spark { width: 120px; } }
 .l-row {
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr) minmax(0, 220px);
@@ -384,6 +400,76 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
   .inv-img { min-height: 0; aspect-ratio: 16 / 8; height: auto; }
   .inv-text { border-left: 0; border-top: 2px solid var(--gold); padding: 26px 22px; }
 }
+
+/* Learning now */
+.learn-lede { font-size: 18.5px; }
+.learn-lede em { font-family: var(--font-display); font-style: italic; font-size: 1.15em; color: var(--gold-ink); }
+
+/* Mini charts under featured project numbers */
+.mc { display: block; width: 100%; max-width: 200px; height: auto; margin-top: 18px; overflow: visible; font-family: var(--font-body); }
+.mc-axis { stroke: var(--rule); stroke-width: 1; }
+.mc-tick { fill: #7a705e; font-size: 10px; font-weight: 600; }
+.mc-lab { fill: var(--muted); font-size: 11.5px; font-weight: 600; }
+.mc-val { fill: var(--muted); font-size: 12px; font-weight: 700; }
+.mc-strong { fill: var(--gold-ink); }
+.mc-line { fill: none; stroke: var(--gold); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+.mc-dot-a { fill: var(--ground); stroke: #8b8170; stroke-width: 2; }
+.mc-dot-b { fill: var(--gold-ink); }
+.mc-block { fill: rgba(176, 133, 47, .2); stroke: var(--gold); stroke-width: 1; }
+.mc-track { fill: rgba(176, 133, 47, .1); }
+.mc-bar { fill: var(--gold); }
+.mc-seg { fill: none; stroke: var(--gold); stroke-width: 9; stroke-linecap: butt; }
+.mc-core { fill: var(--panel); stroke: var(--gold-ink); stroke-width: 1.5; }
+.mc-grow-x { transform-box: fill-box; transform-origin: left center; }
+.mc-grow-y { transform-box: fill-box; transform-origin: center bottom; }
+.mc-pop, .mc-live { transform-box: fill-box; transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .project.reveal .mc-draw { stroke-dashoffset: 1; transition: stroke-dashoffset 1.3s .35s var(--ease); }
+  .js .project.reveal.in .mc-draw { stroke-dashoffset: 0; }
+  .js .project.reveal .mc-grow-x { transform: scaleX(0); transition: transform 1s calc(.35s + var(--i, 0) * .15s) var(--ease); }
+  .js .project.reveal .mc-grow-y { transform: scaleY(0); transition: transform .8s .3s var(--ease); }
+  .js .project.reveal.in .mc-grow-x, .js .project.reveal.in .mc-grow-y { transform: none; }
+  .js .project.reveal .mc-pop { transform: scale(0); transition: transform .4s 1.5s var(--ease); }
+  .js .project.reveal.in .mc-pop { transform: none; }
+  .js .project.reveal .mc-seg { opacity: 0; transition: opacity .35s calc(.3s + var(--i) * .08s); }
+  .js .project.reveal.in .mc-seg { opacity: 1; }
+  .mc-live { animation: mcLive 1.6s ease-in-out infinite; }
+}
+@keyframes mcLive { 50% { transform: scale(1.6); opacity: .5; } }
+@media (max-width: 820px) {
+  .p-fig { flex-wrap: wrap; }
+  .p-fig .mc { flex-basis: 100%; max-width: 240px; margin-top: 6px; }
+}
+
+/* Architecture button and popup */
+.arch-open { font: 700 17.5px/1.2 var(--font-body); color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+.arch-open:hover { color: var(--gold-ink); }
+.lb { border: 0; padding: 0; width: min(1240px, calc(100vw - 32px)); max-height: calc(100vh - 32px); background: var(--ground); color: var(--ink); border-top: 3px solid var(--gold); box-shadow: 0 30px 80px -20px rgba(30, 20, 5, .55); overflow: hidden; }
+.lb[open] { display: flex; flex-direction: column; }
+.lb::backdrop { background: rgba(29, 25, 19, .62); backdrop-filter: blur(3px); }
+.lb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px 12px 24px; border-bottom: 1px solid var(--rule); }
+.lb-title { font-family: var(--font-display); font-size: 22px; }
+.lb-title em { color: var(--gold-ink); }
+.lb-tools { display: flex; gap: 8px; align-items: center; }
+.lb-btn { white-space: nowrap; font: 600 15px/1 var(--font-body); color: var(--ink); background: var(--ground); border: 1.5px solid var(--rule); border-radius: 999px; padding: 9px 14px; cursor: pointer; }
+.lb-btn:hover { border-color: var(--ink); }
+.lb-x { font-size: 24px; padding: 4px 12px 6px; }
+.lb-body { overflow: auto; padding: 16px; background: #f8f9fb; flex: 1; min-height: 0; }
+.lb-body img { display: block; width: 100%; height: auto; cursor: zoom-in; border-radius: 4px; }
+.lb-body.zoomed img { width: 2400px; max-width: none; cursor: zoom-out; }
+.lb-hint { padding: 10px 24px 12px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--rule); }
+@media (prefers-reduced-motion: no-preference) { .lb[open] { animation: pdIn .4s var(--ease); } }
+@media (max-width: 820px) { .lb-title { font-size: 18px; } .lb-hint { display: none; } }
+
+/* Open to roles */
+.open-to { display: inline-flex; align-items: flex-start; gap: 10px; margin-top: 26px; padding: 9px 16px 9px 14px; border: 1px solid var(--rule); border-radius: 999px; background: var(--panel); font-size: 16.5px; line-height: 1.4; color: var(--ink); max-width: 100%; }
+.open-to b { font-weight: 700; color: var(--gold-ink); }
+.ot-dot { flex: none; width: 9px; height: 9px; margin-top: .42em; border-radius: 50%; background: #3f8f55; box-shadow: 0 0 0 0 rgba(63, 143, 85, .5); }
+@media (prefers-reduced-motion: no-preference) { .ot-dot { animation: otPulse 2.4s ease-out infinite; } }
+@keyframes otPulse { 0% { box-shadow: 0 0 0 0 rgba(63, 143, 85, .45); } 70%, 100% { box-shadow: 0 0 0 9px rgba(63, 143, 85, 0); } }
+.open-to + .hero-actions { margin-top: 18px; }
+@media (min-width: 1001px) { .open-to { white-space: nowrap; max-width: none; } }
+@media (max-width: 820px) { .open-to { border-radius: 14px; } }
 @media (max-width: 1000px) {
   .l-diff { font-size: clamp(28px, 3.4vw, 34px); }
 }
@@ -605,12 +691,13 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p>What opens first when I sit down, roughly in this order.</p>
       </div>
       <div class="tools">
-        <div class="tool"><p class="t-name"><span class="order">01</span>Claude</p><p class="t-what">Planning the day, thinking through designs and reviewing code.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">02</span>VS Code</p><p class="t-what">My editor for Python, SQL and everything in between.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">03</span>Databricks</p><p class="t-what">Notebooks, Delta tables and jobs for the heavy data work.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">04</span>Python</p><p class="t-what">The language most of my pipelines and tools are written in.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">05</span>SQL</p><p class="t-what">Modeling, checks and the queries behind every dashboard.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">06</span>Spark</p><p class="t-what">PySpark and Spark SQL when the data gets big.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">01</span>Tea</p><p class="t-what">The real first step of every morning. Nothing else opens before the first cup.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">02</span>Claude</p><p class="t-what">Planning the day, thinking through designs and reviewing code.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">03</span>VS Code</p><p class="t-what">My editor for Python, SQL and everything in between.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">04</span>Databricks</p><p class="t-what">Notebooks, Delta tables and jobs for the heavy data work.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">05</span>Python</p><p class="t-what">The language most of my pipelines and tools are written in.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">06</span>SQL</p><p class="t-what">Modeling, checks and the queries behind every dashboard.</p></div>
+        <div class="tool"><p class="t-name"><span class="order">07</span>Spark</p><p class="t-what">PySpark and Spark SQL when the data gets big.</p></div>
         <div class="tool more-tools"><p class="t-name">and many more…</p></div>
       </div>
     </div>
