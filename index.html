@@ -151,14 +151,8 @@ strong { font-weight: 700; }
 .spark-line { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
 .spark-dot { fill: var(--gold-ink); }
 .spark-ring { fill: none; stroke: var(--gold); stroke-width: 1.5; opacity: 0; transform-box: fill-box; transform-origin: center; }
-@media (prefers-reduced-motion: no-preference) {
-  .spark-line { animation: sparkDraw 1.6s .9s var(--ease) both; }
-  .spark-area { animation: sparkFade 1s 1.9s ease both; }
-  .spark-dot { animation: sparkFade .4s 2.3s ease both; }
-  .spark-ring { animation: sparkPing 2.4s 2.5s ease-out infinite; }
-}
-@keyframes sparkDraw { from { stroke-dashoffset: 1; } }
-@keyframes sparkFade { from { opacity: 0; } }
+/* The sparkline draws itself slowly when the results section comes into view (see script) */
+.spark.live .spark-ring { animation: sparkPing 2.4s ease-out infinite; }
 @keyframes sparkPing { 0% { opacity: .8; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(3.2); } }
 @media (max-width: 520px) { .spark { width: 120px; } }
 .l-row {
@@ -540,7 +534,8 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <svg class="spark" viewBox="4 0 176 48" width="176" height="48" aria-hidden="true" focusable="false">
           <defs><linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0852f" stop-opacity=".22"/><stop offset="1" stop-color="#b0852f" stop-opacity="0"/></linearGradient></defs>
           <line class="spark-base" x1="4" y1="46" x2="180" y2="46"/>
-          <path class="spark-area" d="M4.0 40.0 L16.3 38.4 L28.6 37.6 L40.9 38.7 L53.1 33.1 L65.4 31.3 L77.7 35.8 L90.0 24.4 L102.3 24.8 L114.6 23.4 L126.9 22.3 L139.1 14.3 L151.4 13.5 L163.7 9.3 L176.0 10.0 L176.0 46 L4.0 46 Z"/>
+          <clipPath id="spark-clip"><rect id="spark-rect" x="0" y="0" width="200" height="60"/></clipPath>
+          <path class="spark-area" clip-path="url(#spark-clip)" d="M4.0 40.0 L16.3 38.4 L28.6 37.6 L40.9 38.7 L53.1 33.1 L65.4 31.3 L77.7 35.8 L90.0 24.4 L102.3 24.8 L114.6 23.4 L126.9 22.3 L139.1 14.3 L151.4 13.5 L163.7 9.3 L176.0 10.0 L176.0 46 L4.0 46 Z"/>
           <path class="spark-line" d="M4.0 40.0 L16.3 38.4 L28.6 37.6 L40.9 38.7 L53.1 33.1 L65.4 31.3 L77.7 35.8 L90.0 24.4 L102.3 24.8 L114.6 23.4 L126.9 22.3 L139.1 14.3 L151.4 13.5 L163.7 9.3 L176.0 10.0" pathLength="1"/>
           <circle class="spark-dot" cx="176.0" cy="10.0" r="3.5"/>
           <circle class="spark-ring" cx="176.0" cy="10.0" r="3.5"/>
@@ -562,11 +557,11 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           <span class="l-where">Keysight, on 2M+ records</span>
         </li>
         <li class="l-row">
-          <span class="l-what">Manual test review</span>
+          <span class="l-what">Result validation</span>
           <span class="l-diff" aria-label="from ~30 min to ~5 sec">
             <s aria-hidden="true">~30 min</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:530ms">~5 sec</b>
           </span>
-          <span class="l-where">UL Solutions, on 1M+ RF test records</span>
+          <span class="l-where">UL Solutions, on 1M+ records per test</span>
         </li>
         <li class="l-row">
           <span class="l-what">Text-to-SQL accuracy</span>
@@ -595,7 +590,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <div class="j-body">
           <h3>Data Engineer <span class="j-org"><a href="https://www.ul.com/" target="_blank" rel="noopener" title="Open the UL Solutions website">UL Solutions <span aria-hidden="true">&nearr;</span></a></span></h3>
           <p class="j-about">RF test data for hardware compliance testing</p>
-          <ul class="bul"><li>Cut end-to-end test-cycle analysis from 2 days of Excel work to <strong>30 minutes</strong> by automating RF test-data collection and visualization with Python across <strong>60+ test stations</strong></li><li>Delivered a Python and React validation app that analyzes <strong>1M+ RF test records</strong> and 1,000+ plots per test, cutting manual review from ~30 minutes to <strong>~5 seconds</strong></li><li>Unified <strong>12+ RF test-case formats</strong> with different column sets into one queryable Delta table using Delta Lake mergeSchema, so new test types don't break the pipeline</li><li>Wrote PySpark transformations and Spark SQL with joins and window functions. Date partitioning cut RF query time by <strong>20%</strong></li><li>Developed <strong>5+ Tableau dashboards</strong> on Delta tables that show RF test results to 3 client teams and 20+ internal engineers</li></ul>
+          <ul class="bul"><li>Automated collection and parsing of RF analyzer output files from <strong>60+ test stations</strong> with Python, reducing test-cycle analysis from 2 days of Excel work to <strong>30 minutes</strong></li><li>Delivered a Python and React app that auto-checks RF power against limits on <strong>1M+ records</strong> per test, cutting result validation from ~30 minutes to <strong>~5 seconds</strong></li><li>Handled schema drift across <strong>12+ RF test-case formats</strong> with differing column sets via Delta Lake mergeSchema, unifying them into a single queryable Delta table without breaking pipelines on new test types</li><li>Built PySpark and Spark SQL transformations on Databricks for RF test analysis; date partitioning cut query time <strong>20%</strong></li><li>Developed <strong>5+ Tableau dashboards</strong> on Delta tables surfacing RF test results to 3 client teams and 20+ internal engineers</li></ul>
         </div>
       </article>
       <article class="job">
@@ -1241,6 +1236,41 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 
 
 
+
+
+  /* Results sparkline: draws itself slowly once "What changed after I shipped it" comes into view */
+  (function () {
+    var svg = document.querySelector('.spark'), wrap = document.querySelector('.ledger-wrap');
+    if (!svg || !wrap) return;
+    var line = svg.querySelector('.spark-line'), dot = svg.querySelector('.spark-dot'), ring = svg.querySelector('.spark-ring');
+    var rect = document.getElementById('spark-rect');
+    var len = line.getTotalLength(), DURATION = 4500;
+    function set(p) {
+      line.style.strokeDashoffset = 1 - p;
+      var pt = line.getPointAtLength(p * len);
+      dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+      ring.setAttribute('cx', pt.x); ring.setAttribute('cy', pt.y);
+      rect.setAttribute('width', Math.max(0, pt.x));
+      dot.style.opacity = p > 0.005 ? 1 : 0;
+      svg.classList.toggle('live', p >= 1);
+    }
+    if (reduce || !('IntersectionObserver' in window)) { set(1); return; }
+    set(0);
+    function ease(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      var t0 = null;
+      function step(t) {
+        if (t0 === null) t0 = t;
+        var k = Math.min(1, (t - t0) / DURATION);
+        set(ease(k));
+        if (k < 1) requestAnimationFrame(step);
+      }
+      setTimeout(function () { requestAnimationFrame(step); }, 400);
+    }, { threshold: 0.35 });
+    io.observe(wrap);
+  })();
 
   var btn = document.getElementById('copy-mail');
   var mail = document.getElementById('mail').textContent;
