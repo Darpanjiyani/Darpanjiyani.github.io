@@ -5,138 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Darpan Jiyani Portfolio</title>
 <meta name="description" content="Darpan Jiyani, Data Engineer. Data pipelines, lakehouses and LLM tools: 13 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
-<meta property="og:title" content="Darpan Jiyani, Data Engineer + AI">
+<meta property="og:title" content="Darpan Jiyani, AI Data Engineer">
 <meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 13 projects with code.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Layout: a results ledger. Everything left-aligned on one 200px + fluid grid;
-     each entry carries a figure in the left column. One amber highlighter marks
-     the "after" value of every before -> after pair, and nothing else. */
-  --ground: #f4ecdc;
-  --panel: #fbf6ea;
-  --ink: #1b1a17;
-  --muted: #453f33;
-  --rule: #d9cdb4;
-  --accent: #123a9e;
-  --mark: #ffbf1f;
-  --mark-ink: #1b1a17;
-  --font-display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue Condensed", "Roboto Condensed", Impact, sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  /* Editorial: warm paper, deep ink, one muted gold for rules, numbers and marks.
+     Serif display for names and headings; a sturdy sans for reading text. */
+  --ground: #f6efe0;
+  --panel: #fbf7ee;
+  --ink: #1d1913;
+  --muted: #463e31;
+  --rule: #ddcfb2;
+  --gold: #b0852f;        /* rules, dots, decoration */
+  --gold-ink: #7d5a12;    /* gold used for text: 5:1 on the ground */
+  --mark: #efd9a3;        /* soft highlighter behind "after" values */
+  --accent: #7d5a12;
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --col: 200px;
   --gap: 40px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
   color-scheme: light;
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 72px; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body {
   margin: 0;
   background: var(--ground);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 17.5px;
-  line-height: 1.6;
+  font-size: 18.5px;
+  line-height: 1.62;
+  font-weight: 500;
 }
 h1, h2, h3, p, ul, ol, dl, dd { margin: 0; padding: 0; }
 ul, ol { list-style: none; }
-a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
-a:hover { text-decoration-thickness: 2px; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-strong { font-weight: 600; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-.mono, .label { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 4px; text-decoration-thickness: 1.5px; transition: color .2s, text-decoration-color .2s; }
+a:hover { color: var(--gold-ink); text-decoration-color: var(--gold-ink); }
+:focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 3px; border-radius: 2px; }
+strong { font-weight: 700; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+.label { font-family: var(--font-body); font-size: 14px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-ink); }
 
 /* Top bar */
-.top { position: sticky; top: 0; z-index: 10; background: var(--ground); border-bottom: 1px solid var(--rule); }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; flex-wrap: wrap; }
-.top-name { font-family: var(--font-mono); font-size: 14.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); text-decoration: none; font-weight: 500; }
-.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
-.top nav a { font-size: 16px; font-weight: 500; color: var(--ink); text-decoration: none; padding: 6px 0; }
-.top nav a:hover { color: var(--accent); text-decoration: underline; }
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--ground) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; }
+.top-name { font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
+.top-name em { color: var(--gold-ink); font-style: italic; }
+.top nav { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+.top nav a { font-size: 16.5px; font-weight: 600; color: var(--ink); text-decoration: none; padding: 6px 0; }
+.top nav a:hover { color: var(--gold-ink); }
+.top nav a.nav-cv { border: 1.5px solid var(--ink); padding: 7px 16px; border-radius: 999px; }
+.top nav a.nav-cv:hover { background: var(--ink); color: var(--ground); }
+
+/* Side scroll-spy (wide screens only) */
+.spy { display: none; }
+@media (min-width: 1460px) {
+  .spy { display: block; position: fixed; left: 40px; top: 50%; transform: translateY(-50%); z-index: 5; }
+  .spy ol { display: grid; gap: 4px; border-left: 1px solid var(--rule); }
+  .spy a { display: flex; align-items: center; gap: 12px; padding: 7px 0 7px 18px; margin-left: -1px; border-left: 2px solid transparent; font-size: 15px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color .25s, border-color .25s; }
+  .spy a .n { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--gold-ink); font-size: 15px; width: 20px; }
+  .spy a:hover { color: var(--ink); }
+  .spy a[aria-current="true"] { color: var(--ink); border-left-color: var(--gold); }
+  .top nav a:not(.nav-cv) { display: none; }
+}
 
 /* Hero */
-.hero { padding-block: 56px 64px; }
+.hero { padding-block: 72px 72px; }
 .hero h1 {
   font-family: var(--font-display);
-  font-weight: 900;
-  text-transform: uppercase;
-  font-size: clamp(64px, 14.2vw, 184px);
-  line-height: .84;
-  letter-spacing: -.005em;
-  margin: 14px 0 28px -.03em;
-  text-wrap: balance;
+  font-weight: 400;
+  font-size: clamp(60px, 10.5vw, 136px);
+  line-height: .98;
+  letter-spacing: -.025em;
+  margin: 18px 0 30px -.04em;
+  font-variation-settings: "opsz" 144;
 }
-.hero-cols { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 64px; align-items: start; }
-.lede { font-size: 20px; line-height: 1.5; max-width: 58ch; }
-.lede + .lede { margin-top: 12px; font-size: 18px; }
-.reach { display: grid; gap: 8px; font-size: 17px; }
-.reach li { display: flex; gap: 12px; align-items: baseline; }
-.reach .k { font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); width: 78px; flex: none; }
+.hero h1 em { font-style: italic; color: var(--gold-ink); }
+.hero-rule { display: flex; align-items: center; gap: 14px; margin: 0 0 30px; max-width: 420px; }
+.hero-rule::before { content: ""; flex: 1; height: 1px; background: var(--gold); }
+.hero-rule span { width: 7px; height: 7px; border: 1.5px solid var(--gold); transform: rotate(45deg); }
+.hero-rule::after { content: ""; flex: 1; height: 1px; background: var(--gold); }
+.hero-cols { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 72px; align-items: start; }
+.lede { font-family: var(--font-display); font-size: 25px; line-height: 1.45; font-weight: 400; max-width: 34ch; letter-spacing: -.005em; }
+.lede + .lede { margin-top: 16px; font-family: var(--font-body); font-size: 19px; line-height: 1.6; font-weight: 500; max-width: 56ch; color: var(--muted); }
+.reach { display: grid; gap: 10px; font-size: 17.5px; padding: 22px 26px; background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold); }
+.reach li { display: flex; gap: 14px; align-items: baseline; }
+.reach .k { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--gold-ink); width: 78px; flex: none; }
 
-.ledger-wrap { margin-top: 56px; border-top: 2px solid var(--ink); }
-.ledger-wrap > .label { padding: 10px 0 0; }
+/* Entrance: content is visible by default; motion only adds a gentle rise */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .9s var(--ease) both; animation-delay: var(--d, 0ms); }
+  .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+  .js .reveal.in { opacity: 1; transform: none; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+
+.ledger-wrap { margin-top: 64px; border-top: 1px solid var(--gold); }
+.ledger-wrap > .label { padding: 14px 0 0; }
 .l-row {
   display: grid;
-  grid-template-columns: var(--col) minmax(0, 1fr) minmax(0, 250px);
+  grid-template-columns: 180px minmax(0, 1fr) minmax(0, 220px);
   gap: 8px var(--gap);
   align-items: baseline;
-  padding: 18px 0 14px;
+  padding: 20px 0 16px;
   border-bottom: 1px solid var(--rule);
 }
-.l-what { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
-.l-where { font-size: 16.5px; color: var(--ink); }
+.l-what { font-size: 14px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.l-where { font-size: 17.5px; color: var(--muted); }
 .l-diff {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(38px, 5.4vw, 64px);
-  line-height: 1;
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: .08em .32em;
-  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  font-size: clamp(30px, 3.5vw, 46px);
+  line-height: 1.05;
+  display: flex; flex-wrap: nowrap; white-space: nowrap; align-items: baseline; gap: .08em .3em;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -.02em;
 }
-.l-diff s { color: #6a6252; text-decoration-thickness: .06em; font-weight: 700; }
-.l-arrow { color: var(--accent); font-family: var(--font-body); font-weight: 400; font-size: .62em; }
-.after { position: relative; display: inline-block; isolation: isolate; padding: 0 .14em; color: var(--mark-ink); white-space: nowrap; font-weight: 800; }
-.after::before { content: ""; position: absolute; inset: .04em 0 0; background: var(--mark); z-index: -1; transform-origin: left center; }
+.l-diff s { color: #7a705e; text-decoration-thickness: .05em; font-weight: 400; }
+.l-arrow { color: var(--gold); font-family: var(--font-body); font-weight: 400; font-size: .55em; }
+.after { position: relative; display: inline-block; isolation: isolate; padding: 0 .12em; color: var(--ink); white-space: nowrap; font-weight: 500; font-style: italic; }
+.after::before { content: ""; position: absolute; left: 0; right: 0; bottom: .08em; height: .42em; background: var(--mark); z-index: -1; transform-origin: left center; }
 @media (prefers-reduced-motion: no-preference) {
-  .after { animation: ink .45s var(--d, 0ms) both; }
-  .after::before { animation: sweep .45s var(--d, 0ms) cubic-bezier(.2, .7, .2, 1) both; }
+  .after::before { animation: sweep .8s var(--d, 0ms) var(--ease) both; }
 }
 @keyframes sweep { from { transform: scaleX(0); } }
-@keyframes ink { from { color: var(--ink); } }
 
 /* Buttons */
-.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-.btn { display: inline-flex; align-items: center; gap: 9px; font: 600 17px/1 var(--font-body); color: var(--ink); text-decoration: none; padding: 14px 18px; border: 2px solid var(--ink); background: transparent; }
-.btn:hover { background: var(--panel); }
-.btn-primary { background: var(--mark); color: var(--mark-ink); }
-.btn-primary:hover { background: var(--mark); filter: brightness(.95); }
-.btn-sub { font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; letter-spacing: .04em; border: 1.5px solid currentColor; padding: 2px 5px; }
-.top nav a.nav-cv { border: 2px solid var(--ink); padding: 5px 11px; font-weight: 600; }
-.top nav a.nav-cv:hover { background: var(--mark); color: var(--mark-ink); text-decoration: none; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; font: 600 17px/1 var(--font-body); color: var(--ink); text-decoration: none; padding: 15px 22px; border: 1.5px solid var(--ink); border-radius: 999px; background: transparent; transition: background .2s, color .2s; }
+.btn:hover { background: var(--panel); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--ground); }
+.btn-primary:hover { background: #3a3226; color: var(--ground); }
+.btn-sub { font-size: 12px; font-weight: 700; letter-spacing: .12em; color: var(--mark); }
 
 /* Sections */
-section { padding: 24px 0 72px; }
-.sec-head { border-top: 2px solid var(--ink); padding-top: 12px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; flex-wrap: wrap; }
-.sec-head h2 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: clamp(40px, 6vw, 60px); line-height: .95; letter-spacing: .005em; }
-.sec-head p { font-size: 17px; color: var(--ink); max-width: 52ch; }
+section { padding: 40px 0 80px; }
+.sec-head { border-top: 1px solid var(--gold); padding-top: 20px; display: grid; grid-template-columns: var(--col) minmax(0, 1fr); gap: 8px var(--gap); align-items: baseline; margin-bottom: 8px; }
+.sec-num { font-family: var(--font-display); font-style: italic; font-size: 20px; color: var(--gold-ink); }
+.sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 5.4vw, 60px); line-height: 1.02; letter-spacing: -.02em; }
+.sec-head h2 em { font-style: italic; color: var(--gold-ink); }
+.sec-head p { grid-column: 2; font-size: 18.5px; color: var(--muted); max-width: 56ch; margin-top: 6px; }
 
 /* Filters */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 6px; align-items: center; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 8px; align-items: center; }
 .chip {
-  font: 500 16px/1 var(--font-body);
+  font: 600 16px/1 var(--font-body);
   color: var(--ink); background: transparent;
-  border: 1px solid var(--ink); border-radius: 0;
-  padding: 9px 12px; cursor: pointer;
+  border: 1.5px solid var(--rule); border-radius: 999px;
+  padding: 10px 16px; cursor: pointer; transition: border-color .2s, background .2s;
 }
-.chip:hover { background: var(--panel); }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
-.chip-n { font-family: var(--font-mono); font-size: 13.5px; opacity: .8; margin-left: 4px; }
-.showing { font-family: var(--font-mono); font-size: 14px; color: var(--muted); margin-left: 6px; }
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--ground); }
+.chip-n { font-size: 13.5px; opacity: .75; margin-left: 4px; }
+.showing { font-size: 15px; color: var(--muted); margin-left: 8px; }
 
 /* Entries share one grid */
 .project, .job, .s-row {
@@ -145,110 +173,206 @@ section { padding: 24px 0 72px; }
   gap: 12px var(--gap);
   border-bottom: 1px solid var(--rule);
 }
-.project { padding: 34px 0 36px; }
+.project { padding: 40px 0 42px; }
 .project[hidden] { display: none; }
-.p-fig { display: flex; flex-direction: column; gap: 8px; }
-.p-num { font-family: var(--font-display); font-weight: 800; font-size: 68px; line-height: .86; font-variant-numeric: tabular-nums; }
-.p-cap { font-size: 15.5px; line-height: 1.4; color: var(--ink); max-width: 22ch; }
-.p-kind { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.project h3, .job h3 { font-size: 25px; line-height: 1.25; font-weight: 600; margin-top: 4px; text-wrap: balance; }
-.p-sum { margin-top: 8px; max-width: 64ch; font-size: 18.5px; }
+.p-fig { display: flex; flex-direction: column; gap: 10px; }
+.p-num { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 64px; line-height: .9; color: var(--gold-ink); font-variant-numeric: lining-nums; }
+.p-cap { font-size: 16px; line-height: 1.45; color: var(--muted); max-width: 22ch; }
+.p-kind { font-size: 13.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); }
+.project h3, .job h3 { font-family: var(--font-display); font-size: 30px; line-height: 1.2; font-weight: 500; margin-top: 4px; letter-spacing: -.01em; text-wrap: balance; }
+.p-sum { margin-top: 10px; max-width: 64ch; font-size: 19px; }
 .flow {
-  margin-top: 14px;
+  margin-top: 16px;
   display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
-  font-family: var(--font-mono); font-size: 15px; font-weight: 500; line-height: 1.55;
-  background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--ink);
-  padding: 9px 12px;
+  font-family: var(--font-mono); font-size: 14.5px; font-weight: 500; line-height: 1.55;
+  background: var(--panel); border: 1px solid var(--rule); border-left: 2px solid var(--gold);
+  padding: 10px 14px;
 }
-.f-arrow { color: var(--accent); }
-.bul { margin-top: 16px; display: grid; gap: 10px; max-width: 68ch; }
-.bul li { position: relative; padding-left: 20px; font-size: 17.5px; }
-.bul li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 7px; height: 7px; background: var(--ink); }
-.p-note { margin-top: 14px; font-size: 16px; color: var(--ink); max-width: 68ch; font-style: italic; }
-.p-stack { margin-top: 16px; font-size: 16px; color: var(--ink); max-width: 70ch; }
-.lab { font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; margin-right: 6px; color: var(--muted); }
-.p-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px 24px; font-weight: 600; font-size: 17px; }
+.f-arrow { color: var(--gold); }
+.bul { margin-top: 18px; display: grid; gap: 10px; max-width: 68ch; }
+.bul li { position: relative; padding-left: 22px; font-size: 18px; }
+.bul li::before { content: ""; position: absolute; left: 3px; top: .66em; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+.p-note { margin-top: 14px; font-size: 17px; color: var(--muted); max-width: 68ch; font-style: italic; }
+.p-stack { margin-top: 18px; font-size: 16.5px; color: var(--ink); max-width: 70ch; }
+.lab { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-right: 8px; color: var(--gold-ink); }
+.p-links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px 26px; font-weight: 700; font-size: 17.5px; }
 
 /* Featured projects */
-.feat.has-media .p-body { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 32px 36px; align-items: start; }
+.feat.has-media .p-body { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px 40px; align-items: start; }
 .demo { margin: 0; }
-.demo video { display: block; width: 100%; height: auto; aspect-ratio: 720 / 952; background: #0e1117; border: 2px solid var(--ink); }
-.demo figcaption { margin-top: 8px; font-size: 14.5px; line-height: 1.45; color: var(--muted); }
+.demo video { display: block; width: 100%; height: auto; aspect-ratio: 720 / 952; background: #0e1117; border: 1px solid var(--rule); border-radius: 6px; box-shadow: 0 18px 40px -22px rgba(60, 40, 10, .45); }
+.demo figcaption { margin-top: 10px; font-size: 15px; line-height: 1.45; color: var(--muted); font-style: italic; }
 
 /* Expandable details */
-details.more { margin-top: 16px; }
+details.more { margin-top: 18px; }
 details.more > summary { cursor: pointer; list-style: none; }
 details.more > summary::-webkit-details-marker { display: none; }
-.feat details.more > summary { display: inline-flex; align-items: center; gap: 8px; font: 600 16px/1 var(--font-body); color: var(--ink); border: 1.5px solid var(--ink); padding: 9px 12px; }
-.feat details.more > summary:hover { background: var(--panel); }
-.feat details.more > summary::before, .r-toggle::before { content: "+"; font-family: var(--font-mono); font-weight: 500; }
+.feat details.more > summary { display: inline-flex; align-items: center; gap: 9px; font: 600 16px/1 var(--font-body); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 999px; padding: 10px 16px; }
+.feat details.more > summary:hover { background: var(--ink); color: var(--ground); }
+.feat details.more > summary::before, .r-toggle::before { content: "+"; font-weight: 600; }
 .feat details.more[open] > summary::before, details[open] .r-toggle::before { content: "\2212"; }
 .more-close { display: none; }
 details[open] > summary .more-open { display: none; }
 details[open] > summary .more-close { display: inline; }
 
 /* Compact project rows */
-.row { display: grid; grid-template-columns: var(--col) minmax(0, 1fr) auto; gap: 10px var(--gap); align-items: start; padding: 22px 0 24px; border-bottom: 1px solid var(--rule); }
+.row { display: grid; grid-template-columns: var(--col) minmax(0, 1fr) auto; gap: 10px var(--gap); align-items: start; padding: 26px 0 28px; border-bottom: 1px solid var(--rule); }
 .row[hidden] { display: none; }
 .row .p-num { font-size: 44px; }
-.row .p-cap { font-size: 14.5px; }
+.row .p-cap { font-size: 15px; }
 .row details.more { margin-top: 0; }
-.row summary { display: grid; gap: 4px; }
-.r-title { font-size: 21px; line-height: 1.25; font-weight: 600; }
-.r-sum { font-size: 17px; max-width: 62ch; }
-.r-toggle { margin-top: 6px; display: inline-flex; gap: 7px; align-items: center; font-weight: 600; font-size: 15.5px; color: var(--accent); }
-.row summary:hover .r-title { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
-.row details[open] .p-kind { margin-top: 16px; }
-.r-links { margin-top: 2px; white-space: nowrap; }
+.row summary { display: grid; gap: 6px; }
+.r-title { font-family: var(--font-display); font-size: 25px; line-height: 1.25; font-weight: 500; letter-spacing: -.01em; }
+.r-sum { font-size: 18px; max-width: 62ch; }
+.r-toggle { margin-top: 6px; display: inline-flex; gap: 8px; align-items: center; font-weight: 700; font-size: 16px; color: var(--gold-ink); }
+.row summary:hover .r-title { color: var(--gold-ink); }
+.row details[open] .p-kind { margin-top: 18px; }
+.r-links { margin-top: 4px; white-space: nowrap; }
 
 /* Experience and education */
-.job { padding: 28px 0 30px; }
-.j-meta { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); font-size: 15px; font-weight: 500; color: var(--muted); padding-top: 9px; }
-.j-when { color: var(--ink); }
-.j-org { font-weight: 400; color: var(--muted); }
-.j-org::before { content: "/ "; opacity: .6; }
-.j-org a { font-weight: 500; }
-.j-about { margin-top: 4px; color: var(--muted); font-size: 17px; max-width: 68ch; }
+.job { padding: 32px 0 34px; }
+.j-meta { display: flex; flex-direction: column; gap: 3px; font-size: 16px; font-weight: 600; color: var(--muted); padding-top: 10px; }
+.j-when { color: var(--gold-ink); font-weight: 700; letter-spacing: .02em; }
+.project h3 .j-org, .job h3 .j-org { display: block; margin-top: 4px; font-family: var(--font-body); font-size: 17.5px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+.j-org a { font-weight: 700; }
+.j-about { margin-top: 6px; color: var(--muted); font-size: 18px; max-width: 68ch; font-style: italic; }
 
 /* Skills */
-.s-row { padding: 14px 0; align-items: baseline; }
-.s-row dt { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+.s-row { padding: 16px 0; align-items: baseline; }
+.s-row dt { font-size: 14px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-ink); }
 .s-row dd { max-width: 70ch; }
 
 /* Contact */
-.contact-big { margin-top: 26px; display: grid; gap: 22px; }
-.mail-line { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
-.mail { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 6vw, 64px); line-height: 1; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; text-transform: uppercase; }
-.mail:hover { color: var(--accent); }
-.copy { font: 600 16px/1 var(--font-body); color: var(--ink); background: var(--mark); color: var(--mark-ink); border: 0; padding: 10px 14px; cursor: pointer; }
-.copy:hover { filter: brightness(.95); }
+.contact-big { margin-top: 30px; display: grid; gap: 26px; }
+.mail-line { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.mail { font-family: var(--font-display); font-weight: 400; font-style: italic; font-size: clamp(30px, 5.6vw, 62px); line-height: 1.05; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; letter-spacing: -.02em; }
+.mail:hover { color: var(--gold-ink); }
+.copy { font: 600 16px/1 var(--font-body); background: var(--ink); color: var(--ground); border: 0; border-radius: 999px; padding: 12px 18px; cursor: pointer; }
+.copy:hover { background: #3a3226; }
 .c-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
-.c-grid li { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 2px; }
-.c-grid .k { font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-.c-grid a, .c-grid span.v { font-size: 17.5px; overflow-wrap: anywhere; }
-footer { padding: 0 0 48px; }
-footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
+.c-grid li { padding: 18px 16px 18px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 3px; }
+.c-grid .k { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--gold-ink); }
+.c-grid a, .c-grid span.v { font-size: 18px; overflow-wrap: anywhere; }
+footer { padding: 0 0 56px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 22px; }
+footer p { font-size: 15px; color: var(--muted); }
+footer .sig { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--ink); }
 
+
+/* More projects: a sideways rail of cards */
+.rail-wrap { position: relative; margin-top: 18px; }
+.rail {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 340px);
+  gap: 20px; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-padding-inline: 2px;
+  padding: 6px 2px 22px; scrollbar-width: none; cursor: grab;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+.rail:focus-visible { outline-offset: 6px; }
+.card {
+  scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px;
+  background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold);
+  padding: 24px 24px 22px; min-height: 100%;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s;
+}
+.card[hidden] { display: none; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 20px 38px -24px rgba(60, 40, 10, .45); border-color: #cdb98f; }
+.c-kind { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); }
+.c-fig { display: flex; align-items: baseline; gap: 12px; }
+.card .p-num { font-size: 46px; white-space: nowrap; }
+.card .p-cap { font-size: 15px; max-width: none; }
+.c-title { font-family: var(--font-display); font-size: 25px; line-height: 1.22; font-weight: 500; letter-spacing: -.01em; text-wrap: balance; }
+.c-sum { font-size: 17.5px; line-height: 1.55; }
+.c-foot { margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; border-top: 1px solid var(--rule); }
+.c-open { font: 700 16px/1 var(--font-body); color: var(--ink); background: transparent; border: 1.5px solid var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; transition: background .2s, color .2s; }
+.c-open:hover { background: var(--ink); color: var(--ground); }
+.c-links { margin-top: 0; font-size: 16px; gap: 4px 16px; }
+.rail-ctrl { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.rail-progress { flex: 1; height: 2px; background: var(--rule); position: relative; overflow: hidden; }
+.rail-progress span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); width: 20%; transition: transform .25s var(--ease), width .25s; }
+.rail-count { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--gold-ink); min-width: 4.5ch; text-align: right; }
+.rail.loop { scroll-snap-type: none; }
+.rail.moving .card:hover { transform: none; }
+.rail-play { display: inline-flex; align-items: center; gap: 8px; font: 700 14px/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); background: transparent; border: 1.5px solid var(--rule); border-radius: 999px; padding: 8px 13px; cursor: pointer; transition: border-color .2s; }
+.rail-play:hover { border-color: var(--ink); }
+.rail-play[hidden] { display: none; }
+.pl-i { width: 10px; height: 11px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+.rail-play.is-paused .pl-i { border: 0; width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 10px solid currentColor; }
+.rail-stage { position: relative; }
+.arrow {
+  position: absolute; top: 50%; z-index: 3; transform: translateY(-50%);
+  width: 56px; height: 56px; border-radius: 50%; padding: 0;
+  border: 1.5px solid var(--ink); background: var(--ground); color: var(--ink);
+  display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgba(60, 40, 10, .5);
+  transition: background .2s, color .2s, opacity .25s, transform .25s var(--ease);
+}
+.arrow svg { display: block; }
+.arrow-prev { left: -28px; }
+.arrow-next { right: -28px; }
+.arrow:hover:not(:disabled) { background: var(--ink); color: var(--ground); transform: translateY(-50%) scale(1.06); }
+.arrow:disabled { opacity: 0; pointer-events: none; }
+.rail-stage::after { content: ""; position: absolute; right: 0; top: 0; bottom: 22px; width: 56px; pointer-events: none; background: linear-gradient(to right, transparent, var(--ground)); transition: opacity .3s; }
+.rail-wrap.at-end .rail-stage::after { opacity: 0; }
+.rail-stage::before { content: ""; position: absolute; left: 0; top: 0; bottom: 22px; width: 40px; z-index: 1; pointer-events: none; background: linear-gradient(to left, transparent, var(--ground)); opacity: 0; transition: opacity .3s; }
+.rail-stage:has(.rail.loop)::before { opacity: 1; }
+
+/* Project popup */
+.pd { border: 0; padding: 0; max-width: min(760px, calc(100vw - 32px)); width: 100%; max-height: calc(100vh - 48px); background: var(--ground); color: var(--ink); border-top: 3px solid var(--gold); box-shadow: 0 30px 80px -20px rgba(30, 20, 5, .5); }
+.pd::backdrop { background: rgba(29, 25, 19, .55); backdrop-filter: blur(3px); }
+.pd-inner { position: relative; padding: 38px 40px 30px; }
+.pd-close { position: absolute; right: 14px; top: 12px; width: 44px; height: 44px; border: 0; background: transparent; font-size: 32px; line-height: 1; cursor: pointer; color: var(--ink); border-radius: 50%; }
+.pd-close:hover { background: var(--panel); }
+.pd .d-title { font-family: var(--font-display); font-size: 34px; line-height: 1.15; font-weight: 500; letter-spacing: -.015em; margin: 6px 40px 4px 0; }
+.pd-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.pd-nav .btn { padding: 11px 18px; font-size: 16px; }
+@media (prefers-reduced-motion: no-preference) {
+  .pd[open] { animation: pdIn .4s var(--ease); }
+}
+@keyframes pdIn { from { opacity: 0; transform: translateY(14px); } }
+@media (max-width: 820px) {
+  .rail { grid-auto-columns: 84%; gap: 14px; }
+  .pd-inner { padding: 30px 22px 22px; }
+  .pd .d-title { font-size: 28px; }
+  .arrow { width: 40px; height: 40px; }
+  .arrow-prev { left: 4px; }
+  .arrow-next { right: 4px; }
+}
+
+@media (max-width: 1000px) {
+  .l-diff { font-size: clamp(28px, 3.4vw, 34px); }
+}
 @media (max-width: 820px) {
   :root { --gap: 24px; }
-  .hero { padding-block: 36px 48px; }
+  .hero { padding-block: 44px 52px; }
   .hero-cols { grid-template-columns: minmax(0, 1fr); }
-  .l-row { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 16px 0 14px; }
+  .lede { font-size: 22px; }
+  .l-row { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 18px 0 16px; }
+  .l-diff { flex-wrap: wrap; white-space: normal; font-size: clamp(30px, 8vw, 40px); }
+  .sec-head { grid-template-columns: minmax(0, 1fr); }
+  .sec-head p { grid-column: 1; }
   .project, .job, .s-row, .row { grid-template-columns: minmax(0, 1fr); }
   .feat.has-media .p-body { grid-template-columns: minmax(0, 1fr); }
   .demo { max-width: 360px; }
   .row .p-num { font-size: 40px; }
   .p-fig { flex-direction: row; align-items: baseline; gap: 14px; }
-  .p-num { font-size: 52px; }
+  .p-num { font-size: 50px; }
   .p-cap { max-width: none; }
+  .project h3, .job h3 { font-size: 26px; }
   .j-meta { flex-direction: row; gap: 14px; padding-top: 0; flex-wrap: wrap; }
   .s-row { gap: 4px; }
   .c-grid { grid-template-columns: minmax(0, 1fr); }
   .top nav { gap: 16px; }
 }
+@media (max-width: 520px) {
+  .top nav { gap: 14px; }
+  .top nav a { font-size: 15.5px; }
+  .top nav a.nav-cv { padding: 5px 12px; }
+  .top nav a[href="#skills"] { display: none; }
+}
 @media (max-width: 420px) {
-  .wrap { padding-inline: 18px; }
-  .lede { font-size: 18.5px; }
+  .wrap { padding-inline: 20px; }
   .top-name { display: none; }
 }
 </style>
@@ -257,7 +381,7 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
 
 <header class="top">
   <div class="wrap">
-    <a class="top-name" href="#top">Darpan Jiyani</a>
+    <a class="top-name" href="#top">Darpan <em>Jiyani</em></a>
     <nav aria-label="Sections">
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
@@ -268,12 +392,25 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
   </div>
 </header>
 
-<main id="top">
+<nav class="spy" aria-label="On this page">
+  <ol>
+    <li><a href="#top"><span class="n">i</span>Intro</a></li>
+    <li><a href="#experience"><span class="n">01</span>Experience</a></li>
+    <li><a href="#projects"><span class="n">02</span>Featured</a></li>
+    <li><a href="#more-projects"><span class="n">03</span>More projects</a></li>
+    <li><a href="#skills"><span class="n">04</span>Skills</a></li>
+    <li><a href="#education"><span class="n">05</span>Education</a></li>
+    <li><a href="#contact"><span class="n">06</span>Contact</a></li>
+  </ol>
+</nav>
+
+<main id="top" data-spy>
   <div class="wrap hero">
-    <p class="label">Data Engineer + AI / San Jose, CA</p>
-    <h1>Darpan Jiyani</h1>
+    <p class="label rise">AI Data Engineer &middot; San Jose, CA</p>
+    <h1 class="rise" style="--d:120ms">Darpan <em>Jiyani</em></h1>
+    <div class="hero-rule rise" style="--d:220ms" aria-hidden="true"><span></span></div>
     <div class="hero-cols">
-      <div>
+      <div class="rise" style="--d:300ms">
         <p class="lede">I build data pipelines and the AI tools that run on top of them. Right now I'm a Data Engineer at UL Solutions, turning RF test data into Delta tables, dashboards and a review app.</p>
         <p class="lede">Before that I worked on wafer monitoring at Keysight and boiler sensor telemetry at Cerebulb. MS in Applied Data Intelligence, San Jose State University.</p>
         <p class="hero-actions">
@@ -281,7 +418,7 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
           <a class="btn" href="#projects">See projects</a>
         </p>
       </div>
-      <ul class="reach">
+      <ul class="reach rise" style="--d:420ms">
         <li><span class="k">Email</span><a href="mailto:darpanjiyani78@gmail.com">darpanjiyani78@gmail.com</a></li>
         <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">linkedin.com/in/darpanjiyani</a></li>
         <li><span class="k">GitHub</span><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">github.com/Darpanjiyani</a></li>
@@ -289,7 +426,7 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
       </ul>
     </div>
 
-    <div class="ledger-wrap">
+    <div class="ledger-wrap rise" style="--d:520ms">
       <p class="label">What changed after I shipped it</p>
       <ol class="ledger">
         <li class="l-row">
@@ -324,9 +461,10 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
     </div>
   </div>
 
-  <section id="experience">
+  <section id="experience" data-spy>
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
+        <span class="sec-num">01</span>
         <h2>Experience</h2>
         <p>RF test data, semiconductor manufacturing and industrial IoT.</p>
       </div>
@@ -367,10 +505,11 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
     </div>
   </section>
 
-  <section id="projects">
+  <section id="projects" data-spy>
     <div class="wrap">
-      <div class="sec-head">
-        <h2>Featured projects</h2>
+      <div class="sec-head reveal">
+        <span class="sec-num">02</span>
+        <h2>Featured <em>projects</em></h2>
         <p>The four I would show first. Each one links to its code.</p>
       </div>
       
@@ -457,168 +596,190 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
     </div>
   </section>
 
-  <section id="more-projects">
+  <section id="more-projects" data-spy>
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
+        <span class="sec-num">03</span>
         <h2>More projects</h2>
-        <p>9 more, from lakehouse builds to full-stack apps. Open any row for the details.</p>
+        <p>9 more, from lakehouse builds to full-stack apps. They drift by on their own; point at one to stop. Use the arrows, swipe or drag to browse, and open any card for the full story.</p>
       </div>
       <div class="filters" role="group" aria-label="Filter projects by type">
         <button type="button" class="chip" id="filter-all" data-filter="all" aria-pressed="true">All <span class="chip-n">9</span></button><button type="button" class="chip" id="filter-de" data-filter="de" aria-pressed="false">Data engineering <span class="chip-n">4</span></button><button type="button" class="chip" id="filter-ai" data-filter="ai" aria-pressed="false">AI and ML <span class="chip-n">3</span></button><button type="button" class="chip" id="filter-an" data-filter="an" aria-pressed="false">Analytics <span class="chip-n">3</span></button><button type="button" class="chip" id="filter-sw" data-filter="sw" aria-pressed="false">Software <span class="chip-n">2</span></button>
         <span class="showing" id="showing" aria-live="polite">Showing 9 of 9</span>
       </div>
-      <div id="project-list">
-      <article class="row" data-cats="ai">
-        <div class="p-fig">
-          <span class="p-num">0.96</span>
-          <span class="p-cap">ROC-AUC with LoRA, training under 5% of the parameters</span>
+      <div class="rail-wrap">
+        <div class="rail-stage">
+          <div class="rail" id="project-list" tabindex="0" role="region" aria-label="More projects, scroll sideways">
+        <article class="card" data-cats="ai">
+          <p class="c-kind">RAG and LoRA on public tissue images</p>
+          <div class="c-fig"><span class="p-num">0.96</span><span class="p-cap">ROC-AUC with LoRA, training under 5% of the parameters</span></div>
+          <h3 class="c-title">Multimodal LLM for Cancer Pathology Classification</h3>
+          <p class="c-sum">RAG over image captions and a LoRA-tuned image-plus-text model that classify four tissue types.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Multimodel-LLM-for-Cancer-Pathology-Classification" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">RAG and LoRA on public tissue images</p>
+            <h3 class="d-title">Multimodal LLM for Cancer Pathology Classification</h3>
+            <p class="p-sum">Classifies four tissue types two ways: a RAG pipeline over image captions, and a fused image-plus-text model tuned with LoRA.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">tissue image</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">BLIP caption</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">FAISS index</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">GPT-3.5 names the tissue type</span></p><ul class="bul"><li>Built a RAG pipeline that captions tissue images with BLIP, indexes them in FAISS and classifies 4 tissue types with GPT-3.5</li><li>Fused MobileNetV2 image features with caption embeddings in TensorFlow. LoRA reached <strong>~80% accuracy</strong>, ROC-AUC <strong>0.96</strong></li><li>Matched full fine-tuning within ~1 point with <strong>24× fewer</strong> trainable parameters, vs 19% zero-shot and 49% chain-of-thought GPT</li></ul><p class="p-note">Uses the public PCam and MHIST datasets. This is not clinical work.</p><p class="p-stack"><span class="lab">Stack</span> Python, TensorFlow, BLIP, MiniLM, FAISS, GPT-3.5, MobileNetV2, LoRA</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Multimodel-LLM-for-Cancer-Pathology-Classification" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="de">
+          <p class="c-kind">Lakehouse migration</p>
+          <div class="c-fig"><span class="p-num">7</span><span class="p-cap">currencies converted to INR for one BI view</span></div>
+          <h3 class="c-title">E-Commerce Analytics Platform</h3>
+          <p class="c-sum">A legacy on-premises reporting flow rebuilt as a Databricks lakehouse.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/E-Commerce-Analytics-Platform" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Lakehouse migration</p>
+            <h3 class="d-title">E-Commerce Analytics Platform</h3>
+            <p class="p-sum">A legacy on-premises reporting flow rebuilt as a Databricks lakehouse that ends in a single BI view of sales.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">AWS S3</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">bronze</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">silver (cleaned)</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold Delta</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">one denormalized BI view</span></p><ul class="bul"><li>Moved a legacy on-premises e-commerce reporting flow to a Databricks lakehouse with bronze, silver and gold Delta tables</li><li>Cleaned duplicate orders, mixed date formats, "$" and "%" symbols and misspelled values with PySpark and Spark SQL</li><li>Converted revenue in <strong>7 currencies</strong> to INR and published one BI view of sales by hour, weekday, brand and category</li></ul><p class="p-stack"><span class="lab">Stack</span> Databricks, PySpark, Spark SQL, Delta Lake, Unity Catalog, AWS S3</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/E-Commerce-Analytics-Platform" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="de ai">
+          <p class="c-kind">Streaming and data mining</p>
+          <div class="c-fig"><span class="p-num">60 s</span><span class="p-cap">pull interval for the top 10 coins by market cap</span></div>
+          <h3 class="c-title">Real-Time Cryptocurrency Trend Analysis</h3>
+          <p class="c-sum">Coin prices streamed through Kafka, deduped with streaming algorithms and flagged for price moves.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Real-Time-Cryptocurrency-Trend-Analysis" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Streaming and data mining</p>
+            <h3 class="d-title">Real-Time Cryptocurrency Trend Analysis</h3>
+            <p class="p-sum">Coin prices flow through Kafka into S3 and HDFS, where streaming algorithms dedupe them and a Random Forest explained with SHAP flags price moves.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">CoinGecko API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kafka</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">S3 + HDFS</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">MapReduce and PySpark on EMR</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">price alerts</span></p><ul class="bul"><li>Streamed the top 10 coins from the CoinGecko API every <strong>60 seconds</strong> through Kafka into S3 and HDFS on EMR</li><li>Implemented Bloom Filter, Flajolet-Martin, Reservoir Sampling and PySpark LSH to dedupe streaming crypto data and find similar coins</li><li>Explained a Random Forest model with SHAP, added Laplace-noise differential privacy, and flagged ≥5% gains and &gt;3% drops</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, PySpark, Confluent Kafka, AWS S3, HDFS, AWS EMR, MapReduce, SHAP</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Real-Time-Cryptocurrency-Trend-Analysis" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="de an">
+          <p class="c-kind">Data modeling across three databases</p>
+          <div class="c-fig"><span class="p-num">60K+</span><span class="p-cap">games across 400 clubs and 30K players</span></div>
+          <h3 class="c-title">Football Data Analytics</h3>
+          <p class="c-sum">Match, club and player data modeled in MySQL, Snowflake and MongoDB for coaching dashboards.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Football-Data-Analytics" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Data modeling across three databases</p>
+            <h3 class="d-title">Football Data Analytics</h3>
+            <p class="p-sum">Match, club and player data modeled in MySQL, Snowflake and MongoDB, then turned into dashboards for transfer strategy and coaching reviews.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">MySQL schema, 9 dimension tables</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Snowflake star schema</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Power BI and Atlas Charts dashboards</span></p><ul class="bul"><li>Modeled <strong>60K+ games</strong>, 400 clubs and 30K players into a MySQL schema with 9 dimension tables, then a Snowflake star schema</li><li>Analyzed transfer valuations, manager win rates and late-game goals in Snowflake, MySQL and MongoDB aggregation pipelines</li><li>Delivered Power BI and MongoDB Atlas Charts dashboards for transfer strategy and coaching reviews</li></ul><p class="p-stack"><span class="lab">Stack</span> MySQL, Snowflake, MongoDB, PyMongo, Power BI, MongoDB Atlas Charts, AWS S3, Azure DevOps</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Football-Data-Analytics" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="ai">
+          <p class="c-kind">Deep Learning course project, San Jose State</p>
+          <div class="c-fig"><span class="p-num">~75%</span><span class="p-cap">top-1 accuracy across 345 classes, in under 100 ms</span></div>
+          <h3 class="c-title">Doodle Recognition Using Deep Learning</h3>
+          <p class="c-sum">Draw a sketch and a classifier names it in under 100 ms, then GPT-4 gives drawing tips.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Doodle" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Deep Learning course project, San Jose State</p>
+            <h3 class="d-title">Doodle Recognition Using Deep Learning</h3>
+            <p class="p-sum">Draw a sketch and a classifier names it in under 100 ms, then GPT-4 replies with drawing tips.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">~345K Quick, Draw! sketches</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">EfficientNetV2-B0</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Streamlit drawing app</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">GPT-4 tips</span></p><ul class="bul"><li>Trained EfficientNetV2-B0 on ~345K Quick, Draw! sketches across 345 classes to <strong>~75% top-1 accuracy</strong> with under 100 ms responses</li><li>Compared EfficientNetV2-B0 with a Vision Transformer and dropped the ViT after it overfit on unseen sketches</li><li>Wrote a Streamlit drawing app that classifies sketches live and sends each prediction to GPT-4 for drawing tips</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, EfficientNetV2-B0, Vision Transformer, GPT-4, Streamlit, Google Colab</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Doodle" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="de an">
+          <p class="c-kind">dbt on Databricks, tutorial-based build</p>
+          <div class="c-fig"><span class="p-num">8</span><span class="p-cap">dbt models across bronze, silver and gold, plus an SCD Type 2 snapshot</span></div>
+          <h3 class="c-title">Retail Sales Analytics Platform</h3>
+          <p class="c-sum">A bronze, silver and gold dbt project on Databricks with tests and a snapshot.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Retail-Sales-Analytics-Platform---dbt" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">dbt on Databricks, tutorial-based build</p>
+            <h3 class="d-title">Retail Sales Analytics Platform</h3>
+            <p class="p-sum">A bronze, silver and gold dbt project on Databricks with data tests, a snapshot, and separate dev and prod catalogs.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">6 source tables</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">6 bronze models</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">silver</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">revenue by category and gender</span></p><ul class="bul"><li>Set up a bronze-silver-gold dbt project on Databricks with separate dev and prod catalogs and a custom schema macro</li><li>Added dbt tests (unique, not_null, accepted_values, custom non-negative) and an SCD Type 2 snapshot to track product history</li></ul><p class="p-stack"><span class="lab">Stack</span> dbt, Databricks, Unity Catalog, Spark SQL, Jinja</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Retail-Sales-Analytics-Platform---dbt" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="an">
+          <p class="c-kind">Exploratory analysis and dashboards</p>
+          <div class="c-fig"><span class="p-num">2,640</span><span class="p-cap">billionaires across 78 countries and 18 industries</span></div>
+          <h3 class="c-title">Comprehensive Analysis of Billionaires' Wealth</h3>
+          <p class="c-sum">Who holds $12.2T of wealth, joined with GDP, CPI, tax and education data by country.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Comprehensive-Analysis-of-Billionaire-s-Wealth" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Exploratory analysis and dashboards</p>
+            <h3 class="d-title">Comprehensive Analysis of Billionaires' Wealth</h3>
+            <p class="p-sum">Who holds $12.2T of wealth, joined with GDP, CPI, tax and education indicators for each country.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">billionaire records + country indicators</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Python joins</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">exploratory analysis</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Power BI and Tableau</span></p><ul class="bul"><li>Joined data on <strong>2,640 billionaires</strong> across 78 countries with GDP, CPI, tax and education indicators using Python</li><li>Found that <strong>69%</strong> are self-made and Technology holds the largest wealth share (15.4%), ahead of Fashion &amp; Retail and Finance</li><li>Designed Power BI views (world bubble map, net worth vs. GDP, industry breakdowns) for policy and investment analysis</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, Tableau, Power BI</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Comprehensive-Analysis-of-Billionaire-s-Wealth" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="sw">
+          <p class="c-kind">UberEats-style course lab</p>
+          <div class="c-fig"><span class="p-num">K8s</span><span class="p-cap">app, Kafka and Zookeeper deployed with Helm</span></div>
+          <h3 class="c-title">Food Delivery Platform</h3>
+          <p class="c-sum">A Django REST and React food-delivery app with Kafka events on Kubernetes.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/Lab_1_UberEats" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">UberEats-style course lab</p>
+            <h3 class="d-title">Food Delivery Platform</h3>
+            <p class="p-sum">A Django REST and React food-delivery app with Kafka events, containerized and deployed on Kubernetes.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">React + Redux</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Django REST API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kafka producers and consumers</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Docker</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kubernetes with Helm</span></p><ul class="bul"><li>Added Kafka producer and consumer services for event-driven order and user events in a Django REST food-delivery app</li><li>Containerized the app and deployed it with Kafka and Zookeeper on Kubernetes using Deployments, Services and Helm</li></ul><p class="p-stack"><span class="lab">Stack</span> Django REST Framework, React 18, Redux, Kafka, Zookeeper, Docker, Kubernetes, Helm, Swagger</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/Lab_1_UberEats" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+        <article class="card" data-cats="sw">
+          <p class="c-kind">Full-stack web app</p>
+          <div class="c-fig"><span class="p-num">JWT</span><span class="p-cap">login with token blacklisting, for rider and driver roles</span></div>
+          <h3 class="c-title">Taxi Booking Web App</h3>
+          <p class="c-sum">A ride-booking app with rider and driver roles, JWT login and a tested API.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/taxi-booking" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Full-stack web app</p>
+            <h3 class="d-title">Taxi Booking Web App</h3>
+            <p class="p-sum">A ride-booking app with separate rider and driver roles, JWT login, and an API that ships with tests and OpenAPI docs.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">React (Vite) + Tailwind + Mapbox</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Django REST API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">SimpleJWT auth</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">pytest + OpenAPI docs</span></p><ul class="bul"><li>Built a ride-booking platform with Django REST Framework and React, with separate rider and driver roles</li><li>Secured the API with JWT login and token blacklisting, and added OpenAPI docs and pytest tests</li></ul><p class="p-stack"><span class="lab">Stack</span> Django REST Framework, React (Vite), Tailwind CSS, SimpleJWT, drf-spectacular, pytest, Mapbox</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/taxi-booking" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
+          </div>
+          <button type="button" class="arrow arrow-prev" id="rail-prev" aria-label="Previous projects"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="arrow arrow-next" id="rail-next" aria-label="Next projects"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Multimodal LLM for Cancer Pathology Classification</span>
-            <span class="r-sum">RAG over image captions and a LoRA-tuned image-plus-text model that classify four tissue types.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">RAG and LoRA on public tissue images</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">tissue image</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">BLIP caption</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">FAISS index</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">GPT-3.5 names the tissue type</span></p><ul class="bul"><li>Built a RAG pipeline that captions tissue images with BLIP, indexes them in FAISS and classifies 4 tissue types with GPT-3.5</li><li>Fused MobileNetV2 image features with caption embeddings in TensorFlow. LoRA reached <strong>~80% accuracy</strong>, ROC-AUC <strong>0.96</strong></li><li>Matched full fine-tuning within ~1 point with <strong>24× fewer</strong> trainable parameters, vs 19% zero-shot and 49% chain-of-thought GPT</li></ul><p class="p-note">Uses the public PCam and MHIST datasets. This is not clinical work.</p><p class="p-stack"><span class="lab">Stack</span> Python, TensorFlow, BLIP, MiniLM, FAISS, GPT-3.5, MobileNetV2, LoRA</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Multimodel-LLM-for-Cancer-Pathology-Classification" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="de">
-        <div class="p-fig">
-          <span class="p-num">7</span>
-          <span class="p-cap">currencies converted to INR for one BI view</span>
+        <div class="rail-ctrl">
+          <button type="button" class="rail-play" id="rail-play" aria-pressed="false" aria-label="Pause or play the moving projects"><span class="pl-i" aria-hidden="true"></span><span class="pl-t">Pause</span></button>
+          <div class="rail-progress" aria-hidden="true"><span id="rail-bar"></span></div>
+          <span class="rail-count" id="rail-count" aria-hidden="true"></span>
         </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">E-Commerce Analytics Platform</span>
-            <span class="r-sum">A legacy on-premises reporting flow rebuilt as a Databricks lakehouse.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">Lakehouse migration</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">AWS S3</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">bronze</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">silver (cleaned)</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold Delta</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">one denormalized BI view</span></p><ul class="bul"><li>Moved a legacy on-premises e-commerce reporting flow to a Databricks lakehouse with bronze, silver and gold Delta tables</li><li>Cleaned duplicate orders, mixed date formats, "$" and "%" symbols and misspelled values with PySpark and Spark SQL</li><li>Converted revenue in <strong>7 currencies</strong> to INR and published one BI view of sales by hour, weekday, brand and category</li></ul><p class="p-stack"><span class="lab">Stack</span> Databricks, PySpark, Spark SQL, Delta Lake, Unity Catalog, AWS S3</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/E-Commerce-Analytics-Platform" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="de ai">
-        <div class="p-fig">
-          <span class="p-num">60 s</span>
-          <span class="p-cap">pull interval for the top 10 coins by market cap</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Real-Time Cryptocurrency Trend Analysis</span>
-            <span class="r-sum">Coin prices streamed through Kafka, deduped with streaming algorithms and flagged for price moves.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">Streaming and data mining</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">CoinGecko API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kafka</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">S3 + HDFS</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">MapReduce and PySpark on EMR</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">price alerts</span></p><ul class="bul"><li>Streamed the top 10 coins from the CoinGecko API every <strong>60 seconds</strong> through Kafka into S3 and HDFS on EMR</li><li>Implemented Bloom Filter, Flajolet-Martin, Reservoir Sampling and PySpark LSH to dedupe streaming crypto data and find similar coins</li><li>Explained a Random Forest model with SHAP, added Laplace-noise differential privacy, and flagged ≥5% gains and &gt;3% drops</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, PySpark, Confluent Kafka, AWS S3, HDFS, AWS EMR, MapReduce, SHAP</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Real-Time-Cryptocurrency-Trend-Analysis" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="de an">
-        <div class="p-fig">
-          <span class="p-num">60K+</span>
-          <span class="p-cap">games across 400 clubs and 30K players</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Football Data Analytics</span>
-            <span class="r-sum">Match, club and player data modeled in MySQL, Snowflake and MongoDB for coaching dashboards.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">Data modeling across three databases</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">MySQL schema, 9 dimension tables</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Snowflake star schema</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Power BI and Atlas Charts dashboards</span></p><ul class="bul"><li>Modeled <strong>60K+ games</strong>, 400 clubs and 30K players into a MySQL schema with 9 dimension tables, then a Snowflake star schema</li><li>Analyzed transfer valuations, manager win rates and late-game goals in Snowflake, MySQL and MongoDB aggregation pipelines</li><li>Delivered Power BI and MongoDB Atlas Charts dashboards for transfer strategy and coaching reviews</li></ul><p class="p-stack"><span class="lab">Stack</span> MySQL, Snowflake, MongoDB, PyMongo, Power BI, MongoDB Atlas Charts, AWS S3, Azure DevOps</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Football-Data-Analytics" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="ai">
-        <div class="p-fig">
-          <span class="p-num">~75%</span>
-          <span class="p-cap">top-1 accuracy across 345 classes, in under 100 ms</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Doodle Recognition Using Deep Learning</span>
-            <span class="r-sum">Draw a sketch and a classifier names it in under 100 ms, then GPT-4 gives drawing tips.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">Deep Learning course project, San Jose State</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">~345K Quick, Draw! sketches</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">EfficientNetV2-B0</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Streamlit drawing app</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">GPT-4 tips</span></p><ul class="bul"><li>Trained EfficientNetV2-B0 on ~345K Quick, Draw! sketches across 345 classes to <strong>~75% top-1 accuracy</strong> with under 100 ms responses</li><li>Compared EfficientNetV2-B0 with a Vision Transformer and dropped the ViT after it overfit on unseen sketches</li><li>Wrote a Streamlit drawing app that classifies sketches live and sends each prediction to GPT-4 for drawing tips</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, EfficientNetV2-B0, Vision Transformer, GPT-4, Streamlit, Google Colab</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Doodle" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="de an">
-        <div class="p-fig">
-          <span class="p-num">8</span>
-          <span class="p-cap">dbt models across bronze, silver and gold, plus an SCD Type 2 snapshot</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Retail Sales Analytics Platform</span>
-            <span class="r-sum">A bronze, silver and gold dbt project on Databricks with tests and a snapshot.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">dbt on Databricks, tutorial-based build</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">6 source tables</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">6 bronze models</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">silver</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">gold</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">revenue by category and gender</span></p><ul class="bul"><li>Set up a bronze-silver-gold dbt project on Databricks with separate dev and prod catalogs and a custom schema macro</li><li>Added dbt tests (unique, not_null, accepted_values, custom non-negative) and an SCD Type 2 snapshot to track product history</li></ul><p class="p-stack"><span class="lab">Stack</span> dbt, Databricks, Unity Catalog, Spark SQL, Jinja</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Retail-Sales-Analytics-Platform---dbt" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="an">
-        <div class="p-fig">
-          <span class="p-num">2,640</span>
-          <span class="p-cap">billionaires across 78 countries and 18 industries</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Comprehensive Analysis of Billionaires' Wealth</span>
-            <span class="r-sum">Who holds $12.2T of wealth, joined with GDP, CPI, tax and education data by country.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">Exploratory analysis and dashboards</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">billionaire records + country indicators</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Python joins</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">exploratory analysis</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Power BI and Tableau</span></p><ul class="bul"><li>Joined data on <strong>2,640 billionaires</strong> across 78 countries with GDP, CPI, tax and education indicators using Python</li><li>Found that <strong>69%</strong> are self-made and Technology holds the largest wealth share (15.4%), ahead of Fashion &amp; Retail and Finance</li><li>Designed Power BI views (world bubble map, net worth vs. GDP, industry breakdowns) for policy and investment analysis</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, Tableau, Power BI</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Comprehensive-Analysis-of-Billionaire-s-Wealth" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="sw">
-        <div class="p-fig">
-          <span class="p-num">K8s</span>
-          <span class="p-cap">app, Kafka and Zookeeper deployed with Helm</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Food Delivery Platform</span>
-            <span class="r-sum">A Django REST and React food-delivery app with Kafka events on Kubernetes.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">UberEats-style course lab</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">React + Redux</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Django REST API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kafka producers and consumers</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Docker</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Kubernetes with Helm</span></p><ul class="bul"><li>Added Kafka producer and consumer services for event-driven order and user events in a Django REST food-delivery app</li><li>Containerized the app and deployed it with Kafka and Zookeeper on Kubernetes using Deployments, Services and Helm</li></ul><p class="p-stack"><span class="lab">Stack</span> Django REST Framework, React 18, Redux, Kafka, Zookeeper, Docker, Kubernetes, Helm, Swagger</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/Lab_1_UberEats" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
-      <article class="row" data-cats="sw">
-        <div class="p-fig">
-          <span class="p-num">JWT</span>
-          <span class="p-cap">login with token blacklisting, for rider and driver roles</span>
-        </div>
-        <details class="more r-body">
-          <summary>
-            <span class="r-title">Taxi Booking Web App</span>
-            <span class="r-sum">A ride-booking app with rider and driver roles, JWT login and a tested API.</span>
-            <span class="r-toggle"><span class="more-open">Details</span><span class="more-close">Hide details</span></span>
-          </summary>
-          <p class="p-kind">Full-stack web app</p>
-          <p class="flow" aria-label="Data flow"><span class="f-step">React (Vite) + Tailwind + Mapbox</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Django REST API</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">SimpleJWT auth</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">pytest + OpenAPI docs</span></p><ul class="bul"><li>Built a ride-booking platform with Django REST Framework and React, with separate rider and driver roles</li><li>Secured the API with JWT login and token blacklisting, and added OpenAPI docs and pytest tests</li></ul><p class="p-stack"><span class="lab">Stack</span> Django REST Framework, React (Vite), Tailwind CSS, SimpleJWT, drf-spectacular, pytest, Mapbox</p>
-        </details>
-        <p class="p-links r-links"><a href="https://github.com/Darpanjiyani/taxi-booking" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
-      </article>
       </div>
     </div>
   </section>
 
-  <section id="skills">
+  <section id="skills" data-spy>
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
+        <span class="sec-num">04</span>
         <h2>Skills</h2>
         <p>Tools I have used at work or in the projects above.</p>
       </div>
@@ -626,9 +787,10 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
     </div>
   </section>
 
-  <section id="education">
+  <section id="education" data-spy>
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head reveal">
+        <span class="sec-num">05</span>
         <h2>Education</h2>
       </div>
       
@@ -643,10 +805,11 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
     </div>
   </section>
 
-  <section id="contact">
+  <section id="contact" data-spy>
     <div class="wrap">
-      <div class="sec-head">
-        <h2>Contact</h2>
+      <div class="sec-head reveal">
+        <span class="sec-num">06</span>
+        <h2>Let's <em>talk</em></h2>
         <p>Email is the fastest way to reach me.</p>
       </div>
       <div class="contact-big">
@@ -665,14 +828,25 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
   </section>
 </main>
 
+<dialog class="pd" id="pd" aria-labelledby="pd-title">
+  <div class="pd-inner">
+    <button type="button" class="pd-close" id="pd-close" aria-label="Close">&times;</button>
+    <div id="pd-body"></div>
+    <div class="pd-nav">
+      <button type="button" class="btn" id="pd-prev">&larr; Previous</button>
+      <button type="button" class="btn" id="pd-next">Next &rarr;</button>
+    </div>
+  </div>
+</dialog>
+
 <footer>
-  <div class="wrap"><p>Darpan Jiyani / San Jose, CA / Updated November 2026</p></div>
+  <div class="wrap"><p class="sig">Darpan Jiyani</p><p>San Jose, CA</p></div>
 </footer>
 
 <script>
 (function () {
   var chips = document.querySelectorAll('.chip');
-  var rows = document.querySelectorAll('.row');
+  var rows = document.querySelectorAll('.card');
   var showing = document.getElementById('showing');
   function apply(key) {
     var n = 0;
@@ -683,15 +857,223 @@ footer p { font-family: var(--font-mono); font-size: 14px; color: var(--muted); 
     });
     chips.forEach(function (c) { c.setAttribute('aria-pressed', c.getAttribute('data-filter') === key ? 'true' : 'false'); });
     showing.textContent = 'Showing ' + n + ' of ' + rows.length;
+    rebuild();
   }
   chips.forEach(function (c) {
     c.addEventListener('click', function () { apply(c.getAttribute('data-filter')); });
   });
 
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var vid = document.getElementById('demo-video');
-  if (vid && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    vid.removeAttribute('autoplay'); vid.pause(); vid.controls = true;
+  if (vid && reduce) { vid.removeAttribute('autoplay'); vid.pause(); vid.controls = true; }
+
+  /* Gentle reveal for entries as they scroll in */
+  if ('IntersectionObserver' in window && !reduce) {
+    document.querySelectorAll('.project, .job, .s-row, .l-row').forEach(function (el) { el.classList.add('reveal'); });
+    document.documentElement.classList.add('js');
+    var ro = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { ro.observe(el); });
   }
+
+  /* Side navigation: mark the section in view */
+  var links = {};
+  document.querySelectorAll('.spy a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+  function spy() {
+    var y = window.scrollY + window.innerHeight * 0.35, cur = 'top';
+    secs.forEach(function (s) { if (s.offsetTop <= y) cur = s.id; });
+    Object.keys(links).forEach(function (k) { links[k].setAttribute('aria-current', k === cur ? 'true' : 'false'); });
+  }
+  window.addEventListener('scroll', spy, { passive: true });
+  spy();
+
+
+  /* Sideways rail: slow auto-scroll that loops, pauses on hover, arrows, drag, keys */
+  var rail = document.getElementById('project-list');
+  var wrap = rail.closest('.rail-wrap'), stage = rail.parentNode;
+  var prev = document.getElementById('rail-prev'), next = document.getElementById('rail-next');
+  var bar = document.getElementById('rail-bar'), count = document.getElementById('rail-count');
+  var playBtn = document.getElementById('rail-play');
+  var GAP = 20, SPEED = 36;            /* pixels per second */
+  var loop = false, total = 0, pos = 0;
+  var hover = false, focusIn = false, inView = false, holdUntil = 0;
+  var playing = !reduce;
+  rows.forEach(function (r, i) { r.setAttribute('data-i', i); });
+  function visible() { return Array.prototype.filter.call(rows, function (r) { return !r.hidden; }); }
+  function step() { var v = visible(); return v.length ? v[0].getBoundingClientRect().width + GAP : 300; }
+  function maxX() { return rail.scrollWidth - rail.clientWidth; }
+  function setX(x) { pos = x; rail.scrollLeft = x; }
+
+  function rebuild() {
+    rail.querySelectorAll('.clone').forEach(function (c) { c.remove(); });
+    var v = visible();
+    GAP = parseFloat(getComputedStyle(rail).columnGap) || 20;
+    total = v.length * step();
+    loop = v.length > 1 && total >= rail.clientWidth + GAP * 2;
+    if (loop) {
+      v.forEach(function (c) {
+        var k = c.cloneNode(true);
+        k.classList.add('clone'); k.removeAttribute('id'); k.setAttribute('aria-hidden', 'true');
+        k.querySelectorAll('a, button').forEach(function (el) { el.setAttribute('tabindex', '-1'); });
+        rail.appendChild(k);
+      });
+    }
+    rail.classList.toggle('loop', loop);
+    playBtn.hidden = !loop;
+    setX(0); update();
+  }
+  function norm() {
+    if (!loop) return;
+    var x = rail.scrollLeft;
+    if (x >= total) setX(x - total);
+    else if (x < 1 && x + total <= maxX()) setX(x + total);
+  }
+  function update() {
+    var x = rail.scrollLeft, v = visible(), s = step();
+    if (loop) {
+      prev.disabled = false; next.disabled = false; wrap.classList.remove('at-end');
+      var lx = ((x % total) + total) % total, frac = Math.min(1, rail.clientWidth / total);
+      bar.style.width = frac * 100 + '%';
+      bar.style.transform = 'translateX(' + (lx / total) * (100 / frac) + '%)';
+      var first = Math.round(lx / s) % v.length + 1;
+      count.textContent = first + ' / ' + v.length;
+    } else {
+      var max = maxX();
+      prev.disabled = x <= 2; next.disabled = x >= max - 2;
+      wrap.classList.toggle('at-end', x >= max - 2);
+      var f = rail.scrollWidth ? rail.clientWidth / rail.scrollWidth : 1;
+      bar.style.width = Math.min(100, f * 100) + '%';
+      bar.style.transform = 'translateX(' + (max > 0 ? (x / max) * ((1 / f) - 1) * 100 : 0) + '%)';
+      var per = Math.max(1, Math.round(rail.clientWidth / s));
+      var a = Math.min(v.length, Math.round(x / s) + 1), z = Math.min(v.length, a + per - 1);
+      count.textContent = v.length ? (a === z ? a : a + '–' + z) + ' / ' + v.length : '0';
+    }
+  }
+  var behave = reduce ? 'auto' : 'smooth';
+  function hold(ms) { holdUntil = performance.now() + (ms || 4000); }
+  function move(cards) {
+    hold();
+    var s = step(), x = rail.scrollLeft, dist = cards * s;
+    if (loop) {
+      if (x + dist > maxX()) x -= total;
+      if (x + dist < 0) x += total;
+      setX(x);
+    }
+    rail.scrollTo({ left: (Math.round(x / s) * s) + dist, behavior: behave });
+  }
+  function perView() { return Math.max(1, Math.floor((rail.clientWidth + GAP) / step())); }
+  prev.addEventListener('click', function () { move(-perView()); });
+  next.addEventListener('click', function () { move(perView()); });
+  rail.addEventListener('scroll', function () { if (Math.abs(rail.scrollLeft - pos) > 2) pos = rail.scrollLeft; update(); }, { passive: true });
+  rail.addEventListener('scrollend', function () { if (!down) norm(); });
+  rail.addEventListener('wheel', function () { hold(); }, { passive: true });
+  rail.addEventListener('touchstart', function () { hold(6000); }, { passive: true });
+  rail.addEventListener('touchend', function () { hold(4000); }, { passive: true });
+  window.addEventListener('resize', function () { rebuild(); });
+  rail.addEventListener('keydown', function (ev) {
+    if (ev.target !== rail) return;
+    if (ev.key === 'ArrowRight') { ev.preventDefault(); move(1); }
+    if (ev.key === 'ArrowLeft') { ev.preventDefault(); move(-1); }
+  });
+
+  /* Mouse drag */
+  var down = false, sx = 0, sl = 0, moved = false;
+  rail.addEventListener('pointerdown', function (ev) {
+    if (ev.pointerType !== 'mouse' || ev.target.closest('a, button')) return;
+    down = true; moved = false; sx = ev.clientX; sl = rail.scrollLeft;
+  });
+  window.addEventListener('pointermove', function (ev) {
+    if (!down) return;
+    var dx = ev.clientX - sx;
+    if (Math.abs(dx) > 4) { moved = true; rail.classList.add('dragging'); }
+    if (!moved) return;
+    var t = sl - dx;
+    if (loop && t < 0) { sl += total; t += total; }
+    if (loop && t > maxX()) { sl -= total; t -= total; }
+    setX(t);
+  });
+  window.addEventListener('pointerup', function () {
+    if (!down) return; down = false;
+    if (moved) { rail.classList.remove('dragging'); hold(3000); norm(); setTimeout(function () { moved = false; }, 0); }
+  });
+
+  /* Pause while the cursor is on the projects, while focused, or in the popup */
+  stage.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') hover = true; });
+  stage.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') hover = false; });
+  wrap.addEventListener('focusin', function () { focusIn = true; });
+  wrap.addEventListener('focusout', function () { focusIn = wrap.contains(document.activeElement); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }).observe(wrap);
+  } else { inView = true; }
+  function setPlaying(on) {
+    playing = on;
+    playBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+    playBtn.querySelector('.pl-t').textContent = on ? 'Pause' : 'Play';
+    playBtn.classList.toggle('is-paused', !on);
+  }
+  playBtn.addEventListener('click', function () { setPlaying(!playing); });
+  setPlaying(playing);
+
+  var last = 0;
+  function tick(t) {
+    var dt = last ? Math.min(64, t - last) : 0; last = t;
+    var run = loop && playing && inView && !hover && !focusIn && !down && !document.hidden && !(dlg && dlg.open) && t > holdUntil;
+    rail.classList.toggle('moving', run);
+    if (run) {
+      if (Math.abs(rail.scrollLeft - pos) > 2) pos = rail.scrollLeft;   /* user moved it */
+      pos += SPEED * dt / 1000;
+      if (pos >= total) pos -= total;
+      rail.scrollLeft = pos;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* Project popup */
+  var dlg = document.getElementById('pd'), body = document.getElementById('pd-body');
+  var cur = null, opener = null;
+  function realOf(card) { return card.classList.contains('clone') ? rows[+card.getAttribute('data-i')] : card; }
+  function show(card) {
+    cur = card;
+    body.innerHTML = card.querySelector('.c-detail').innerHTML;
+    var t = body.querySelector('.d-title'); if (t) t.id = 'pd-title';
+    var v = visible(), i = v.indexOf(card);
+    document.getElementById('pd-prev').disabled = !loop && i <= 0;
+    document.getElementById('pd-next').disabled = !loop && i >= v.length - 1;
+    dlg.querySelector('.pd-inner').scrollTop = 0; dlg.scrollTop = 0;
+  }
+  function openCard(card, btn) {
+    opener = btn; show(card);
+    if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); } else { dlg.setAttribute('open', ''); }
+  }
+  rail.addEventListener('click', function (ev) {
+    if (moved) { ev.preventDefault(); ev.stopPropagation(); return; }
+    var card = ev.target.closest('.card');
+    if (!card || ev.target.closest('a')) return;
+    var real = realOf(card);
+    openCard(real, card.classList.contains('clone') ? real.querySelector('.c-open') : card.querySelector('.c-open'));
+  }, true);
+  function go(d) {
+    var v = visible(), i = v.indexOf(cur) + d;
+    if (loop) i = (i + v.length) % v.length;
+    if (i >= 0 && i < v.length) {
+      show(v[i]);
+      setX(i * step()); hold(5000);
+    }
+  }
+  document.getElementById('pd-prev').addEventListener('click', function () { go(-1); });
+  document.getElementById('pd-next').addEventListener('click', function () { go(1); });
+  document.getElementById('pd-close').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (ev) { if (ev.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', function (ev) {
+    if (ev.key === 'ArrowRight') go(1);
+    if (ev.key === 'ArrowLeft') go(-1);
+  });
+  dlg.addEventListener('close', function () { hold(2500); if (opener) opener.focus({ preventScroll: true }); });
+
+  rebuild();
+  requestAnimationFrame(tick);
 
   var btn = document.getElementById('copy-mail');
   var mail = document.getElementById('mail').textContent;
