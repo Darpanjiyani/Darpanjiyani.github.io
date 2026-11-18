@@ -483,6 +483,11 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 @media (max-width: 1180px) { .bring-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 680px) { .bring-list { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
 
+
+/* Hero tagline */
+.tagline { font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); line-height: 1.25; letter-spacing: -.01em; margin: -10px 0 26px; color: var(--ink); }
+.tagline em { font-style: italic; color: var(--gold-ink); }
+@media (max-width: 680px) { .tagline em { display: block; } }
 @media (max-width: 1000px) {
   .l-diff { font-size: clamp(28px, 3.4vw, 34px); }
 }
@@ -553,6 +558,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
   <div class="wrap hero">
     <p class="label rise">AI Data Engineer &middot; San Jose, CA</p>
     <h1 class="rise" style="--d:120ms">Darpan <em>Jiyani</em></h1>
+    <p class="tagline rise" style="--d:200ms">Pipelines that hold. <em>AI that tells the truth.</em></p>
     <div class="hero-rule rise" style="--d:220ms" aria-hidden="true"><span></span></div>
     <div class="hero-cols">
       <div class="rise" style="--d:300ms">
