@@ -43,6 +43,9 @@
   --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --col: 200px;
+  --maxw: 1560px;
+  --pad: clamp(20px, 3.6vw, 56px);
+  --side: 0px;
   --gap: 40px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   color-scheme: light;
@@ -62,15 +65,16 @@ body {
 
 /* Background: faint column guides, like the rules on a page layout */
 body::before {
-  content: ""; position: fixed; top: 0; bottom: 0; left: 50%; z-index: -1; pointer-events: none;
-  width: calc(min(1120px, 100vw) - 56px + 48px); transform: translateX(-50%);
+  content: ""; position: fixed; top: 0; bottom: 0; z-index: -1; pointer-events: none;
+  left: calc(var(--side) + (100% - var(--side)) / 2);
+  width: calc(min(var(--maxw), 100% - var(--side)) - 2 * var(--pad) + 48px); transform: translateX(-50%);
   border-left: 1px solid var(--guide); border-right: 1px solid var(--guide);
   background:
     linear-gradient(var(--guide), var(--guide)) calc(24px + 200px + 20px) 0 / 1px 100% no-repeat;
 }
 :root { --guide: rgba(176, 133, 47, .16); }
 @media (max-width: 820px) {
-  body::before { width: calc(100vw - 16px); background: none; }
+  body::before { left: 50%; width: calc(100% - 16px); background: none; }
 }
 
 h1, h2, h3, p, ul, ol, dl, dd { margin: 0; padding: 0; }
@@ -79,7 +83,7 @@ a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--
 a:hover { color: var(--gold-ink); text-decoration-color: var(--gold-ink); }
 :focus-visible { outline: 2px solid var(--gold-ink); outline-offset: 3px; border-radius: 2px; }
 strong { font-weight: 700; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad); }
 .label { font-family: var(--font-body); font-size: 14px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-ink); }
 
 /* Top bar */
@@ -103,27 +107,30 @@ strong { font-weight: 700; }
   .spy a:hover { color: var(--ink); }
   .spy a[aria-current="true"] { color: var(--ink); border-left-color: var(--gold); }
   .top nav a:not(.nav-cv) { display: none; }
+  body.has-spy { --side: 205px; }
+  body.has-spy main, body.has-spy footer { padding-left: var(--side); }
+  body.has-spy .top .wrap { max-width: none; padding-left: 40px; padding-right: 40px; }
 }
 
 /* Hero */
-.hero { padding-block: 72px 72px; }
+.hero { padding-block: 48px 72px; }
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(60px, 10.5vw, 136px);
+  font-size: clamp(60px, 10vw, 124px);
   line-height: .98;
   letter-spacing: -.025em;
-  margin: 18px 0 30px -.04em;
+  margin: 14px 0 22px -.04em;
   font-variation-settings: "opsz" 144;
 }
 .hero h1 em { font-style: italic; color: var(--gold-ink); }
-.hero-rule { display: flex; align-items: center; gap: 14px; margin: 0 0 30px; max-width: 420px; }
+.hero-rule { display: flex; align-items: center; gap: 14px; margin: 0 0 26px; max-width: 420px; }
 .hero-rule::before { content: ""; flex: 1; height: 1px; background: var(--gold); }
 .hero-rule span { width: 7px; height: 7px; border: 1.5px solid var(--gold); transform: rotate(45deg); }
 .hero-rule::after { content: ""; flex: 1; height: 1px; background: var(--gold); }
 .hero-cols { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 72px; align-items: start; }
-.lede { font-family: var(--font-display); font-size: 25px; line-height: 1.45; font-weight: 400; max-width: 34ch; letter-spacing: -.005em; }
-.lede + .lede { margin-top: 16px; font-family: var(--font-body); font-size: 19px; line-height: 1.6; font-weight: 500; max-width: 56ch; color: var(--muted); }
+.lede { font-family: var(--font-display); font-size: 25px; line-height: 1.45; font-weight: 400; max-width: 40ch; letter-spacing: -.005em; }
+.lede + .lede { margin-top: 16px; font-family: var(--font-body); font-size: 19px; line-height: 1.6; font-weight: 500; max-width: 64ch; color: var(--muted); }
 .reach { display: grid; gap: 10px; font-size: 17.5px; padding: 22px 26px; background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold); }
 .reach li { display: flex; gap: 14px; align-items: baseline; }
 .reach .k { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--gold-ink); width: 78px; flex: none; }
@@ -197,7 +204,7 @@ section { padding: 40px 0 80px; }
 .sec-num { font-family: var(--font-display); font-style: italic; font-size: 20px; color: var(--gold-ink); }
 .sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 5.4vw, 60px); line-height: 1.02; letter-spacing: -.02em; }
 .sec-head h2 em { font-style: italic; color: var(--gold-ink); }
-.sec-head p { grid-column: 2; font-size: 18.5px; color: var(--muted); max-width: 56ch; margin-top: 6px; }
+.sec-head p { grid-column: 2; font-size: 18.5px; color: var(--muted); max-width: 66ch; margin-top: 6px; }
 
 /* Filters */
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 8px; align-items: center; }
@@ -226,7 +233,7 @@ section { padding: 40px 0 80px; }
 .p-cap { font-size: 16px; line-height: 1.45; color: var(--muted); max-width: 22ch; }
 .p-kind { font-size: 13.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); }
 .project h3, .job h3 { font-family: var(--font-display); font-size: 30px; line-height: 1.2; font-weight: 500; margin-top: 4px; letter-spacing: -.01em; text-wrap: balance; }
-.p-sum { margin-top: 10px; max-width: 64ch; font-size: 19px; }
+.p-sum { margin-top: 10px; max-width: 74ch; font-size: 19px; }
 .flow {
   margin-top: 16px;
   display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
@@ -235,11 +242,11 @@ section { padding: 40px 0 80px; }
   padding: 10px 14px;
 }
 .f-arrow { color: var(--gold); }
-.bul { margin-top: 18px; display: grid; gap: 10px; max-width: 68ch; }
+.bul { margin-top: 18px; display: grid; gap: 10px; max-width: 82ch; }
 .bul li { position: relative; padding-left: 22px; font-size: 18px; }
 .bul li::before { content: ""; position: absolute; left: 3px; top: .66em; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
-.p-note { margin-top: 14px; font-size: 17px; color: var(--muted); max-width: 68ch; font-style: italic; }
-.p-stack { margin-top: 18px; font-size: 16.5px; color: var(--ink); max-width: 70ch; }
+.p-note { margin-top: 14px; font-size: 17px; color: var(--muted); max-width: 82ch; font-style: italic; }
+.p-stack { margin-top: 18px; font-size: 16.5px; color: var(--ink); max-width: 90ch; }
 .lab { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-right: 8px; color: var(--gold-ink); }
 .p-links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px 26px; font-weight: 700; font-size: 17.5px; }
 
@@ -269,7 +276,7 @@ details[open] > summary .more-close { display: inline; }
 .row details.more { margin-top: 0; }
 .row summary { display: grid; gap: 6px; }
 .r-title { font-family: var(--font-display); font-size: 25px; line-height: 1.25; font-weight: 500; letter-spacing: -.01em; }
-.r-sum { font-size: 18px; max-width: 62ch; }
+.r-sum { font-size: 18px; max-width: 70ch; }
 .r-toggle { margin-top: 6px; display: inline-flex; gap: 8px; align-items: center; font-weight: 700; font-size: 16px; color: var(--gold-ink); }
 .row summary:hover .r-title { color: var(--gold-ink); }
 .row details[open] .p-kind { margin-top: 18px; }
@@ -281,12 +288,12 @@ details[open] > summary .more-close { display: inline; }
 .j-when { color: var(--gold-ink); font-weight: 700; letter-spacing: .02em; }
 .project h3 .j-org, .job h3 .j-org { display: block; margin-top: 4px; font-family: var(--font-body); font-size: 17.5px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
 .j-org a { font-weight: 700; }
-.j-about { margin-top: 6px; color: var(--muted); font-size: 18px; max-width: 68ch; font-style: italic; }
+.j-about { margin-top: 6px; color: var(--muted); font-size: 18px; max-width: 82ch; font-style: italic; }
 
 /* Skills */
 .s-row { padding: 16px 0; align-items: baseline; }
 .s-row dt { font-size: 14px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-ink); }
-.s-row dd { max-width: 70ch; }
+.s-row dd { max-width: 100ch; }
 
 /* Contact */
 .contact-big { margin-top: 30px; display: grid; gap: 26px; }
@@ -300,7 +307,8 @@ details[open] > summary .more-close { display: inline; }
 .c-grid .k { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--gold-ink); }
 .c-grid a, .c-grid span.v { font-size: 18px; overflow-wrap: anywhere; }
 footer { padding: 0 0 56px; }
-footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 22px; }
+footer .wrap { position: relative; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 22px; }
+footer .wrap::before { content: ""; position: absolute; top: 0; left: var(--pad); right: var(--pad); border-top: 1px solid var(--rule); }
 footer p { font-size: 15px; color: var(--muted); }
 footer .sig { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--ink); }
 
@@ -468,7 +476,6 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 @media (prefers-reduced-motion: no-preference) { .ot-dot { animation: otPulse 2.4s ease-out infinite; } }
 @keyframes otPulse { 0% { box-shadow: 0 0 0 0 rgba(63, 143, 85, .45); } 70%, 100% { box-shadow: 0 0 0 9px rgba(63, 143, 85, 0); } }
 .open-to + .hero-actions { margin-top: 18px; }
-@media (min-width: 1001px) { .open-to { white-space: nowrap; max-width: none; } }
 @media (max-width: 820px) { .open-to { border-radius: 14px; } }
 
 /* What I bring to a team */
@@ -485,9 +492,123 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 
 
 /* Hero tagline */
-.tagline { font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); line-height: 1.25; letter-spacing: -.01em; margin: -10px 0 26px; color: var(--ink); }
-.tagline em { font-style: italic; color: var(--gold-ink); }
+.tagline { font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); line-height: 1.25; letter-spacing: -.01em; margin: -8px 0 22px; color: var(--ink); }
+.tagline .tg-a { color: var(--gold-ink); }
+.tagline em { font-style: italic; color: var(--ink); }
 @media (max-width: 680px) { .tagline em { display: block; } }
+
+/* ---------- Hero layout: intro + results banner + actions ---------- */
+.hero-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 480px); grid-template-rows: auto 1fr; grid-template-areas: "text proof" "act proof"; gap: 0 72px; align-items: start; }
+.h-text { grid-area: text; }
+.h-proof { grid-area: proof; }
+.h-act { grid-area: act; }
+.h-act .open-to { margin-top: 24px; border-radius: 14px; }
+.reach-line { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: 18px; font-size: 16px; font-weight: 600; }
+.reach-line li { display: inline-flex; align-items: center; }
+.reach-line li + li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); margin: 0 14px; }
+.reach-line a { color: var(--ink); }
+@media (max-width: 1060px) { .hero-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 0 40px; } }
+@media (max-width: 820px) {
+  .hero-cols { grid-template-columns: minmax(0, 1fr); grid-template-areas: "text" "proof" "act"; }
+  .h-proof { margin-top: 28px; }
+}
+
+/* ---------- Results banner ---------- */
+.proof { position: relative; background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold); padding: 20px 26px 16px; box-shadow: 0 26px 50px -38px rgba(60, 40, 10, .55); }
+.pf-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.pf-count { font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--gold-ink); }
+.pf-spark { display: block; width: 100%; height: auto; margin: 12px 0 6px; overflow: visible; }
+.pf-base { stroke: var(--rule); stroke-width: 1; }
+.pf-area { fill: url(#pf-fill); }
+.pf-line { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.pf-tip { fill: var(--gold-ink); }
+.pf-ring { fill: none; stroke: var(--gold); stroke-width: 1.5; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.proof.done .pf-ring { animation: sparkPing 1.6s ease-out; }
+.pf-slides { display: grid; }
+.pf-slide { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility 0s linear .45s; }
+.pf-slide.is-on { opacity: 1; visibility: visible; transition: opacity .6s ease .1s, visibility 0s; }
+.pf-key { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); margin-top: 6px; }
+.pf-problem { margin-top: 8px; font-size: 17px; line-height: 1.5; color: var(--muted); }
+.pf-diff { margin-top: 12px; display: flex; flex-direction: column; gap: 2px; }
+.pf-was { display: inline-flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-size: 28px; line-height: 1.1; color: #7a705e; }
+.pf-was s { text-decoration: none; position: relative; }
+.pf-was s::after { content: ""; position: absolute; left: -3%; right: -3%; top: 54%; height: 2px; background: currentColor; transform-origin: left center; }
+.pf-arrow { color: var(--gold); font-family: var(--font-body); font-size: 22px; }
+.pf-now { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(46px, 5.2vw, 70px); line-height: 1.02; letter-spacing: -.02em; color: var(--ink); }
+.pf-mark { position: relative; display: inline-block; isolation: isolate; padding: 0 .1em; white-space: nowrap; }
+.pf-mark::before { content: ""; position: absolute; left: 0; right: 0; bottom: .1em; height: .38em; background: var(--mark); z-index: -1; transform-origin: left center; }
+.pf-how { margin-top: 12px; font-size: 16.5px; line-height: 1.55; color: var(--ink); }
+.pf-who { margin-top: 10px; font-size: 15px; color: var(--muted); }
+.pf-who b { color: var(--gold-ink); font-weight: 700; }
+.pf-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.pf-dots { display: flex; gap: 2px; flex-wrap: wrap; justify-content: center; }
+.pf-dot { font-family: var(--font-display); font-style: italic; font-size: 16px; color: #8b8170; background: none; border: 0; padding: 6px 7px; cursor: pointer; border-bottom: 2px solid transparent; line-height: 1; }
+.pf-dot:hover { color: var(--ink); }
+.pf-dot[aria-current="true"] { color: var(--ink); border-bottom-color: var(--gold); }
+.pf-step { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--rule); background: var(--ground); color: var(--ink); font-size: 17px; cursor: pointer; display: grid; place-items: center; padding: 0; flex: none; }
+.pf-step:hover { border-color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .pf-slide.is-on .pf-problem { animation: pfRise .6s .1s var(--ease) both; }
+  .pf-slide.is-on .pf-was { animation: pfRise .6s .25s var(--ease) both; }
+  .pf-slide.is-on .pf-was s::after { animation: pfStrike .5s .65s var(--ease) both; }
+  .pf-slide.is-on .pf-now { animation: pfRise .7s .85s var(--ease) both; }
+  .pf-slide.is-on .pf-mark::before { animation: sweep .8s 1.25s var(--ease) both; }
+  .pf-slide.is-on .pf-how, .pf-slide.is-on .pf-who { animation: pfRise .6s 1.1s var(--ease) both; }
+}
+@keyframes pfRise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes pfStrike { from { transform: scaleX(0); } }
+@media (max-width: 820px) { .proof { padding: 18px 18px 14px; } .pf-was { font-size: 24px; } }
+
+/* ---------- Why me, for your team ---------- */
+.fit { margin-top: 72px; border-top: 1px solid var(--gold); padding-top: 14px; }
+.fit-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.15; letter-spacing: -.015em; max-width: 34ch; margin-top: 10px; }
+.fit-title em { font-style: italic; color: var(--gold-ink); }
+.fit-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 26px; }
+.fit-ask { font-family: var(--font-display); font-style: italic; font-size: 22px; color: var(--muted); }
+.fit-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.fit-tab { font: 600 16.5px/1 var(--font-body); color: var(--ink); background: var(--ground); border: 1.5px solid var(--rule); border-radius: 999px; padding: 11px 18px; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+.fit-tab:hover { border-color: var(--ink); }
+.fit-tab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--ground); }
+.fit-panel { margin-top: 22px; background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold); padding: 26px 30px 26px; }
+.fit-panel[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) { .fit-panel.swap { animation: pfRise .45s var(--ease); } }
+.fit-pitch { font-family: var(--font-display); font-size: clamp(21px, 2.2vw, 26px); line-height: 1.35; max-width: 60ch; }
+.fit-table { margin-top: 20px; }
+.fit-th { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 24px; font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.fit-rows li { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 4px 24px; padding: 13px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.fr-need { display: flex; gap: 10px; align-items: baseline; font-weight: 700; font-size: 17px; }
+.fr-need::before { content: "\2713"; flex: none; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--mark); color: var(--gold-ink); font-size: 12px; font-weight: 700; transform: translateY(2px); }
+.fr-proof { font-size: 17px; line-height: 1.55; color: var(--muted); max-width: 90ch; }
+.fit-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-top: 22px; }
+.fit-start { font-size: 16.5px; font-weight: 600; }
+.fit-lab { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); margin-right: 8px; }
+.fit-sep { color: var(--gold); margin: 0 6px; }
+.fit-mail { flex: 0 1 auto; max-width: 100%; line-height: 1.3; text-align: left; }
+.bring { margin-top: 64px; }
+@media (max-width: 820px) {
+  .fit-panel { padding: 20px 18px; }
+  .fit-th { display: none; }
+  .fit-rows li { grid-template-columns: minmax(0, 1fr); }
+  .fr-proof { padding-left: 30px; }
+  .fit-ask { width: 100%; }
+}
+
+/* Very wide screens: scale the hero up so it fills the wider page */
+@media (min-width: 1700px) {
+  .hero h1 { font-size: clamp(124px, 7.8vw, 156px); }
+  .tagline { font-size: 40px; }
+  .hero .lede { font-size: 29px; max-width: 44ch; }
+  .hero .lede + .lede { font-size: 20.5px; max-width: 70ch; }
+  .hero-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 540px); gap: 0 96px; }
+}
+
+/* Very wide screens: let reading text run a little longer so sections fill the width */
+@media (min-width: 1700px) {
+  .p-sum { max-width: 84ch; }
+  .bul, .p-note, .j-about { max-width: 96ch; }
+  .sec-head p { max-width: 76ch; }
+  .r-sum { max-width: 80ch; }
+}
 @media (max-width: 1000px) {
   .l-diff { font-size: clamp(28px, 3.4vw, 34px); }
 }
@@ -525,7 +646,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 }
 </style>
 </head>
-<body>
+<body class="has-spy">
 
 <header class="top">
   <div class="wrap">
@@ -558,69 +679,147 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
   <div class="wrap hero">
     <p class="label rise">AI Data Engineer &middot; San Jose, CA</p>
     <h1 class="rise" style="--d:120ms">Darpan <em>Jiyani</em></h1>
-    <p class="tagline rise" style="--d:200ms">Pipelines that hold. <em>AI that tells the truth.</em></p>
+    <p class="tagline rise" style="--d:200ms"><span class="tg-a">Pipelines that hold.</span> <em>AI that tells the truth.</em></p>
     <div class="hero-rule rise" style="--d:220ms" aria-hidden="true"><span></span></div>
     <div class="hero-cols">
-      <div class="rise" style="--d:300ms">
+      <div class="h-text rise" style="--d:300ms">
         <p class="lede">I build data pipelines and the AI tools that run on top of them. Right now I'm a Data Engineer at UL Solutions, turning RF test data into Delta tables, dashboards and a review app.</p>
         <p class="lede">Before that I worked on wafer monitoring at Keysight and boiler sensor telemetry at Cerebulb. MS in Applied Data Intelligence, San Jose State University.</p>
+      </div>
+      <div class="h-proof rise" style="--d:420ms">
+      <div class="proof" id="proof" role="region" aria-roledescription="carousel" aria-label="Results I shipped">
+        <div class="pf-top">
+          <p class="label">Results I shipped</p>
+          <p class="pf-count" aria-hidden="true"><span id="pf-n">01</span> / 06</p>
+        </div>
+        <svg class="pf-spark" viewBox="0 0 400 46" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="pf-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0852f" stop-opacity=".22"/><stop offset="1" stop-color="#b0852f" stop-opacity="0"/></linearGradient>
+            <clipPath id="pf-clip"><rect id="pf-rect" x="0" y="0" width="400" height="46"/></clipPath>
+          </defs>
+          <line class="pf-base" x1="2" y1="44" x2="398" y2="44"/>
+          <path class="pf-area" clip-path="url(#pf-clip)" d="M2.0 38.0 L26.8 32.4 L51.5 37.6 L76.2 35.3 L101.0 36.0 L125.8 32.7 L150.5 25.1 L175.2 22.2 L200.0 21.2 L224.8 29.6 L249.5 19.7 L274.2 14.8 L299.0 18.9 L323.8 12.9 L348.5 10.7 L373.2 11.0 L398.0 8.0 L398.0 44 L2.0 44 Z"/>
+          <path class="pf-line" pathLength="1" d="M2.0 38.0 L26.8 32.4 L51.5 37.6 L76.2 35.3 L101.0 36.0 L125.8 32.7 L150.5 25.1 L175.2 22.2 L200.0 21.2 L224.8 29.6 L249.5 19.7 L274.2 14.8 L299.0 18.9 L323.8 12.9 L348.5 10.7 L373.2 11.0 L398.0 8.0"/>
+          <circle class="pf-ring" cx="398" cy="8" r="4"/>
+          <circle class="pf-tip" cx="398" cy="8" r="4"/>
+        </svg>
+        <div class="pf-slides">
+          <article class="pf-slide is-on" role="group" aria-roledescription="slide" aria-label="1 of 6: Test-cycle analysis" data-d="M2.0 38.0 L26.8 32.4 L51.5 37.6 L76.2 35.3 L101.0 36.0 L125.8 32.7 L150.5 25.1 L175.2 22.2 L200.0 21.2 L224.8 29.6 L249.5 19.7 L274.2 14.8 L299.0 18.9 L323.8 12.9 L348.5 10.7 L373.2 11.0 L398.0 8.0" data-a="M2.0 38.0 L26.8 32.4 L51.5 37.6 L76.2 35.3 L101.0 36.0 L125.8 32.7 L150.5 25.1 L175.2 22.2 L200.0 21.2 L224.8 29.6 L249.5 19.7 L274.2 14.8 L299.0 18.9 L323.8 12.9 L348.5 10.7 L373.2 11.0 L398.0 8.0 L398.0 44 L2.0 44 Z">
+            <p class="pf-key">Test-cycle analysis</p>
+            <p class="pf-problem">RF test-cycle analysis took two days of Excel work.</p>
+            <p class="pf-diff"><span class="pf-was"><s>2 days</s><span class="pf-arrow" aria-hidden="true">&rarr;</span></span><span class="pf-now"><span class="pf-mark">30 min</span></span></p>
+            <p class="pf-how">I automated collecting and parsing RF analyzer files from 60+ test stations with Python.</p>
+            <p class="pf-who"><b>UL Solutions</b> · RF compliance testing</p>
+          </article>
+          <article class="pf-slide" role="group" aria-roledescription="slide" aria-label="2 of 6: Text-to-SQL accuracy" data-d="M2.0 38.0 L26.8 38.0 L51.5 37.5 L76.2 29.7 L101.0 31.6 L125.8 36.1 L150.5 34.1 L175.2 24.3 L200.0 25.6 L224.8 27.3 L249.5 19.6 L274.2 14.8 L299.0 13.2 L323.8 12.1 L348.5 11.1 L373.2 13.8 L398.0 8.0" data-a="M2.0 38.0 L26.8 38.0 L51.5 37.5 L76.2 29.7 L101.0 31.6 L125.8 36.1 L150.5 34.1 L175.2 24.3 L200.0 25.6 L224.8 27.3 L249.5 19.6 L274.2 14.8 L299.0 13.2 L323.8 12.1 L348.5 11.1 L373.2 13.8 L398.0 8.0 L398.0 44 L2.0 44 Z" aria-hidden="true">
+            <p class="pf-key">Text-to-SQL accuracy</p>
+            <p class="pf-problem">An AI that answers data questions is only useful if it is right, and safe.</p>
+            <p class="pf-diff"><span class="pf-was"><s>89.4%</s><span class="pf-arrow" aria-hidden="true">&rarr;</span></span><span class="pf-now"><span class="pf-mark">99.3%</span></span></p>
+            <p class="pf-how">I raised my AI Data Agent&#x27;s execution accuracy on 47 questions (3-run average), and it blocked all 22 attempts to change data.</p>
+            <p class="pf-who"><b>AI Data Agent</b> · <a href="https://ai-data-agent-darpan.streamlit.app/" target="_blank" rel="noopener">Try the live demo <span aria-hidden="true">&nearr;</span></a></p>
+          </article>
+          <article class="pf-slide" role="group" aria-roledescription="slide" aria-label="3 of 6: Power BI refresh" data-d="M2.0 38.0 L26.8 34.7 L51.5 33.1 L76.2 32.2 L101.0 31.8 L125.8 33.2 L150.5 32.4 L175.2 27.7 L200.0 20.6 L224.8 30.2 L249.5 17.4 L274.2 17.9 L299.0 15.6 L323.8 10.4 L348.5 9.3 L373.2 8.9 L398.0 8.0" data-a="M2.0 38.0 L26.8 34.7 L51.5 33.1 L76.2 32.2 L101.0 31.8 L125.8 33.2 L150.5 32.4 L175.2 27.7 L200.0 20.6 L224.8 30.2 L249.5 17.4 L274.2 17.9 L299.0 15.6 L323.8 10.4 L348.5 9.3 L373.2 8.9 L398.0 8.0 L398.0 44 L2.0 44 Z" aria-hidden="true">
+            <p class="pf-key">Power BI refresh</p>
+            <p class="pf-problem">A 30-person team waited 15 minutes for every Power BI refresh.</p>
+            <p class="pf-diff"><span class="pf-was"><s>15 min</s><span class="pf-arrow" aria-hidden="true">&rarr;</span></span><span class="pf-now"><span class="pf-mark">under 15 sec</span></span></p>
+            <p class="pf-how">I rebuilt the ETL as incremental loads with timestamp-based CDC on 2M+ records, for near real-time wafer monitoring.</p>
+            <p class="pf-who"><b>Keysight Technologies</b> · semiconductor manufacturing</p>
+          </article>
+          <article class="pf-slide" role="group" aria-roledescription="slide" aria-label="4 of 6: Operator alerts" data-d="M2.0 38.0 L26.8 41 L51.5 38.7 L76.2 33.5 L101.0 31.1 L125.8 27.1 L150.5 36.3 L175.2 25.9 L200.0 20.3 L224.8 22.0 L249.5 16.7 L274.2 18.3 L299.0 14.4 L323.8 13.6 L348.5 15.9 L373.2 14.2 L398.0 8.0" data-a="M2.0 38.0 L26.8 41 L51.5 38.7 L76.2 33.5 L101.0 31.1 L125.8 27.1 L150.5 36.3 L175.2 25.9 L200.0 20.3 L224.8 22.0 L249.5 16.7 L274.2 18.3 L299.0 14.4 L323.8 13.6 L348.5 15.9 L373.2 14.2 L398.0 8.0 L398.0 44 L2.0 44 Z" aria-hidden="true">
+            <p class="pf-key">Operator alerts</p>
+            <p class="pf-problem">Operators heard about tool problems two to three hours late.</p>
+            <p class="pf-diff"><span class="pf-was"><s>2–3 hrs</s><span class="pf-arrow" aria-hidden="true">&rarr;</span></span><span class="pf-now"><span class="pf-mark">under 5 min</span></span></p>
+            <p class="pf-how">I added SQL status-change detection and Python alerts across 3 production lines.</p>
+            <p class="pf-who"><b>Keysight Technologies</b> · production operators</p>
+          </article>
+          <article class="pf-slide" role="group" aria-roledescription="slide" aria-label="5 of 6: Result validation" data-d="M2.0 38.0 L26.8 34.3 L51.5 39.3 L76.2 30.3 L101.0 33.8 L125.8 31.2 L150.5 27.2 L175.2 24.6 L200.0 26.5 L224.8 26.9 L249.5 24.7 L274.2 22.2 L299.0 15.3 L323.8 17.5 L348.5 8.6 L373.2 12.4 L398.0 8.0" data-a="M2.0 38.0 L26.8 34.3 L51.5 39.3 L76.2 30.3 L101.0 33.8 L125.8 31.2 L150.5 27.2 L175.2 24.6 L200.0 26.5 L224.8 26.9 L249.5 24.7 L274.2 22.2 L299.0 15.3 L323.8 17.5 L348.5 8.6 L373.2 12.4 L398.0 8.0 L398.0 44 L2.0 44 Z" aria-hidden="true">
+            <p class="pf-key">Result validation</p>
+            <p class="pf-problem">Checking RF power against limits took about 30 minutes per test.</p>
+            <p class="pf-diff"><span class="pf-was"><s>~30 min</s><span class="pf-arrow" aria-hidden="true">&rarr;</span></span><span class="pf-now"><span class="pf-mark">~5 sec</span></span></p>
+            <p class="pf-how">I delivered a Python and React app that auto-checks 1M+ records per test.</p>
+            <p class="pf-who"><b>UL Solutions</b> · RF test engineers</p>
+          </article>
+          <article class="pf-slide" role="group" aria-roledescription="slide" aria-label="6 of 6: Schema drift" data-d="M2.0 38.0 L26.8 32.9 L51.5 39.1 L76.2 31.8 L101.0 28.3 L125.8 27.3 L150.5 24.9 L175.2 22.5 L200.0 26.5 L224.8 24.6 L249.5 21.8 L274.2 18.8 L299.0 20.8 L323.8 10.1 L348.5 14.2 L373.2 9.9 L398.0 8.0" data-a="M2.0 38.0 L26.8 32.9 L51.5 39.1 L76.2 31.8 L101.0 28.3 L125.8 27.3 L150.5 24.9 L175.2 22.5 L200.0 26.5 L224.8 24.6 L249.5 21.8 L274.2 18.8 L299.0 20.8 L323.8 10.1 L348.5 14.2 L373.2 9.9 L398.0 8.0 L398.0 44 L2.0 44 Z" aria-hidden="true">
+            <p class="pf-key">Schema drift</p>
+            <p class="pf-problem">Each of 12+ RF test types arrived with its own set of columns.</p>
+            <p class="pf-diff"><span class="pf-was"><s>12+ formats</s><span class="pf-arrow" aria-hidden="true">&rarr;</span></span><span class="pf-now"><span class="pf-mark">1 table</span></span></p>
+            <p class="pf-how">I unified them with Delta Lake mergeSchema into one queryable table, without breaking pipelines on new test types.</p>
+            <p class="pf-who"><b>UL Solutions</b> · Databricks and Delta Lake</p>
+          </article>
+        </div>
+        <div class="pf-nav">
+          <button type="button" class="pf-step" id="pf-prev" aria-label="Previous result">&larr;</button>
+          <div class="pf-dots"><button type="button" class="pf-dot" aria-label="Show result 1: Test-cycle analysis" aria-current="true">01</button><button type="button" class="pf-dot" aria-label="Show result 2: Text-to-SQL accuracy">02</button><button type="button" class="pf-dot" aria-label="Show result 3: Power BI refresh">03</button><button type="button" class="pf-dot" aria-label="Show result 4: Operator alerts">04</button><button type="button" class="pf-dot" aria-label="Show result 5: Result validation">05</button><button type="button" class="pf-dot" aria-label="Show result 6: Schema drift">06</button></div>
+          <button type="button" class="pf-step" id="pf-next" aria-label="Next result">&rarr;</button>
+        </div>
+      </div>
+      </div>
+      <div class="h-act rise" style="--d:360ms">
         <p class="open-to"><span class="ot-dot" aria-hidden="true"></span><span><b>Open to</b> Data Engineering, Software Engineering, Data Science and AI Engineering roles</span></p>
         <p class="hero-actions">
           <a class="btn btn-primary" href="Darpan_Jiyani_Resume.pdf" download><span aria-hidden="true">&darr;</span> Download resume <span class="btn-sub">PDF</span></a>
-          <a class="btn" href="#projects">See projects</a>
+          <a class="btn" href="#why">Why me for your role</a>
         </p>
+        <ul class="reach-line">
+          <li><a href="mailto:darpanjiyani78@gmail.com">darpanjiyani78@gmail.com</a></li>
+          <li><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="tel:+14085908885">+1 408-590-8885</a></li>
+        </ul>
       </div>
-      <ul class="reach rise" style="--d:420ms">
-        <li><span class="k">Email</span><a href="mailto:darpanjiyani78@gmail.com">darpanjiyani78@gmail.com</a></li>
-        <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">linkedin.com/in/darpanjiyani</a></li>
-        <li><span class="k">GitHub</span><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">github.com/Darpanjiyani</a></li>
-        <li><span class="k">Phone</span><a href="tel:+14085908885">+1 408-590-8885</a></li>
-      </ul>
     </div>
 
-    <div class="ledger-wrap rise" style="--d:520ms">
-<div class="ledger-head">
-        <p class="label">What changed after I shipped it</p>
-        <svg class="spark" viewBox="4 0 176 48" width="176" height="48" aria-hidden="true" focusable="false">
-          <defs><linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0852f" stop-opacity=".22"/><stop offset="1" stop-color="#b0852f" stop-opacity="0"/></linearGradient></defs>
-          <line class="spark-base" x1="4" y1="46" x2="180" y2="46"/>
-          <clipPath id="spark-clip"><rect id="spark-rect" x="0" y="0" width="200" height="60"/></clipPath>
-          <path class="spark-area" clip-path="url(#spark-clip)" d="M4.0 40.0 L16.3 38.4 L28.6 37.6 L40.9 38.7 L53.1 33.1 L65.4 31.3 L77.7 35.8 L90.0 24.4 L102.3 24.8 L114.6 23.4 L126.9 22.3 L139.1 14.3 L151.4 13.5 L163.7 9.3 L176.0 10.0 L176.0 46 L4.0 46 Z"/>
-          <path class="spark-line" d="M4.0 40.0 L16.3 38.4 L28.6 37.6 L40.9 38.7 L53.1 33.1 L65.4 31.3 L77.7 35.8 L90.0 24.4 L102.3 24.8 L114.6 23.4 L126.9 22.3 L139.1 14.3 L151.4 13.5 L163.7 9.3 L176.0 10.0" pathLength="1"/>
-          <circle class="spark-dot" cx="176.0" cy="10.0" r="3.5"/>
-          <circle class="spark-ring" cx="176.0" cy="10.0" r="3.5"/>
-        </svg>
+    <div class="fit reveal" id="why" aria-labelledby="fit-title">
+      <p class="label">Why me, for your team</p>
+      <h2 class="fit-title" id="fit-title">Most candidates bring the pipeline <em>or</em> the AI. I bring both, and I measure every change.</h2>
+      <div class="fit-pick">
+        <span class="fit-ask" id="fit-ask">Hiring for a</span>
+        <div class="fit-tabs" role="tablist" aria-labelledby="fit-ask"><button type="button" role="tab" class="fit-tab" id="fit-tab-data-engineer" aria-controls="fit-data-engineer" aria-selected="true" tabindex="0" data-role="data-engineer" data-start="0">Data Engineer</button><button type="button" role="tab" class="fit-tab" id="fit-tab-ai-engineer" aria-controls="fit-ai-engineer" aria-selected="false" tabindex="-1" data-role="ai-engineer" data-start="1">AI Engineer</button><button type="button" role="tab" class="fit-tab" id="fit-tab-data-scientist" aria-controls="fit-data-scientist" aria-selected="false" tabindex="-1" data-role="data-scientist" data-start="2">Data Scientist</button><button type="button" role="tab" class="fit-tab" id="fit-tab-software-engineer" aria-controls="fit-software-engineer" aria-selected="false" tabindex="-1" data-role="software-engineer" data-start="4">Software Engineer</button></div>
       </div>
-      <ol class="ledger">
-        <li class="l-row">
-          <span class="l-what">Test-cycle analysis</span>
-          <span class="l-diff" aria-label="from 2 days to 30 min">
-            <s aria-hidden="true">2 days</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:250ms">30 min</b>
-          </span>
-          <span class="l-where">UL Solutions, across 60+ RF test stations</span>
-        </li>
-        <li class="l-row">
-          <span class="l-what">Power BI refresh</span>
-          <span class="l-diff" aria-label="from 15 min to under 15 sec">
-            <s aria-hidden="true">15 min</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:390ms">under 15 sec</b>
-          </span>
-          <span class="l-where">Keysight, on 2M+ records</span>
-        </li>
-        <li class="l-row">
-          <span class="l-what">Result validation</span>
-          <span class="l-diff" aria-label="from ~30 min to ~5 sec">
-            <s aria-hidden="true">~30 min</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:530ms">~5 sec</b>
-          </span>
-          <span class="l-where">UL Solutions, on 1M+ records per test</span>
-        </li>
-        <li class="l-row">
-          <span class="l-what">Text-to-SQL accuracy</span>
-          <span class="l-diff" aria-label="from 89.4% to 99.3%">
-            <s aria-hidden="true">89.4%</s><span class="l-arrow" aria-hidden="true">&rarr;</span><b class="after" aria-hidden="true" style="--d:670ms">99.3%</b>
-          </span>
-          <span class="l-where">AI Data Agent, 47 questions, average of 3 runs</span>
-        </li>
-      </ol>
+      <div class="fit-panel" role="tabpanel" id="fit-data-engineer" aria-labelledby="fit-tab-data-engineer">
+        <p class="fit-pitch">I have shipped production pipelines at three companies, across RF compliance testing, semiconductor manufacturing and industrial IoT.</p>
+        <div class="fit-table">
+          <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
+          <ul class="fit-rows"><li><span class="fr-need">Spark and Databricks</span><span class="fr-proof">PySpark and Spark SQL on Databricks at UL Solutions; date partitioning cut query time 20%.</span></li><li><span class="fr-need">Incremental ETL and CDC</span><span class="fr-proof">Timestamp-based CDC at Keysight took a Power BI refresh from 15 minutes to under 15 seconds on 2M+ records.</span></li><li><span class="fr-need">Streaming</span><span class="fr-proof">Kafka and Spark Structured Streaming into Delta, with a quarantine table and SCD Type 2 history (Real-Time Ride Analytics).</span></li><li><span class="fr-need">Orchestration</span><span class="fr-proof">Dockerized Airflow DAGs on 15-minute schedules, with task retries and email failure alerts, at Keysight.</span></li><li><span class="fr-need">Schema evolution and modeling</span><span class="fr-proof">12+ RF test formats unified into one Delta table with mergeSchema; a Redshift star schema for boiler KPIs at Cerebulb.</span></li><li><span class="fr-need">Cloud</span><span class="fr-proof">AWS EventBridge, Lambda, S3, EMR and Redshift: 140K+ sensor readings a day from 100+ boiler sensor APIs.</span></li></ul>
+        </div>
+        <div class="fit-foot">
+          <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-real-time-ride-analytics">Real-Time Ride Analytics</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-transportation-analytics-lakehouse-pipeline">Transportation Analytics Lakehouse Pipeline</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="e-commerce-analytics-platform">E-Commerce Analytics Platform</a></p>
+          <a class="btn btn-primary fit-mail" href="mailto:darpanjiyani78@gmail.com?subject=Data%20Engineer%20role">Email me about a Data Engineer role <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="fit-panel" role="tabpanel" id="fit-ai-engineer" aria-labelledby="fit-tab-ai-engineer" hidden>
+        <p class="fit-pitch">I build AI tools the way I build pipelines: measured, tested and safe by default.</p>
+        <div class="fit-table">
+          <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
+          <ul class="fit-rows"><li><span class="fr-need">LLM apps and agents</span><span class="fr-proof">AI Data Agent: a LangGraph multi-agent system on Claude that routes each question to a SQL agent or an ETL agent. Live demo.</span></li><li><span class="fr-need">Evaluation</span><span class="fr-proof">An eval harness raised execution accuracy from 89.4% to 99.3% on 47 questions, with 100% on 2 held-out sets of 20.</span></li><li><span class="fr-need">Safety and guardrails</span><span class="fr-proof">A sqlglot guard, an LLM judge and a read-only database role blocked all 22 attempts to change data; data loads need human approval.</span></li><li><span class="fr-need">Fine-tuning</span><span class="fr-proof">Fine-tuned 5 specialist LLMs with QLoRA on GCP; the code model reached 70% pass@1 on DS-1000 (MS capstone).</span></li><li><span class="fr-need">Cost and memory</span><span class="fr-proof">Prompt caching cut billed input tokens about 59%; LangGraph memory got follow-ups right in 32 of 32 chats.</span></li><li><span class="fr-need">RAG and tools</span><span class="fr-proof">RAG over image captions with FAISS (pathology project); Claude and OpenAI APIs; MCP servers with FastMCP.</span></li></ul>
+        </div>
+        <div class="fit-foot">
+          <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-ai-data-agent">AI Data Agent</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-simulation-of-domain-expert-in-llm-models">Simulation of Domain Expert in LLM Models</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="multimodal-llm-for-cancer-pathology-classification">Multimodal LLM for Cancer Pathology Classification</a></p>
+          <a class="btn btn-primary fit-mail" href="mailto:darpanjiyani78@gmail.com?subject=AI%20Engineer%20role">Email me about an AI Engineer role <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="fit-panel" role="tabpanel" id="fit-data-scientist" aria-labelledby="fit-tab-data-scientist" hidden>
+        <p class="fit-pitch">I start from the question, test against a baseline, and explain the result so people can act on it.</p>
+        <div class="fit-table">
+          <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
+          <ul class="fit-rows"><li><span class="fr-need">Analytics that drive action</span><span class="fr-proof">As a Data Science Intern at Keysight, my alerts cut operator notification from 2–3 hours to under 5 minutes.</span></li><li><span class="fr-need">Experiment design</span><span class="fr-proof">Benchmarked 15 LLMs on GSM8K, MATH, HumanEval and DS-1000; all 5 fine-tuned models beat their zero-shot baselines.</span></li><li><span class="fr-need">Deep learning</span><span class="fr-proof">EfficientNetV2-B0 on ~345K sketches across 345 classes: ~75% top-1 accuracy with answers in under 100 ms.</span></li><li><span class="fr-need">Efficient modeling</span><span class="fr-proof">A LoRA model reached ~80% accuracy and ROC-AUC 0.96, within about 1 point of full fine-tuning with 24× fewer trainable parameters.</span></li><li><span class="fr-need">Explainability</span><span class="fr-proof">Explained a Random Forest with SHAP and added Laplace-noise differential privacy (crypto trend analysis).</span></li><li><span class="fr-need">Baselines and monitoring</span><span class="fr-proof">A DAX dashboard flags underperforming shifts against rolling baselines, replacing manual review at Keysight.</span></li></ul>
+        </div>
+        <div class="fit-foot">
+          <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-simulation-of-domain-expert-in-llm-models">Simulation of Domain Expert in LLM Models</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="multimodal-llm-for-cancer-pathology-classification">Multimodal LLM for Cancer Pathology Classification</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="doodle-recognition-using-deep-learning">Doodle Recognition Using Deep Learning</a></p>
+          <a class="btn btn-primary fit-mail" href="mailto:darpanjiyani78@gmail.com?subject=Data%20Scientist%20role">Email me about a Data Scientist role <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="fit-panel" role="tabpanel" id="fit-software-engineer" aria-labelledby="fit-tab-software-engineer" hidden>
+        <p class="fit-pitch">I build working software around data: apps, APIs and the tests that keep them working.</p>
+        <div class="fit-table">
+          <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
+          <ul class="fit-rows"><li><span class="fr-need">Production apps</span><span class="fr-proof">A Python and React app at UL Solutions checks RF power against limits on 1M+ records per test, in about 5 seconds instead of 30 minutes.</span></li><li><span class="fr-need">APIs and backends</span><span class="fr-proof">FastAPI services (a ride-event producer, a model router on Cloud Run) and Django REST APIs with JWT login and OpenAPI docs.</span></li><li><span class="fr-need">Testing and CI</span><span class="fr-proof">pytest suites, GitHub Actions CI and Databricks Asset Bundles for deployment; pytest API tests for the Taxi Booking app.</span></li><li><span class="fr-need">Frontend</span><span class="fr-proof">React apps with Vite, Tailwind and Redux, from the UL validation tool to Taxi Booking and Food Delivery.</span></li><li><span class="fr-need">Containers and events</span><span class="fr-proof">Docker, Kubernetes and Helm, with Kafka producer and consumer services (Food Delivery Platform).</span></li><li><span class="fr-need">Secure by default</span><span class="fr-proof">JWT with token blacklisting and rider and driver roles; read-only database roles and sandboxed code in the AI Data Agent.</span></li></ul>
+        </div>
+        <div class="fit-foot">
+          <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#more-projects" data-open="taxi-booking-web-app">Taxi Booking Web App</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="food-delivery-platform">Food Delivery Platform</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-ai-data-agent">AI Data Agent</a></p>
+          <a class="btn btn-primary fit-mail" href="mailto:darpanjiyani78@gmail.com?subject=Software%20Engineer%20role">Email me about a Software Engineer role <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
     </div>
 
     <div class="bring reveal" aria-labelledby="bring-title">
@@ -686,7 +885,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p>The four I would show first. Each one links to its code.</p>
       </div>
       
-      <article class="project feat has-media">
+      <article class="project feat has-media" id="p-ai-data-agent">
         <div class="p-fig">
           <span class="p-num">99.3%</span>
           <span class="p-cap">text-to-SQL execution accuracy, up from 89.4%</span>
@@ -717,7 +916,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           </figure>
         </div>
       </article>
-      <article class="project feat">
+      <article class="project feat" id="p-real-time-ride-analytics">
         <div class="p-fig">
           <span class="p-num">10</span>
           <span class="p-cap">cities of live ride events, merged with a 2,000-ride backfill</span>
@@ -745,7 +944,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           </div>
         </div>
       </article>
-      <article class="project feat">
+      <article class="project feat" id="p-simulation-of-domain-expert-in-llm-models">
         <div class="p-fig">
           <span class="p-num">70%</span>
           <span class="p-cap">pass@1 on DS-1000 for the fine-tuned code model, 60% on HumanEval</span>
@@ -768,7 +967,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           </div>
         </div>
       </article>
-      <article class="project feat">
+      <article class="project feat" id="p-transportation-analytics-lakehouse-pipeline">
         <div class="p-fig">
           <span class="p-num">10</span>
           <span class="p-cap">city-level views feeding Databricks dashboards and Genie</span>
@@ -811,7 +1010,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       <div class="rail-wrap">
         <div class="rail-stage">
           <div class="rail" id="project-list" tabindex="0" role="region" aria-label="More projects, scroll sideways">
-        <article class="card" data-cats="ai">
+        <article class="card" data-cats="ai" data-slug="multimodal-llm-for-cancer-pathology-classification">
           <p class="c-kind">RAG and LoRA on public tissue images</p>
           <div class="c-fig"><span class="p-num">0.96</span><span class="p-cap">ROC-AUC with LoRA, training under 5% of the parameters</span></div>
           <h3 class="c-title">Multimodal LLM for Cancer Pathology Classification</h3>
@@ -828,7 +1027,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Multimodel-LLM-for-Cancer-Pathology-Classification" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="de">
+        <article class="card" data-cats="de" data-slug="e-commerce-analytics-platform">
           <p class="c-kind">Lakehouse migration</p>
           <div class="c-fig"><span class="p-num">7</span><span class="p-cap">currencies converted to INR for one BI view</span></div>
           <h3 class="c-title">E-Commerce Analytics Platform</h3>
@@ -845,7 +1044,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/E-Commerce-Analytics-Platform" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="de ai">
+        <article class="card" data-cats="de ai" data-slug="real-time-cryptocurrency-trend-analysis">
           <p class="c-kind">Streaming and data mining</p>
           <div class="c-fig"><span class="p-num">60 s</span><span class="p-cap">pull interval for the top 10 coins by market cap</span></div>
           <h3 class="c-title">Real-Time Cryptocurrency Trend Analysis</h3>
@@ -862,7 +1061,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Real-Time-Cryptocurrency-Trend-Analysis" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="de an">
+        <article class="card" data-cats="de an" data-slug="football-data-analytics">
           <p class="c-kind">Data modeling across three databases</p>
           <div class="c-fig"><span class="p-num">60K+</span><span class="p-cap">games across 400 clubs and 30K players</span></div>
           <h3 class="c-title">Football Data Analytics</h3>
@@ -879,7 +1078,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Football-Data-Analytics" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="ai">
+        <article class="card" data-cats="ai" data-slug="doodle-recognition-using-deep-learning">
           <p class="c-kind">Deep Learning course project, San Jose State</p>
           <div class="c-fig"><span class="p-num">~75%</span><span class="p-cap">top-1 accuracy across 345 classes, in under 100 ms</span></div>
           <h3 class="c-title">Doodle Recognition Using Deep Learning</h3>
@@ -896,7 +1095,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Doodle" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="de an">
+        <article class="card" data-cats="de an" data-slug="retail-sales-analytics-platform">
           <p class="c-kind">dbt on Databricks, tutorial-based build</p>
           <div class="c-fig"><span class="p-num">8</span><span class="p-cap">dbt models across bronze, silver and gold, plus an SCD Type 2 snapshot</span></div>
           <h3 class="c-title">Retail Sales Analytics Platform</h3>
@@ -913,7 +1112,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Retail-Sales-Analytics-Platform---dbt" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="an">
+        <article class="card" data-cats="an" data-slug="comprehensive-analysis-of-billionaires-wealth">
           <p class="c-kind">Exploratory analysis and dashboards</p>
           <div class="c-fig"><span class="p-num">2,640</span><span class="p-cap">billionaires across 78 countries and 18 industries</span></div>
           <h3 class="c-title">Comprehensive Analysis of Billionaires' Wealth</h3>
@@ -930,7 +1129,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Comprehensive-Analysis-of-Billionaire-s-Wealth" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="sw">
+        <article class="card" data-cats="sw" data-slug="food-delivery-platform">
           <p class="c-kind">UberEats-style course lab</p>
           <div class="c-fig"><span class="p-num">K8s</span><span class="p-cap">app, Kafka and Zookeeper deployed with Helm</span></div>
           <h3 class="c-title">Food Delivery Platform</h3>
@@ -947,7 +1146,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <p class="p-links"><a href="https://github.com/Darpanjiyani/Lab_1_UberEats" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
           </div>
         </article>
-        <article class="card" data-cats="sw">
+        <article class="card" data-cats="sw" data-slug="taxi-booking-web-app">
           <p class="c-kind">Full-stack web app</p>
           <div class="c-fig"><span class="p-num">JWT</span><span class="p-cap">login with token blacklisting, for rider and driver roles</span></div>
           <h3 class="c-title">Taxi Booking Web App</h3>
@@ -1311,39 +1510,6 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 
 
 
-  /* Results sparkline: draws itself slowly once "What changed after I shipped it" comes into view */
-  (function () {
-    var svg = document.querySelector('.spark'), wrap = document.querySelector('.ledger-wrap');
-    if (!svg || !wrap) return;
-    var line = svg.querySelector('.spark-line'), dot = svg.querySelector('.spark-dot'), ring = svg.querySelector('.spark-ring');
-    var rect = document.getElementById('spark-rect');
-    var len = line.getTotalLength(), DURATION = 4500;
-    function set(p) {
-      line.style.strokeDashoffset = 1 - p;
-      var pt = line.getPointAtLength(p * len);
-      dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
-      ring.setAttribute('cx', pt.x); ring.setAttribute('cy', pt.y);
-      rect.setAttribute('width', Math.max(0, pt.x));
-      dot.style.opacity = p > 0.005 ? 1 : 0;
-      svg.classList.toggle('live', p >= 1);
-    }
-    if (reduce || !('IntersectionObserver' in window)) { set(1); return; }
-    set(0);
-    function ease(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
-    var io = new IntersectionObserver(function (es) {
-      if (!es[0].isIntersecting) return;
-      io.disconnect();
-      var t0 = null;
-      function step(t) {
-        if (t0 === null) t0 = t;
-        var k = Math.min(1, (t - t0) / DURATION);
-        set(ease(k));
-        if (k < 1) requestAnimationFrame(step);
-      }
-      setTimeout(function () { requestAnimationFrame(step); }, 400);
-    }, { threshold: 0.35 });
-    io.observe(wrap);
-  })();
 
 
   /* Architecture popup */
@@ -1374,6 +1540,146 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     dlg.addEventListener('click', function (ev) { if (ev.target === dlg) dlg.close(); });
     dlg.addEventListener('close', function () { if (opener) opener.focus({ preventScroll: true }); });
   })();
+
+
+  /* Results banner: one result at a time; the sparkline is the timer */
+  (function () {
+    var box = document.getElementById('proof');
+    if (!box) return;
+    var slides = [].slice.call(box.querySelectorAll('.pf-slide'));
+    var dots = [].slice.call(box.querySelectorAll('.pf-dot'));
+    var wrapS = box.querySelector('.pf-slides');
+    var line = box.querySelector('.pf-line'), area = box.querySelector('.pf-area');
+    var tip = box.querySelector('.pf-tip'), ring = box.querySelector('.pf-ring'), rect = document.getElementById('pf-rect');
+    var num = document.getElementById('pf-n');
+    var DUR = 7000, HOLD = 900, cur = 0, t = 0, len = 1;
+    var hover = false, kbFocus = false, inView = true, tabbing = false;
+    function setSpark(p) {
+      line.style.strokeDashoffset = 1 - p;
+      var pt = line.getPointAtLength(Math.max(0.001, p) * len);
+      tip.setAttribute('cx', pt.x); tip.setAttribute('cy', pt.y);
+      ring.setAttribute('cx', pt.x); ring.setAttribute('cy', pt.y);
+      rect.setAttribute('width', pt.x);
+    }
+    function show(i, byUser) {
+      cur = (i + slides.length) % slides.length;
+      slides.forEach(function (s, k) {
+        var on = k === cur;
+        s.classList.toggle('is-on', on);
+        if (on) s.removeAttribute('aria-hidden'); else s.setAttribute('aria-hidden', 'true');
+      });
+      dots.forEach(function (d, k) { if (k === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+      num.textContent = (cur < 9 ? '0' : '') + (cur + 1);
+      line.setAttribute('d', slides[cur].getAttribute('data-d'));
+      area.setAttribute('d', slides[cur].getAttribute('data-a'));
+      len = line.getTotalLength();
+      t = 0; box.classList.remove('done');
+      setSpark(reduce ? 1 : 0);
+      wrapS.setAttribute('aria-live', byUser ? 'polite' : 'off');
+    }
+    window.pfShow = function (i) { show(i, false); };
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { show(k, true); }); });
+    document.getElementById('pf-prev').addEventListener('click', function () { show(cur - 1, true); });
+    document.getElementById('pf-next').addEventListener('click', function () { show(cur + 1, true); });
+    box.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') hover = true; });
+    box.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') hover = false; });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Tab') tabbing = true; });
+    document.addEventListener('pointerdown', function () { tabbing = false; kbFocus = false; });
+    box.addEventListener('focusin', function () { kbFocus = tabbing; });
+    box.addEventListener('focusout', function () { setTimeout(function () { kbFocus = tabbing && box.contains(document.activeElement); }, 0); });
+    box.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowRight') { show(cur + 1, true); }
+      if (ev.key === 'ArrowLeft') { show(cur - 1, true); }
+    });
+    var sx = null;
+    box.addEventListener('touchstart', function (ev) { sx = ev.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (ev) {
+      if (sx === null) return;
+      var dx = ev.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 45) show(cur + (dx < 0 ? 1 : -1), true);
+    }, { passive: true });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }, { threshold: 0.25 }).observe(box);
+    }
+    show(0, false);
+    if (reduce) return;
+    var last = 0;
+    function tick(now) {
+      var dt = last ? Math.min(80, now - last) : 0; last = now;
+      if (!hover && !kbFocus && inView && !document.hidden) {
+        t += dt;
+        var p = Math.min(1, t / DUR);
+        setSpark(p);
+        if (p >= 1 && !box.classList.contains('done')) box.classList.add('done');
+        if (t >= DUR + HOLD) show(cur + 1, false);
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+
+  /* Why me, for your team: role tabs; #data-engineer style links pick a role */
+  (function () {
+    var tabs = [].slice.call(document.querySelectorAll('.fit-tab'));
+    if (!tabs.length) return;
+    function select(tab, moveFocus) {
+      tabs.forEach(function (t) {
+        var on = t === tab, panel = document.getElementById(t.getAttribute('aria-controls'));
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        if (on) { panel.hidden = false; panel.classList.remove('swap'); void panel.offsetWidth; panel.classList.add('swap'); }
+        else panel.hidden = true;
+      });
+      if (moveFocus) tab.focus();
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(t, false); });
+      t.addEventListener('keydown', function (ev) {
+        var j = null;
+        if (ev.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (ev.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+        if (ev.key === 'Home') j = 0;
+        if (ev.key === 'End') j = tabs.length - 1;
+        if (j !== null) { ev.preventDefault(); select(tabs[j], true); }
+      });
+    });
+    function fromHash() {
+      var h = location.hash.slice(1);
+      var t = h && document.querySelector('.fit-tab[data-role="' + h + '"]');
+      if (!t) return;
+      select(t, false);
+      if (window.pfShow) window.pfShow(+t.getAttribute('data-start'));
+    }
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+
+    /* "Start with" links to projects in the More projects rail open that project's popup */
+    document.querySelectorAll('[data-open]').forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        var card = document.querySelector('.card:not(.clone)[data-slug="' + a.getAttribute('data-open') + '"]');
+        if (!card) return;
+        ev.preventDefault();
+        if (card.hidden) { var all = document.querySelector('.chip[data-filter="all"]'); if (all) all.click(); }
+        var b = card.querySelector('.c-open');
+        if (b) b.click();
+      });
+    });
+  })();
+
+
+  /* In-page links: show a not-yet-revealed target at once, so the jump lands in the right place */
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+    if (!a || a.hasAttribute('data-open')) return;
+    var id = a.getAttribute('href').slice(1);
+    var t = id && document.getElementById(id);
+    if (!t) return;
+    [t].concat([].slice.call(t.querySelectorAll('.reveal'))).forEach(function (el) {
+      if (el.classList.contains('reveal') && !el.classList.contains('in')) {
+        el.style.transition = 'none'; el.classList.add('in'); void el.offsetWidth; el.style.transition = '';
+      }
+    });
+  }, true);
 
   var btn = document.getElementById('copy-mail');
   var mail = document.getElementById('mail').textContent;
