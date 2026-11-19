@@ -712,6 +712,21 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 .gear { counter-reset: g; }
 .g-item { display: grid; grid-template-columns: var(--col) minmax(0, 1fr); gap: 8px var(--gap); padding: 26px 0; border-bottom: 1px solid var(--rule); transition: background .25s; cursor: default; }
 .g-item.on { background: linear-gradient(90deg, rgba(239, 217, 163, .35), transparent 70%); }
+/* Clicked from the photo: a warm gold glow that slowly fades (about 4.5 s) */
+.g-item { position: relative; isolation: isolate; }
+.g-item::before { content: ""; position: absolute; inset: 0 -22px; z-index: -1; border-radius: 12px; pointer-events: none; opacity: 0;
+  background: radial-gradient(120% 140% at 12% 50%, rgba(240, 200, 110, .55), rgba(239, 217, 163, .28) 45%, rgba(239, 217, 163, 0) 80%);
+  box-shadow: 0 0 0 1px rgba(176, 133, 47, .35), 0 18px 50px -18px rgba(176, 133, 47, .55); }
+.g-item.glow::before { animation: gGlow 4.6s ease-out forwards; }
+@media (max-width: 820px) { .g-item::before { inset: 0 -10px; } }
+.g-item.glow .g-num b { animation: gNum 4.6s ease-out forwards; }
+@keyframes gGlow { 0% { opacity: 0; } 10% { opacity: 1; } 35% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gNum { 0%, 10% { color: #b8860b; text-shadow: 0 0 18px rgba(240, 190, 80, .9); } 100% { text-shadow: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .g-item.glow .g-num b { animation: gNum 4.6s ease-out forwards, gPop .7s cubic-bezier(.3, 1.6, .5, 1) .15s; }
+}
+@keyframes gPop { 40% { transform: scale(1.18); } }
+.g-num b { display: inline-block; }
 .g-num { display: flex; align-items: baseline; gap: 14px; }
 .g-num b { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 44px; line-height: 1; color: var(--gold-ink); }
 .g-num span { font-size: 13.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); }
@@ -725,6 +740,24 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 @media (max-width: 520px) { .tools { grid-template-columns: minmax(0, 1fr); } }
 .tool { background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold); padding: 18px 20px 20px; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
 .tool:hover { transform: translateY(-4px); box-shadow: 0 18px 32px -22px rgba(60, 40, 10, .45); }
+/* Flip cards: on hover the card turns over to show its icon, then turns back to the text */
+.tool.flip { background: none; border: 0; padding: 0; perspective: 1000px; cursor: default; }
+.tool.flip:hover { box-shadow: none; }
+.t-in { position: relative; height: 100%; transform-style: preserve-3d; }
+.t-face { height: 100%; background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold); padding: 18px 20px 20px; -webkit-backface-visibility: hidden; backface-visibility: hidden; transition: box-shadow .3s var(--ease); }
+.tool.flip:hover .t-face { box-shadow: 0 18px 32px -22px rgba(60, 40, 10, .45); }
+.t-back { position: absolute; inset: 0; transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--gold-ink);
+  background: radial-gradient(circle at 50% 42%, rgba(240, 205, 120, .45), rgba(239, 217, 163, .12) 55%, var(--panel) 80%); }
+.t-icon { width: 58px; height: 58px; }
+.t-bname { font-family: var(--font-display); font-style: italic; font-size: 20px; color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .tool.flip.flipping .t-in { animation: tFlip 2s cubic-bezier(.45, .05, .25, 1) both; }
+}
+@keyframes tFlip { 0% { transform: rotateY(0); } 22% { transform: rotateY(180deg); } 62% { transform: rotateY(180deg); } 86%, 100% { transform: rotateY(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .t-back { transform: none; opacity: 0; transition: opacity .4s ease; }
+  .tool.flip.flipping .t-back { opacity: 1; }
+}
 .tool .t-name { font-family: var(--font-display); font-size: 24px; font-weight: 500; }
 .tool .t-what { margin-top: 6px; font-size: 16.5px; color: var(--muted); line-height: 1.5; }
 .tool.more-tools { display: grid; place-items: center; text-align: center; border-style: dashed; border-top-style: solid; background: transparent; }
@@ -858,13 +891,13 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p>What opens first when I sit down, roughly in this order.</p>
       </div>
       <div class="tools">
-        <div class="tool"><p class="t-name"><span class="order">01</span>Tea</p><p class="t-what">The real first step of every morning. Nothing else opens before the first cup.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">02</span>Claude</p><p class="t-what">Planning the day, thinking through designs and reviewing code.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">03</span>VS Code</p><p class="t-what">My editor for Python, SQL and everything in between.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">04</span>Databricks</p><p class="t-what">Notebooks, Delta tables and jobs for the heavy data work.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">05</span>Python</p><p class="t-what">The language most of my pipelines and tools are written in.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">06</span>SQL</p><p class="t-what">Modeling, checks and the queries behind every dashboard.</p></div>
-        <div class="tool"><p class="t-name"><span class="order">07</span>Spark</p><p class="t-what">PySpark and Spark SQL when the data gets big.</p></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">01</span>Tea</p><p class="t-what">The real first step of every morning. Nothing else opens before the first cup.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4 10h12v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8 3.5c-1 1.2 1 2 0 3.5M12 3.5c-1 1.2 1 2 0 3.5"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M3 21.5h16"/></svg><span class="t-bname">Tea</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">02</span>Claude</p><p class="t-what">Planning the day, thinking through designs and reviewing code.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v10H10l-5 4v-4H4z"/><circle cx="8.5" cy="10" r="1" fill="currentColor"/><circle cx="12" cy="10" r="1" fill="currentColor"/><circle cx="15.5" cy="10" r="1" fill="currentColor"/></svg><span class="t-bname">Claude</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">03</span>VS Code</p><p class="t-what">My editor for Python, SQL and everything in between.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg><span class="t-bname">VS Code</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">04</span>Databricks</p><p class="t-what">Notebooks, Delta tables and jobs for the heavy data work.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><rect fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" x="4" y="3" width="16" height="18" rx="2"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 14h16"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8 10.2l2.4 0.8-2.4 0.8z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12.5 11h4M8 17h8"/></svg><span class="t-bname">Databricks</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">05</span>Python</p><p class="t-what">The language most of my pipelines and tools are written in.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><rect fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" x="3" y="4.5" width="18" height="15" rx="2"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M7 10l3 2-3 2M12.5 15h4.5"/></svg><span class="t-bname">Python</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">06</span>SQL</p><p class="t-what">Modeling, checks and the queries behind every dashboard.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><ellipse fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" cx="12" cy="5.5" rx="7.5" ry="2.8"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></svg><span class="t-bname">SQL</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name"><span class="order">07</span>Spark</p><p class="t-what">PySpark and Spark SQL when the data gets big.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M13 2.5L4.5 13.5h6.5l-1 8 8.5-11h-6.5z"/></svg><span class="t-bname">Spark</span></div></div></div>
         <div class="tool more-tools"><p class="t-name">and many more…</p></div>
       </div>
     </div>
@@ -878,10 +911,10 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p>How I switch off between builds.</p>
       </div>
       <div class="tools">
-        <div class="tool"><p class="t-name">YouTube</p><p class="t-what">Tech talks, tutorials and the occasional rabbit hole.</p></div>
-        <div class="tool"><p class="t-name">Spotify</p><p class="t-what">Music on while I work.</p></div>
-        <div class="tool"><p class="t-name">Netflix</p><p class="t-what">For chilling at the end of the day.</p></div>
-        <div class="tool"><p class="t-name">TED Talks</p><p class="t-what">Big ideas from people outside tech, a talk or two at a time.</p></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name">YouTube</p><p class="t-what">Tech talks, tutorials and the occasional rabbit hole.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><rect fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" x="3" y="4" width="18" height="12.5" rx="2"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M10.2 7.8v5l4.2-2.5z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8 20.5h8M12 16.5v4"/></svg><span class="t-bname">YouTube</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name">Spotify</p><p class="t-what">Music on while I work.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M9 18V5.5l11-2v12"/><circle fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" cx="6.5" cy="18" r="2.5"/><circle fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" cx="17.5" cy="15.5" r="2.5"/></svg><span class="t-bname">Spotify</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name">Netflix</p><p class="t-what">For chilling at the end of the day.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5.5 9.5h13L17 21H7z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M10 9.5l.5 11.5M14 9.5l-.5 11.5"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M6 9.5a2.2 2.2 0 0 1 2.6-3.3 2.6 2.6 0 0 1 4.8-.9 2.2 2.2 0 0 1 4 1.5 2 2 0 0 1 .9 2.7"/></svg><span class="t-bname">Netflix</span></div></div></div>
+        <div class="tool flip"><div class="t-in"><div class="t-face t-front"><p class="t-name">TED Talks</p><p class="t-what">Big ideas from people outside tech, a talk or two at a time.</p></div><div class="t-face t-back" aria-hidden="true"><svg class="t-icon" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" focusable="false"><rect fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" x="9" y="2.5" width="6" height="11" rx="3"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4M8.5 21.5h7"/></svg><span class="t-bname">TED Talks</span></div></div></div>
       </div>
     </div>
   </section>
@@ -919,7 +952,19 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     s.addEventListener('click', function () {
       mark(k);
       var it = document.querySelector('.g-item[data-k="' + k + '"]');
-      if (it) it.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      if (!it) return;
+      it.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      /* light it up once it has scrolled into place */
+      var lit = false;
+      function light() {
+        if (lit) return; lit = true;
+        document.querySelectorAll('.g-item.glow').forEach(function (g) { g.classList.remove('glow'); });
+        void it.offsetWidth;
+        it.classList.add('glow');
+        clearTimeout(it._glowT); it._glowT = setTimeout(function () { it.classList.remove('glow'); }, 4800);
+      }
+      if ('onscrollend' in window) { window.addEventListener('scrollend', light, { once: true }); }
+      setTimeout(light, reduce ? 0 : 750);
     });
   });
   items.forEach(function (i) {
@@ -969,6 +1014,19 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     };
     document.body.appendChild(s);
   })();
+
+
+  /* Tool cards: flip once per hover (or tap) to show the icon, then return to the text */
+  document.querySelectorAll('.tool.flip').forEach(function (c) {
+    var inner = c.querySelector('.t-in');
+    function go() {
+      if (c.classList.contains('flipping')) return;
+      c.classList.add('flipping');
+      setTimeout(function () { c.classList.remove('flipping'); }, reduce ? 1400 : 2050);
+    }
+    c.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') go(); });
+    c.addEventListener('click', go);
+  });
 
   if ('IntersectionObserver' in window && !reduce) {
     document.querySelectorAll('.g-item, .tool').forEach(function (el) { el.classList.add('reveal'); });
