@@ -686,6 +686,48 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 @keyframes mqScroll { to { transform: translateX(-25%); } }
 @keyframes mqJump { 0% { transform: none; } 35% { transform: translateY(-.22em) rotate(-3deg); } 70% { transform: translateY(.04em); } 100% { transform: none; } }
 @media (max-width: 820px) { .marquee { margin-top: 28px; padding: 6px 0 0; } .mq-word { -webkit-text-stroke-width: 1.1px; } }
+
+/* Results deck: cards hang from a gold rail; the rest of the deck fans out to the right.
+   A finished card swings out to the left, tucks behind and moves to the back; the next one swings forward. */
+.pf-hang { padding-top: 14px; }
+.pf-deck { --hang: 52px; --pk: 10px; --ps: .03; --peek: 50px; position: relative; padding: var(--hang) var(--peek) 0 0; }
+.pf-rail { position: absolute; left: -6px; right: -6px; top: 0; height: 2px; margin-top: -1px; background: var(--gold); border-radius: 2px; }
+.pf-rail::before, .pf-rail::after { content: ""; position: absolute; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: var(--gold); }
+.pf-rail::before { left: -4px; } .pf-rail::after { right: -4px; }
+/* the label sits on the rail, centred over the card; one thread drops from it to the card */
+.pf-tag { position: absolute; top: 0; left: calc((100% - var(--peek)) / 2); transform: translate(-50%, -50%); z-index: 9; margin: 0;
+  background: var(--ground); border: 1.5px solid var(--gold); border-radius: 999px; padding: 7px 16px 6px;
+  font: 700 13.5px/1 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-ink); white-space: nowrap; }
+.pf-thread { position: absolute; top: 12px; left: calc((100% - var(--peek)) / 2); width: 10px; margin-left: -5px; height: calc(var(--hang) - 12px); z-index: 8;
+  background: linear-gradient(var(--gold), var(--gold)) 50% 0 / 1.5px calc(100% - 5px) no-repeat, radial-gradient(circle at 50% calc(100% - 4px), var(--gold-ink) 3.6px, transparent 4.2px); }
+.pf-ctag { position: absolute; top: 0; right: 4px; transform: translateY(-50%); z-index: 9; margin: 0; background: var(--ground); padding: 0 8px; line-height: 1.2; }
+.pf-deck .proof { z-index: 6; transform-origin: 50% 0; }
+.pf-sheet { position: absolute; top: var(--hang); left: 0; right: var(--peek); bottom: 0; z-index: calc(6 - var(--k)); background: var(--panel); border: 1px solid var(--rule); border-top: 2px solid var(--gold);
+  transform-origin: 100% 0; transform: translateX(calc(var(--k) * var(--pk))) scale(calc(1 - var(--k) * var(--ps))); opacity: calc(1 - var(--k) * .12);
+  box-shadow: 0 16px 26px -20px rgba(60, 40, 10, .5); pointer-events: none; }
+.pf-ghost { position: absolute; left: 0; top: var(--hang); z-index: 7; pointer-events: none; transform-origin: 50% 0; }
+.pf-ghost *, .pf-ghost *::before, .pf-ghost *::after { animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .pf-ghost { animation: pfLeave .9s cubic-bezier(.45, 0, .2, 1) forwards; }
+  .proof.arriving { animation: pfArrive 1.6s cubic-bezier(.3, .7, .3, 1) both; }
+}
+@keyframes pfLeave {
+  0% { transform: none; opacity: 1; z-index: 7; transform-origin: 50% 0; }
+  30% { transform: translateX(-46px) rotate(-5deg); opacity: 1; z-index: 7; transform-origin: 50% 0; }
+  33% { opacity: 1; z-index: 0; }
+  100% { transform: translateX(calc(var(--pk) * 5)) scale(calc(1 - var(--ps) * 5)); opacity: 0; z-index: 0; transform-origin: 100% 0; }
+}
+@keyframes pfArrive {
+  0% { transform: translateX(var(--pk)) scale(calc(1 - var(--ps))); opacity: .88; }
+  34% { transform: rotate(1.6deg); opacity: 1; }
+  54% { transform: rotate(-1deg); }
+  72% { transform: rotate(.5deg); }
+  88% { transform: rotate(-.18deg); }
+  100% { transform: none; }
+}
+.pf-slides.no-tx .pf-slide { transition: none !important; }
+@media (max-width: 820px) { .pf-deck { --hang: 44px; --pk: 6px; --ps: .025; --peek: 30px; } .pf-tag { font-size: 12.5px; padding: 6px 13px 5px; } }
+@media (max-width: 520px) { .pf-dots { flex-wrap: nowrap; gap: 0; } .pf-dot { padding: 6px 4px; font-size: 15px; } .pf-step { width: 34px; height: 34px; font-size: 15px; } }
 @media (max-width: 1000px) {
   .l-diff { font-size: clamp(28px, 3.4vw, 34px); }
 }
@@ -764,11 +806,11 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p class="lede">Before that I worked on wafer monitoring at Keysight and boiler sensor telemetry at Cerebulb. MS in Applied Data Intelligence, San Jose State University.</p>
       </div>
       <div class="h-proof rise" style="--d:420ms">
-      <div class="proof" id="proof" role="region" aria-roledescription="carousel" aria-label="Results I shipped">
-        <div class="pf-top">
-          <p class="label">Results I shipped</p>
-          <p class="pf-count" aria-hidden="true"><span id="pf-n">01</span> / 06</p>
-        </div>
+      <div class="pf-hang">
+      <div class="pf-deck" id="pf-deck">
+        <span class="pf-rail" aria-hidden="true"></span><span class="pf-thread" aria-hidden="true"></span>
+        <p class="pf-tag">Results I shipped</p><p class="pf-count pf-ctag" aria-hidden="true"><span id="pf-n">01</span> / 06</p>
+        <div class="pf-sheet" style="--k:1" aria-hidden="true"></div><div class="pf-sheet" style="--k:2" aria-hidden="true"></div><div class="pf-sheet" style="--k:3" aria-hidden="true"></div><div class="pf-sheet" style="--k:4" aria-hidden="true"></div><div class="pf-sheet" style="--k:5" aria-hidden="true"></div><div class="proof" id="proof" role="region" aria-roledescription="carousel" aria-label="Results I shipped">
         <svg class="pf-spark" viewBox="0 0 400 46" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="pf-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0852f" stop-opacity=".22"/><stop offset="1" stop-color="#b0852f" stop-opacity="0"/></linearGradient>
@@ -829,7 +871,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           <div class="pf-dots"><button type="button" class="pf-dot" aria-label="Show result 1: Test-cycle analysis" aria-current="true">01</button><button type="button" class="pf-dot" aria-label="Show result 2: Text-to-SQL accuracy">02</button><button type="button" class="pf-dot" aria-label="Show result 3: Power BI refresh">03</button><button type="button" class="pf-dot" aria-label="Show result 4: Operator alerts">04</button><button type="button" class="pf-dot" aria-label="Show result 5: Result validation">05</button><button type="button" class="pf-dot" aria-label="Show result 6: Schema drift">06</button></div>
           <button type="button" class="pf-step" id="pf-next" aria-label="Next result">&rarr;</button>
         </div>
-      </div>
+      </div></div></div>
       </div>
       <div class="h-act rise" style="--d:360ms">
         <p class="open-to"><span class="ot-dot" aria-hidden="true"></span><span><b>Open to</b> Data Engineering, Software Engineering, Data Science and AI Engineering roles</span></p>
@@ -1667,10 +1709,31 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       setSpark(reduce ? 1 : 0);
       wrapS.setAttribute('aria-live', byUser ? 'polite' : 'off');
     }
+    var deck = document.getElementById('pf-deck'), busy = false;
+    function go(i, byUser) {
+      if (busy) return;
+      if (reduce || !deck) { show(i, byUser); return; }
+      busy = true;
+      /* the finished card: a copy lifts, tucks behind the stack and fades at the back */
+      var ghost = box.cloneNode(true);
+      ghost.removeAttribute('id'); ghost.classList.add('pf-ghost'); ghost.setAttribute('aria-hidden', 'true'); ghost.inert = true;
+      ghost.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+      ghost.style.height = box.offsetHeight + 'px';
+      ghost.style.width = box.offsetWidth + 'px';
+      deck.appendChild(ghost);
+      /* the next card swings forward from the stack, already showing its result */
+      wrapS.classList.add('no-tx');
+      show(i, byUser);
+      void box.offsetWidth;
+      wrapS.classList.remove('no-tx');
+      box.classList.remove('arriving'); void box.offsetWidth; box.classList.add('arriving');
+      clearTimeout(box._arrT); box._arrT = setTimeout(function () { box.classList.remove('arriving'); }, 1650);
+      setTimeout(function () { ghost.remove(); busy = false; }, 920);
+    }
     window.pfShow = function (i) { show(i, false); };
-    dots.forEach(function (d, k) { d.addEventListener('click', function () { show(k, true); }); });
-    document.getElementById('pf-prev').addEventListener('click', function () { show(cur - 1, true); });
-    document.getElementById('pf-next').addEventListener('click', function () { show(cur + 1, true); });
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { if (k !== cur) go(k, true); }); });
+    document.getElementById('pf-prev').addEventListener('click', function () { go(cur - 1, true); });
+    document.getElementById('pf-next').addEventListener('click', function () { go(cur + 1, true); });
     box.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') hover = true; });
     box.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') hover = false; });
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Tab') tabbing = true; });
@@ -1678,15 +1741,15 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     box.addEventListener('focusin', function () { kbFocus = tabbing; });
     box.addEventListener('focusout', function () { setTimeout(function () { kbFocus = tabbing && box.contains(document.activeElement); }, 0); });
     box.addEventListener('keydown', function (ev) {
-      if (ev.key === 'ArrowRight') { show(cur + 1, true); }
-      if (ev.key === 'ArrowLeft') { show(cur - 1, true); }
+      if (ev.key === 'ArrowRight') { go(cur + 1, true); }
+      if (ev.key === 'ArrowLeft') { go(cur - 1, true); }
     });
     var sx = null;
     box.addEventListener('touchstart', function (ev) { sx = ev.touches[0].clientX; }, { passive: true });
     box.addEventListener('touchend', function (ev) {
       if (sx === null) return;
       var dx = ev.changedTouches[0].clientX - sx; sx = null;
-      if (Math.abs(dx) > 45) show(cur + (dx < 0 ? 1 : -1), true);
+      if (Math.abs(dx) > 45) go(cur + (dx < 0 ? 1 : -1), true);
     }, { passive: true });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }, { threshold: 0.25 }).observe(box);
@@ -1696,12 +1759,12 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     var last = 0;
     function tick(now) {
       var dt = last ? Math.min(80, now - last) : 0; last = now;
-      if (!hover && !kbFocus && inView && !document.hidden) {
+      if (!hover && !kbFocus && inView && !document.hidden && !busy) {
         t += dt;
         var p = Math.min(1, t / DUR);
         setSpark(p);
         if (p >= 1 && !box.classList.contains('done')) box.classList.add('done');
-        if (t >= DUR + HOLD) show(cur + 1, false);
+        if (t >= DUR + HOLD) go(cur + 1, false);
       }
       requestAnimationFrame(tick);
     }
