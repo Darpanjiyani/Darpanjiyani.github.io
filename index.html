@@ -4,7 +4,59 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Darpan Jiyani | AI Data Engineer</title>
-<meta name="description" content="Darpan Jiyani, Data Engineer. Data pipelines, lakehouses and LLM tools: 13 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
+<meta name="description" content="Darpan Jiyani, AI Data Engineer in San Jose, CA. Data pipelines, lakehouses and LLM tools: 13 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
+<link rel="canonical" href="https://darpanjiyani.com/">
+<script type="application/ld+json">[
+ {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Darpan Jiyani",
+  "url": "https://darpanjiyani.com/",
+  "jobTitle": "Data Engineer",
+  "description": "AI Data Engineer building data pipelines, lakehouses and the AI tools that run on top of them.",
+  "worksFor": {
+   "@type": "Organization",
+   "name": "UL Solutions",
+   "url": "https://www.ul.com/"
+  },
+  "alumniOf": {
+   "@type": "CollegeOrUniversity",
+   "name": "San Jose State University"
+  },
+  "address": {
+   "@type": "PostalAddress",
+   "addressLocality": "San Jose",
+   "addressRegion": "CA",
+   "addressCountry": "US"
+  },
+  "email": "mailto:darpanjiyani78@gmail.com",
+  "sameAs": [
+   "https://www.linkedin.com/in/darpanjiyani",
+   "https://github.com/Darpanjiyani"
+  ],
+  "knowsAbout": [
+   "Data engineering",
+   "Apache Spark",
+   "Databricks",
+   "Delta Lake",
+   "Apache Airflow",
+   "Python",
+   "SQL",
+   "AWS",
+   "Large language models",
+   "AI agents",
+   "LangGraph",
+   "Text-to-SQL"
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Darpan Jiyani",
+  "url": "https://darpanjiyani.com/"
+ }
+]</script>
+
 <meta property="og:title" content="Darpan Jiyani, AI Data Engineer">
 <meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 13 projects with code.">
 <meta property="og:type" content="website">
@@ -1718,6 +1770,48 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     if (!m) return;
     if (!('IntersectionObserver' in window)) { m.classList.add('run'); return; }
     new IntersectionObserver(function (es) { m.classList.toggle('run', es[0].isIntersecting); }).observe(m);
+  })();
+
+
+  /* Visit counter (GoatCounter): no cookies; runs only on the real site, not in previews */
+  (function () {
+    if (!/(^|\.)darpanjiyani\.com$/.test(location.hostname)) return;
+    function area(el) {
+      return el.closest('.spy') ? 'side-menu' : el.closest('.project') ? 'project' : el.closest('.top') ? 'nav' : el.closest('.hero') ? 'hero' : el.closest('#contact') ? 'contact'
+           : el.closest('.fit') ? 'why' : el.closest('.invite') ? 'invite' : el.closest('footer') ? 'footer' : 'page';
+    }
+    function slugOf(el) {
+      var a = el.closest('[id^="p-"]'), c = el.closest('[data-slug]');
+      return a ? a.id.slice(2) : c ? c.getAttribute('data-slug') : 'unknown';
+    }
+    function tag(sel, name) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (!el.hasAttribute('data-goatcounter-click')) el.setAttribute('data-goatcounter-click', name(el));
+      });
+    }
+    tag('a[href$="Darpan_Jiyani_Resume.pdf"]', function (el) { return 'resume-download-' + area(el); });
+    tag('a[href^="mailto:"]', function (el) { var p = el.closest('.fit-panel'); return p ? 'email-' + p.id.replace('fit-', '') : 'email-' + area(el); });
+    tag('a[href*="linkedin.com/in/"]', function (el) { return 'linkedin-' + area(el); });
+    tag('a[href="https://github.com/Darpanjiyani"]', function (el) { return 'github-profile-' + area(el); });
+    tag('a[href*="github.com/Darpanjiyani/"]', function (el) { return 'project-github-' + slugOf(el); });
+    tag('a[href*="streamlit.app"]', function (el) { return 'live-demo-' + area(el); });
+    tag('a[href="setup.html"]', function (el) { return 'setup-' + area(el); });
+    tag('.fit-tab', function (el) { return 'role-tab-' + el.getAttribute('data-role'); });
+    tag('.c-open', function (el) { return 'project-open-' + slugOf(el); });
+    tag('.arch-open', function () { return 'architecture-ai-data-agent'; });
+    tag('#copy-mail', function () { return 'copy-email'; });
+    tag('a.back', function () { return 'setup-back-to-portfolio'; });
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://gc.zgo.at/count.js';
+    s.setAttribute('data-goatcounter', 'https://darpanjiyani.goatcounter.com/count');
+    s.onload = function () {
+      /* which role link (e.g. darpanjiyani.com/#ai-engineer) brought the visitor */
+      var h = location.hash.slice(1);
+      if (h && document.querySelector('.fit-tab[data-role="' + h + '"]') && window.goatcounter && window.goatcounter.count)
+        window.goatcounter.count({ path: 'arrived-via-' + h, title: 'Opened a role link', event: true });
+    };
+    document.body.appendChild(s);
   })();
 
   var btn = document.getElementById('copy-mail');
