@@ -113,14 +113,14 @@ strong { font-weight: 700; }
 }
 
 /* Hero */
-.hero { padding-block: 48px 72px; }
+.hero { padding-block: 40px 72px; }
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(60px, 10vw, 124px);
   line-height: .98;
   letter-spacing: -.025em;
-  margin: 14px 0 22px -.04em;
+  margin: 8px 0 22px -.04em;
   font-variation-settings: "opsz" 144;
 }
 .hero h1 em { font-style: italic; color: var(--gold-ink); }
@@ -302,11 +302,11 @@ details[open] > summary .more-close { display: inline; }
 .mail:hover { color: var(--gold-ink); }
 .copy { font: 600 16px/1 var(--font-body); background: var(--ink); color: var(--ground); border: 0; border-radius: 999px; padding: 12px 18px; cursor: pointer; }
 .copy:hover { background: #3a3226; }
-.c-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
+.c-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
 .c-grid li { padding: 18px 16px 18px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 3px; }
 .c-grid .k { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--gold-ink); }
 .c-grid a, .c-grid span.v { font-size: 18px; overflow-wrap: anywhere; }
-footer { padding: 0 0 56px; }
+footer { padding: 0 0 36px; }
 footer .wrap { position: relative; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 22px; }
 footer .wrap::before { content: ""; position: absolute; top: 0; left: var(--pad); right: var(--pad); border-top: 1px solid var(--rule); }
 footer p { font-size: 15px; color: var(--muted); }
@@ -492,7 +492,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 
 
 /* Hero tagline */
-.tagline { font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); line-height: 1.25; letter-spacing: -.01em; margin: -8px 0 22px; color: var(--ink); }
+.tagline { font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); line-height: 1.25; letter-spacing: -.01em; margin: clamp(22px, 2.2vw, 42px) 0 22px; color: var(--ink); }
 .tagline .tg-a { color: var(--gold-ink); }
 .tagline em { font-style: italic; color: var(--ink); }
 @media (max-width: 680px) { .tagline em { display: block; } }
@@ -609,6 +609,31 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
   .sec-head p { max-width: 76ch; }
   .r-sum { max-width: 80ch; }
 }
+
+
+/* Contact: everything shares the heading's left edge (second column) */
+.contact-big { margin-left: calc(var(--col) + var(--gap)); }
+@media (max-width: 820px) { .contact-big { margin-left: 0; } }
+@media (max-width: 560px) { .mail { font-size: 6.6vw; overflow-wrap: normal; white-space: nowrap; } }
+
+/* Closing word band: DATA ◇ AI ◇ CLAUDE ◇ ENGINEERING, scrolling while on screen */
+.marquee { margin-top: 40px; margin-left: calc(-1 * var(--side)); overflow: hidden; padding: 10px 0 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent); mask-image: linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent); }
+.spy { transition: opacity .3s ease; }
+.spy.dim { opacity: 0; pointer-events: none; }
+.mq-track { display: flex; width: max-content; }
+.mq-seq { display: flex; align-items: center; flex: none; }
+.mq-word { display: inline-flex; font-family: var(--font-display); font-weight: 500; font-size: clamp(56px, 9vw, 150px); line-height: 1; letter-spacing: .02em; color: transparent; -webkit-text-stroke: 1.4px rgba(176, 133, 47, .55); cursor: default; padding: 0 .04em; }
+.mq-ch { display: inline-block; transition: color .35s ease, -webkit-text-stroke-color .35s ease; }
+.mq-word:hover .mq-ch { color: var(--gold-ink); -webkit-text-stroke-color: var(--gold-ink); }
+.mq-sep { flex: none; width: .5em; height: .5em; margin: 0 .55em; font-size: clamp(22px, 3vw, 46px); border: 1.5px solid rgba(176, 133, 47, .55); transform: rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .marquee.run .mq-track { animation: mqScroll 66s linear infinite; }
+  .marquee:hover .mq-track { animation-play-state: paused; }
+  .mq-word:hover .mq-ch { animation: mqJump .7s calc(var(--i) * 45ms) cubic-bezier(.3, 1.6, .5, 1) both; }
+}
+@keyframes mqScroll { to { transform: translateX(-25%); } }
+@keyframes mqJump { 0% { transform: none; } 35% { transform: translateY(-.22em) rotate(-3deg); } 70% { transform: translateY(.04em); } 100% { transform: none; } }
+@media (max-width: 820px) { .marquee { margin-top: 28px; padding: 6px 0 0; } .mq-word { -webkit-text-stroke-width: 1.1px; } }
 @media (max-width: 1000px) {
   .l-diff { font-size: clamp(28px, 3.4vw, 34px); }
 }
@@ -764,7 +789,6 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           <li><a href="mailto:darpanjiyani78@gmail.com">darpanjiyani78@gmail.com</a></li>
           <li><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="tel:+14085908885">+1 408-590-8885</a></li>
         </ul>
       </div>
     </div>
@@ -827,7 +851,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       <ol class="bring-list">
         <li><span class="b-num">01</span><h3>I make slow data <em>fast</em>.</h3><p>I cut a Power BI refresh from 15 minutes to under 15 seconds, and RF test analysis from 2 days to 30 minutes.</p></li>
         <li><span class="b-num">02</span><h3>I build AI tools you can <em>trust</em>.</h3><p>My AI Data Agent went from 89.4% to 99.3% accuracy, and blocked all 22 attempts to change data.</p></li>
-        <li><span class="b-num">03</span><h3>I build for the people using the <em>data</em>.</h3><p>My dashboards and reports serve operators, supervisors, plant managers and client teams.</p></li>
+        <li><span class="b-num">03</span><h3>My dashboards get <em>used</em>, not just built.</h3><p>My dashboards and reports serve operators, supervisors, plant managers and client teams.</p></li>
         <li><span class="b-num">04</span><h3>I own pipelines <em>end to end</em>.</h3><p>At Cerebulb I built the whole path: sensor APIs every minute → S3 → PySpark on EMR → Redshift star schema → Tableau dashboards.</p></li>
       </ol>
     </div>
@@ -1222,8 +1246,8 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="sec-num">06</span>
-        <h2>Let's <em>talk</em></h2>
-        <p>Open to Data Engineering, Software Engineering, Data Science and AI Engineering roles. Email is the fastest way to reach me.</p>
+        <h2>Thank you for exploring my <em>work</em>.</h2>
+        <p>Have a suggestion, want to work together, or want to explore a new AI tool? Let's talk. I'm open to Data Engineering, Software Engineering, Data Science and AI Engineering roles.</p>
       </div>
       <div class="contact-big">
         <div class="mail-line">
@@ -1233,7 +1257,6 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <ul class="c-grid">
           <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/darpanjiyani" target="_blank" rel="noopener">linkedin.com/in/darpanjiyani</a></li>
           <li><span class="k">GitHub</span><a href="https://github.com/Darpanjiyani" target="_blank" rel="noopener">github.com/Darpanjiyani</a></li>
-          <li><span class="k">Phone</span><a href="tel:+14085908885">+1 408-590-8885</a></li>
           <li><span class="k">Resume</span><a href="Darpan_Jiyani_Resume.pdf" download>Download PDF</a></li>
         </ul>
       </div>
@@ -1267,6 +1290,9 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 
 <footer>
   <div class="wrap"><p class="sig">Darpan Jiyani</p><p>San Jose, CA</p></div>
+<div class="marquee" id="marquee" role="img" aria-label="Data, pipelines, AI, agents, LLMs, Claude, engineering">
+    <div class="mq-track"><span class="mq-seq"><span class="mq-word"><span class="mq-ch" style="--i:0">D</span><span class="mq-ch" style="--i:1">A</span><span class="mq-ch" style="--i:2">T</span><span class="mq-ch" style="--i:3">A</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">P</span><span class="mq-ch" style="--i:1">I</span><span class="mq-ch" style="--i:2">P</span><span class="mq-ch" style="--i:3">E</span><span class="mq-ch" style="--i:4">L</span><span class="mq-ch" style="--i:5">I</span><span class="mq-ch" style="--i:6">N</span><span class="mq-ch" style="--i:7">E</span><span class="mq-ch" style="--i:8">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">I</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">G</span><span class="mq-ch" style="--i:2">E</span><span class="mq-ch" style="--i:3">N</span><span class="mq-ch" style="--i:4">T</span><span class="mq-ch" style="--i:5">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">L</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">M</span><span class="mq-ch" style="--i:3">s</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">C</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">A</span><span class="mq-ch" style="--i:3">U</span><span class="mq-ch" style="--i:4">D</span><span class="mq-ch" style="--i:5">E</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">E</span><span class="mq-ch" style="--i:1">N</span><span class="mq-ch" style="--i:2">G</span><span class="mq-ch" style="--i:3">I</span><span class="mq-ch" style="--i:4">N</span><span class="mq-ch" style="--i:5">E</span><span class="mq-ch" style="--i:6">E</span><span class="mq-ch" style="--i:7">R</span><span class="mq-ch" style="--i:8">I</span><span class="mq-ch" style="--i:9">N</span><span class="mq-ch" style="--i:10">G</span></span><span class="mq-sep" aria-hidden="true"></span></span><span class="mq-seq" aria-hidden="true"><span class="mq-word"><span class="mq-ch" style="--i:0">D</span><span class="mq-ch" style="--i:1">A</span><span class="mq-ch" style="--i:2">T</span><span class="mq-ch" style="--i:3">A</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">P</span><span class="mq-ch" style="--i:1">I</span><span class="mq-ch" style="--i:2">P</span><span class="mq-ch" style="--i:3">E</span><span class="mq-ch" style="--i:4">L</span><span class="mq-ch" style="--i:5">I</span><span class="mq-ch" style="--i:6">N</span><span class="mq-ch" style="--i:7">E</span><span class="mq-ch" style="--i:8">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">I</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">G</span><span class="mq-ch" style="--i:2">E</span><span class="mq-ch" style="--i:3">N</span><span class="mq-ch" style="--i:4">T</span><span class="mq-ch" style="--i:5">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">L</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">M</span><span class="mq-ch" style="--i:3">s</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">C</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">A</span><span class="mq-ch" style="--i:3">U</span><span class="mq-ch" style="--i:4">D</span><span class="mq-ch" style="--i:5">E</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">E</span><span class="mq-ch" style="--i:1">N</span><span class="mq-ch" style="--i:2">G</span><span class="mq-ch" style="--i:3">I</span><span class="mq-ch" style="--i:4">N</span><span class="mq-ch" style="--i:5">E</span><span class="mq-ch" style="--i:6">E</span><span class="mq-ch" style="--i:7">R</span><span class="mq-ch" style="--i:8">I</span><span class="mq-ch" style="--i:9">N</span><span class="mq-ch" style="--i:10">G</span></span><span class="mq-sep" aria-hidden="true"></span></span><span class="mq-seq" aria-hidden="true"><span class="mq-word"><span class="mq-ch" style="--i:0">D</span><span class="mq-ch" style="--i:1">A</span><span class="mq-ch" style="--i:2">T</span><span class="mq-ch" style="--i:3">A</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">P</span><span class="mq-ch" style="--i:1">I</span><span class="mq-ch" style="--i:2">P</span><span class="mq-ch" style="--i:3">E</span><span class="mq-ch" style="--i:4">L</span><span class="mq-ch" style="--i:5">I</span><span class="mq-ch" style="--i:6">N</span><span class="mq-ch" style="--i:7">E</span><span class="mq-ch" style="--i:8">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">I</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">G</span><span class="mq-ch" style="--i:2">E</span><span class="mq-ch" style="--i:3">N</span><span class="mq-ch" style="--i:4">T</span><span class="mq-ch" style="--i:5">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">L</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">M</span><span class="mq-ch" style="--i:3">s</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">C</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">A</span><span class="mq-ch" style="--i:3">U</span><span class="mq-ch" style="--i:4">D</span><span class="mq-ch" style="--i:5">E</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">E</span><span class="mq-ch" style="--i:1">N</span><span class="mq-ch" style="--i:2">G</span><span class="mq-ch" style="--i:3">I</span><span class="mq-ch" style="--i:4">N</span><span class="mq-ch" style="--i:5">E</span><span class="mq-ch" style="--i:6">E</span><span class="mq-ch" style="--i:7">R</span><span class="mq-ch" style="--i:8">I</span><span class="mq-ch" style="--i:9">N</span><span class="mq-ch" style="--i:10">G</span></span><span class="mq-sep" aria-hidden="true"></span></span><span class="mq-seq" aria-hidden="true"><span class="mq-word"><span class="mq-ch" style="--i:0">D</span><span class="mq-ch" style="--i:1">A</span><span class="mq-ch" style="--i:2">T</span><span class="mq-ch" style="--i:3">A</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">P</span><span class="mq-ch" style="--i:1">I</span><span class="mq-ch" style="--i:2">P</span><span class="mq-ch" style="--i:3">E</span><span class="mq-ch" style="--i:4">L</span><span class="mq-ch" style="--i:5">I</span><span class="mq-ch" style="--i:6">N</span><span class="mq-ch" style="--i:7">E</span><span class="mq-ch" style="--i:8">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">I</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">A</span><span class="mq-ch" style="--i:1">G</span><span class="mq-ch" style="--i:2">E</span><span class="mq-ch" style="--i:3">N</span><span class="mq-ch" style="--i:4">T</span><span class="mq-ch" style="--i:5">S</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">L</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">M</span><span class="mq-ch" style="--i:3">s</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">C</span><span class="mq-ch" style="--i:1">L</span><span class="mq-ch" style="--i:2">A</span><span class="mq-ch" style="--i:3">U</span><span class="mq-ch" style="--i:4">D</span><span class="mq-ch" style="--i:5">E</span></span><span class="mq-sep" aria-hidden="true"></span><span class="mq-word"><span class="mq-ch" style="--i:0">E</span><span class="mq-ch" style="--i:1">N</span><span class="mq-ch" style="--i:2">G</span><span class="mq-ch" style="--i:3">I</span><span class="mq-ch" style="--i:4">N</span><span class="mq-ch" style="--i:5">E</span><span class="mq-ch" style="--i:6">E</span><span class="mq-ch" style="--i:7">R</span><span class="mq-ch" style="--i:8">I</span><span class="mq-ch" style="--i:9">N</span><span class="mq-ch" style="--i:10">G</span></span><span class="mq-sep" aria-hidden="true"></span></span></div>
+</div>
 </footer>
 
 <script>
@@ -1317,7 +1343,11 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     var y = window.scrollY + window.innerHeight * 0.35, cur = 'top';
     secs.forEach(function (s) { if (s.offsetTop <= y) cur = s.id; });
     Object.keys(links).forEach(function (k) { links[k].setAttribute('aria-current', k === cur ? 'true' : 'false'); });
+    /* fade the side menu out if the closing word band would slide under it */
+    var sp = document.querySelector('.spy'), mq = document.getElementById('marquee');
+    if (sp && mq) sp.classList.toggle('dim', mq.getBoundingClientRect().top < sp.getBoundingClientRect().bottom + 24);
   }
+  window.addEventListener('resize', spy);
   window.addEventListener('scroll', spy, { passive: true });
   spy();
 
@@ -1680,6 +1710,15 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       }
     });
   }, true);
+
+
+  /* Closing word band runs only while it is on screen */
+  (function () {
+    var m = document.getElementById('marquee');
+    if (!m) return;
+    if (!('IntersectionObserver' in window)) { m.classList.add('run'); return; }
+    new IntersectionObserver(function (es) { m.classList.toggle('run', es[0].isIntersecting); }).observe(m);
+  })();
 
   var btn = document.getElementById('copy-mail');
   var mail = document.getElementById('mail').textContent;
