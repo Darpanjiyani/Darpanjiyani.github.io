@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Darpan Jiyani | AI Data Engineer</title>
-<meta name="description" content="Darpan Jiyani, AI Data Engineer in San Jose, CA. Data pipelines, lakehouses and LLM tools: 13 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
+<meta name="description" content="Darpan Jiyani, AI Data Engineer in San Jose, CA. Data pipelines, lakehouses and LLM tools: 14 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
 <link rel="canonical" href="https://darpanjiyani.com/">
 <script type="application/ld+json">[
  {
@@ -58,7 +58,7 @@
 ]</script>
 
 <meta property="og:title" content="Darpan Jiyani, AI Data Engineer">
-<meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 13 projects with code.">
+<meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 14 projects with code.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://darpanjiyani.com/">
 <meta property="og:site_name" content="Darpan Jiyani">
@@ -68,7 +68,7 @@
 <meta property="og:image:alt" content="Darpan Jiyani, AI Data Engineer. Data pipelines, lakehouses and the AI tools that run on top of them.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Darpan Jiyani, AI Data Engineer">
-<meta name="twitter:description" content="Data pipelines, lakehouses and LLM tools. 13 projects with code.">
+<meta name="twitter:description" content="Data pipelines, lakehouses and LLM tools. 14 projects with code.">
 <meta name="twitter:image" content="https://darpanjiyani.com/og-image.jpg">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -139,7 +139,7 @@ strong { font-weight: 700; }
 .label { font-family: var(--font-body); font-size: 14px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-ink); }
 
 /* Top bar */
-.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--ground) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+.top { position: sticky; top: 0; z-index: 10; background: rgba(246, 239, 224, .92); background: color-mix(in srgb, var(--ground) 92%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
 .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; }
 .top-name { font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
 .top-name em { color: var(--gold-ink); font-style: italic; }
@@ -422,7 +422,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 
 /* Project popup */
 .pd { border: 0; padding: 0; max-width: min(760px, calc(100vw - 32px)); width: 100%; max-height: calc(100vh - 48px); background: var(--ground); color: var(--ink); border-top: 3px solid var(--gold); box-shadow: 0 30px 80px -20px rgba(30, 20, 5, .5); }
-.pd::backdrop { background: rgba(29, 25, 19, .55); backdrop-filter: blur(3px); }
+.pd::backdrop { background: rgba(29, 25, 19, .55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 .pd-inner { position: relative; padding: 38px 40px 30px; }
 .pd-close { position: absolute; right: 14px; top: 12px; width: 44px; height: 44px; border: 0; background: transparent; font-size: 32px; line-height: 1; cursor: pointer; color: var(--ink); border-radius: 50%; }
 .pd-close:hover { background: var(--panel); }
@@ -507,7 +507,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 .arch-open:hover { color: var(--gold-ink); }
 .lb { border: 0; padding: 0; width: min(1240px, calc(100vw - 32px)); max-height: calc(100vh - 32px); background: var(--ground); color: var(--ink); border-top: 3px solid var(--gold); box-shadow: 0 30px 80px -20px rgba(30, 20, 5, .55); overflow: hidden; }
 .lb[open] { display: flex; flex-direction: column; }
-.lb::backdrop { background: rgba(29, 25, 19, .62); backdrop-filter: blur(3px); }
+.lb::backdrop { background: rgba(29, 25, 19, .62); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 .lb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px 12px 24px; border-bottom: 1px solid var(--rule); }
 .lb-title { font-family: var(--font-display); font-size: 22px; }
 .lb-title em { color: var(--gold-ink); }
@@ -736,10 +736,10 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 .mb-ico { display: grid; gap: 4px; width: 20px; }
 .mb-ico i { display: block; height: 2px; border-radius: 2px; background: currentColor; }
 .mb-ico i:nth-child(2) { width: 70%; margin-left: auto; }
-.drawer { margin: 0 0 0 auto; height: 100dvh; max-height: none; width: min(340px, 86vw); padding: 0; border: 0; border-left: 3px solid var(--gold);
+.drawer { margin: 0 0 0 auto; height: 100vh; height: 100dvh; overscroll-behavior: contain; max-height: none; width: min(340px, 86vw); padding: 0; border: 0; border-left: 3px solid var(--gold);
   background: var(--ground); color: var(--ink); box-shadow: -24px 0 60px -30px rgba(30, 20, 5, .55); overflow-y: auto; }
 .drawer[open] { display: flex; flex-direction: column; }
-.drawer::backdrop { background: rgba(29, 25, 19, .5); backdrop-filter: blur(2px); }
+.drawer::backdrop { background: rgba(29, 25, 19, .5); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
 @media (prefers-reduced-motion: no-preference) {
   .drawer[open] { animation: drIn .38s cubic-bezier(.2, .7, .2, 1); }
   .drawer.closing { animation: drOut .26s ease-in forwards; }
@@ -972,7 +972,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
           <ul class="fit-rows"><li><span class="fr-need">LLM apps and agents</span><span class="fr-proof">AI Data Agent: a LangGraph multi-agent system on Claude that routes each question to a SQL agent or an ETL agent. Live demo.</span></li><li><span class="fr-need">Evaluation</span><span class="fr-proof">An eval harness raised execution accuracy from 89.4% to 99.3% on 47 questions, with 100% on 2 held-out sets of 20.</span></li><li><span class="fr-need">Safety and guardrails</span><span class="fr-proof">A sqlglot guard, an LLM judge and a read-only database role blocked all 22 attempts to change data; data loads need human approval.</span></li><li><span class="fr-need">Fine-tuning</span><span class="fr-proof">Fine-tuned 5 specialist LLMs with QLoRA on GCP; the code model reached 70% pass@1 on DS-1000 (MS capstone).</span></li><li><span class="fr-need">Cost and memory</span><span class="fr-proof">Prompt caching cut billed input tokens about 59%; LangGraph memory got follow-ups right in 32 of 32 chats.</span></li><li><span class="fr-need">RAG and tools</span><span class="fr-proof">RAG over image captions with FAISS (pathology project); Claude and OpenAI APIs; MCP servers with FastMCP.</span></li></ul>
         </div>
         <div class="fit-foot">
-          <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-ai-data-agent">AI Data Agent</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-simulation-of-domain-expert-in-llm-models">Simulation of Domain Expert in LLM Models</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="multimodal-llm-for-cancer-pathology-classification">Multimodal LLM for Cancer Pathology Classification</a></p>
+          <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-ai-data-agent">AI Data Agent</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-resume-evidence-tailor">Resume Evidence Tailor</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-simulation-of-domain-expert-in-llm-models">Simulation of Domain Expert in LLM Models</a></p>
           <a class="btn btn-primary fit-mail" href="mailto:darpanjiyani78@gmail.com?subject=AI%20Engineer%20role">Email me about an AI Engineer role <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
@@ -1060,7 +1060,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       <div class="sec-head reveal">
         <span class="sec-num">02</span>
         <h2>Featured <em>projects</em></h2>
-        <p>The four I would show first. Each one links to its code.</p>
+        <p>The five I would show first. Each one links to its code.</p>
       </div>
       
       <article class="project feat has-media" id="p-ai-data-agent">
@@ -1167,6 +1167,37 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
             <details class="more">
               <summary><span class="more-open">Build details</span><span class="more-close">Hide details</span></summary>
               <ul class="bul"><li>Ingested trip data from S3 as a stream with Databricks Auto Loader and Lakeflow into Delta tables with Change Data Feed</li><li>Added data quality checks and automatic CDC upserts into an SCD Type 1 trips table, plus a holiday-flagged calendar table</li><li>Published a gold trips fact view and <strong>10 city-level views</strong> feeding Databricks dashboards and Genie</li></ul><p class="p-stack"><span class="lab">Stack</span> Databricks, Auto Loader, Lakeflow Declarative Pipelines, Delta Lake, Unity Catalog, Change Data Feed, AWS S3</p>
+            </details>
+          </div>
+        </div>
+      </article>
+      <article class="project feat" id="p-resume-evidence-tailor">
+        <div class="p-fig">
+          <span class="p-num">2 min</span>
+          <span class="p-cap">to tailor my resume to a job, down from 15–20 minutes by hand</span>
+          <svg class="mc" viewBox="0 0 200 84" role="img" aria-label="Bar chart: tailoring a resume took 15 to 20 minutes by hand and about 2 minutes with the skill">
+  <text class="mc-lab" x="0" y="10">by hand</text>
+  <rect class="mc-track" x="0" y="16" width="150" height="12" rx="2"/>
+  <rect class="mc-bar mc-grow-x" style="--i:0; opacity:.45" x="0" y="16" width="150" height="12" rx="2"/>
+  <rect class="mc-bar mc-grow-x" style="--i:0" x="0" y="16" width="112" height="12" rx="2"/>
+  <text class="mc-val" x="156" y="26">15–20</text>
+  <text class="mc-lab" x="0" y="46">with the skill</text>
+  <rect class="mc-track" x="0" y="52" width="150" height="12" rx="2"/>
+  <rect class="mc-bar mc-grow-x" style="--i:1" x="0" y="52" width="15" height="12" rx="2"/>
+  <text class="mc-val mc-strong" x="21" y="62">~2 min</text>
+  <text class="mc-tick" x="0" y="82">0</text><text class="mc-tick" x="150" y="82" text-anchor="end">20 min</text>
+</svg>
+        </div>
+        <div class="p-body">
+          <div class="p-text">
+            <p class="p-kind">Claude Skill with Python guardrails</p>
+            <h3>Resume Evidence Tailor</h3>
+            <p class="p-sum">Give it a job posting and my resume, and it returns a tailored one-page Word resume. It uses only facts on file, and Python checks verify its work before it hands anything over.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">job posting + resume</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">rank top requirements</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">tailor from Evidence Bank</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">Python fact + layout checks</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">resume + Confirm Before Sending list</span></p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/claude-resume-evidence-tailor" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+            <details class="more">
+              <summary><span class="more-open">Build details</span><span class="more-close">Hide details</span></summary>
+              <ul class="bul"><li>Built a Claude skill that tailors my resume to a job in <strong>~2 minutes</strong>, down from 15–20 minutes by hand, with no reformatting</li><li>Wrote a Python checker that matches every number and tool in the output against the sources and flags anything it can't back</li><li>Kept the one-page layout by editing a copy of the Word file and comparing every line's position with the original</li><li>Scored each project against the job's top 5–8 requirements and swapped projects in one slot at a time</li><li>Wrote honesty rules as data fields: team projects claim only my part, and unconfirmed facts go to a Confirm Before Sending list</li><li>Added a script that flags stock AI words and repeated sentence shapes, and required every bullet to start with a different verb</li></ul><p class="p-note">My real Evidence Bank stays private. The public repo has a blank template and a full run for a fictional candidate.</p><p class="p-stack"><span class="lab">Stack</span> Claude Agent Skills, Python, Word .docx XML, LibreOffice, pdftotext, Markdown</p>
             </details>
           </div>
         </div>
@@ -1360,7 +1391,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <h2>Skills</h2>
         <p>Tools I have used at work or in the projects above.</p>
       </div>
-      <dl><div class="s-row"><dt>Languages</dt><dd>Python, SQL, Java, JavaScript</dd></div><div class="s-row"><dt>Data engineering</dt><dd>ETL/ELT, PySpark, Spark SQL, Spark Structured Streaming, Kafka, Airflow 3 (TaskFlow API, assets), Databricks, Delta Lake, dbt</dd></div><div class="s-row"><dt>Cloud and databases</dt><dd>AWS (S3, EMR, Redshift, Lambda, EventBridge), Azure Event Hubs, GCP Cloud Run, Snowflake, PostgreSQL, MySQL, SQL Server, MongoDB, ChromaDB</dd></div><div class="s-row"><dt>Modeling and optimization</dt><dd>Star schema, medallion architecture, SCD Type 1 and 2, CDC, schema evolution, partitioning, query tuning, data quality checks</dd></div><div class="s-row"><dt>AI and LLMs</dt><dd>LangGraph, LangChain, Claude API, OpenAI API, text-to-SQL, RAG, MCP servers (FastMCP), QLoRA fine-tuning, LLM evaluation, LLM-as-a-Judge</dd></div><div class="s-row"><dt>BI and DevOps</dt><dd>Power BI (DAX), Tableau, Streamlit, Power Automate, Git, Docker, GitHub Actions, pytest</dd></div><div class="s-row s-learn"><dt>Learning now</dt><dd><p class="learn-lede">Getting <em>1% better</em> at AI and Data every day.</p></dd></div></dl>
+      <dl><div class="s-row"><dt>Languages</dt><dd>Python, SQL, Java, JavaScript</dd></div><div class="s-row"><dt>Data engineering</dt><dd>ETL/ELT, PySpark, Spark SQL, Spark Structured Streaming, Kafka, Airflow 3 (TaskFlow API, assets), Databricks, Delta Lake, dbt</dd></div><div class="s-row"><dt>Cloud and databases</dt><dd>AWS (S3, EMR, Redshift, Lambda, EventBridge), Azure Event Hubs, GCP Cloud Run, Snowflake, PostgreSQL, MySQL, SQL Server, MongoDB, ChromaDB</dd></div><div class="s-row"><dt>Modeling and optimization</dt><dd>Star schema, medallion architecture, SCD Type 1 and 2, CDC, schema evolution, partitioning, query tuning, data quality checks</dd></div><div class="s-row"><dt>AI and LLMs</dt><dd>LangGraph, LangChain, Claude API, OpenAI API, text-to-SQL, RAG, MCP servers (FastMCP), Claude Agent Skills, QLoRA fine-tuning, LLM evaluation, LLM-as-a-Judge</dd></div><div class="s-row"><dt>BI and DevOps</dt><dd>Power BI (DAX), Tableau, Streamlit, Power Automate, Git, Docker, GitHub Actions, pytest</dd></div><div class="s-row s-learn"><dt>Learning now</dt><dd><p class="learn-lede">Getting <em>1% better</em> at AI and Data every day.</p></dd></div></dl>
     </div>
   </section>
 
