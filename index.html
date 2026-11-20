@@ -384,6 +384,16 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
   transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s;
 }
 .card[hidden] { display: none; }
+/* Arriving from a project link: a warm gold glow that slowly fades (about 4.5 s), as on the setup page */
+.project.feat, .card { position: relative; isolation: isolate; }
+.project.feat::before, .card::before { content: ""; position: absolute; z-index: -1; pointer-events: none; opacity: 0;
+  background: radial-gradient(120% 140% at 12% 35%, rgba(240, 200, 110, .5), rgba(239, 217, 163, .24) 45%, rgba(239, 217, 163, 0) 80%);
+  box-shadow: 0 0 0 1px rgba(176, 133, 47, .4), 0 18px 50px -18px rgba(176, 133, 47, .55); }
+.project.feat::before { inset: 6px -22px; border-radius: 14px; }
+.card::before { inset: 0; }
+.project.feat.glow::before, .card.glow::before { animation: pjGlow 4.6s ease-out forwards; }
+@keyframes pjGlow { 0% { opacity: 0; } 10% { opacity: 1; } 35% { opacity: 1; } 100% { opacity: 0; } }
+@media (max-width: 820px) { .project.feat::before { inset: 6px -10px; } }
 .card:hover { transform: translateY(-4px); box-shadow: 0 20px 38px -24px rgba(60, 40, 10, .45); border-color: #cdb98f; }
 .c-kind { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); }
 .c-fig { display: flex; align-items: baseline; gap: 12px; }
@@ -633,6 +643,10 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
 .fr-need::before { content: "\2713"; flex: none; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--mark); color: var(--gold-ink); font-size: 12px; font-weight: 700; transform: translateY(2px); }
 .fr-proof { font-size: 17px; line-height: 1.55; color: var(--muted); max-width: 90ch; }
 .fr-proof b { color: var(--ink); font-weight: 700; }
+.fr-src { color: var(--ink); white-space: nowrap; }
+.fr-link { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.fr-link::after { content: " \2197"; color: var(--gold-ink); font-size: .85em; }
+.fr-link:hover { color: var(--gold-ink); }
 .fit-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-top: 22px; }
 .fit-start { font-size: 16.5px; font-weight: 600; }
 .fit-lab { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-ink); margin-right: 8px; }
@@ -959,7 +973,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p class="fit-pitch">I&#x27;ve shipped production pipelines at three companies.</p>
         <div class="fit-table">
           <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
-          <ul class="fit-rows"><li><span class="fr-need">Spark and Databricks</span><span class="fr-proof"><b>20% faster</b> queries from date partitioning · UL Solutions</span></li><li><span class="fr-need">Incremental ETL and CDC</span><span class="fr-proof"><b>15 min → under 15 sec</b> Power BI refresh on 2M+ records · Keysight</span></li><li><span class="fr-need">Orchestration</span><span class="fr-proof">Airflow DAGs <b>every 15 min</b>, with retries and failure alerts · Keysight</span></li><li><span class="fr-need">Cloud</span><span class="fr-proof"><b>140K+ sensor readings a day</b> through AWS into Redshift · Cerebulb</span></li></ul>
+          <ul class="fit-rows"><li><span class="fr-need">Spark and Databricks</span><span class="fr-proof"><b>20% faster</b> queries from date partitioning<span class="fr-dot" aria-hidden="true"> · </span><span class="fr-src">UL Solutions</span></span></li><li><span class="fr-need">Incremental ETL and CDC</span><span class="fr-proof"><b>15 min → under 15 sec</b> Power BI refresh on 2M+ records<span class="fr-dot" aria-hidden="true"> · </span><span class="fr-src">Keysight</span></span></li><li><span class="fr-need">Orchestration</span><span class="fr-proof">Airflow DAGs <b>every 15 min</b>, with retries and failure alerts<span class="fr-dot" aria-hidden="true"> · </span><span class="fr-src">Keysight</span></span></li><li><span class="fr-need">Cloud</span><span class="fr-proof"><b>140K+ sensor readings a day</b> through AWS into Redshift<span class="fr-dot" aria-hidden="true"> · </span><span class="fr-src">Cerebulb</span></span></li></ul>
         </div>
         <div class="fit-foot">
           <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-real-time-ride-analytics">Real-Time Ride Analytics</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-transportation-analytics-lakehouse-pipeline">Transportation Analytics Lakehouse Pipeline</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="e-commerce-analytics-platform">E-Commerce Analytics Platform</a></p>
@@ -970,7 +984,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p class="fit-pitch">I build AI tools the way I build pipelines: measured, tested and safe by default.</p>
         <div class="fit-table">
           <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
-          <ul class="fit-rows"><li><span class="fr-need">LLM apps and agents</span><span class="fr-proof">Multi-agent text-to-SQL on Claude and LangGraph · <b>live demo</b></span></li><li><span class="fr-need">Evaluation</span><span class="fr-proof"><b>89.4% → 99.3%</b> text-to-SQL accuracy on 47 questions</span></li><li><span class="fr-need">Safety and guardrails</span><span class="fr-proof"><b>22 of 22</b> attempts to change data blocked</span></li><li><span class="fr-need">Cost</span><span class="fr-proof"><b>~59% fewer</b> billed input tokens with prompt caching</span></li></ul>
+          <ul class="fit-rows"><li><span class="fr-need">LLM apps and agents</span><span class="fr-proof">Multi-agent text-to-SQL on Claude and LangGraph, with a <b>live demo</b><span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#p-ai-data-agent">AI Data Agent</a></span></li><li><span class="fr-need">Evaluation</span><span class="fr-proof"><b>89.4% → 99.3%</b> text-to-SQL accuracy on 47 questions<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#p-ai-data-agent">AI Data Agent</a></span></li><li><span class="fr-need">Safety and guardrails</span><span class="fr-proof"><b>22 of 22</b> attempts to change data blocked<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#p-ai-data-agent">AI Data Agent</a></span></li><li><span class="fr-need">Fine-tuning</span><span class="fr-proof"><b>5 specialist LLMs</b> tuned with QLoRA; the code model hit <b>70% pass@1</b><span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#p-simulation-of-domain-expert-in-llm-models">Domain Expert LLMs</a></span></li></ul>
         </div>
         <div class="fit-foot">
           <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-ai-data-agent">AI Data Agent</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-resume-evidence-tailor">Resume Evidence Tailor</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-simulation-of-domain-expert-in-llm-models">Simulation of Domain Expert in LLM Models</a></p>
@@ -981,7 +995,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p class="fit-pitch">I test every result against a baseline, then explain it so people can act.</p>
         <div class="fit-table">
           <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
-          <ul class="fit-rows"><li><span class="fr-need">Analytics that drive action</span><span class="fr-proof"><b>2–3 hours → under 5 min</b> for operator alerts · Keysight</span></li><li><span class="fr-need">Experiment design</span><span class="fr-proof"><b>15 LLMs</b> benchmarked; all 5 fine-tuned models beat their baselines</span></li><li><span class="fr-need">Deep learning</span><span class="fr-proof"><b>~75% top-1</b> accuracy on 345 sketch classes, under 100 ms per answer</span></li><li><span class="fr-need">Efficient modeling</span><span class="fr-proof">LoRA within ~1 point of full fine-tuning, with <b>24× fewer</b> parameters</span></li></ul>
+          <ul class="fit-rows"><li><span class="fr-need">Analytics that drive action</span><span class="fr-proof"><b>2–3 hours → under 5 min</b> for operator alerts<span class="fr-dot" aria-hidden="true"> · </span><span class="fr-src">Keysight</span></span></li><li><span class="fr-need">Experiment design</span><span class="fr-proof"><b>15 LLMs</b> benchmarked; all 5 fine-tuned models beat their baselines<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#p-simulation-of-domain-expert-in-llm-models">Domain Expert LLMs</a></span></li><li><span class="fr-need">Deep learning</span><span class="fr-proof"><b>~75% top-1</b> accuracy on 345 sketch classes, under 100 ms per answer<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#more-projects" data-open="doodle-recognition-using-deep-learning">Doodle Recognition</a></span></li><li><span class="fr-need">Efficient modeling</span><span class="fr-proof">LoRA within ~1 point of full fine-tuning, with <b>24× fewer</b> parameters<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#more-projects" data-open="multimodal-llm-for-cancer-pathology-classification">Cancer Pathology</a></span></li></ul>
         </div>
         <div class="fit-foot">
           <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#p-simulation-of-domain-expert-in-llm-models">Simulation of Domain Expert in LLM Models</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="multimodal-llm-for-cancer-pathology-classification">Multimodal LLM for Cancer Pathology Classification</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="doodle-recognition-using-deep-learning">Doodle Recognition Using Deep Learning</a></p>
@@ -992,7 +1006,7 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
         <p class="fit-pitch">I build apps and APIs around data, with tests that keep them working.</p>
         <div class="fit-table">
           <p class="fit-th" aria-hidden="true"><span>What you need</span><span>Where I have done it</span></p>
-          <ul class="fit-rows"><li><span class="fr-need">Production apps</span><span class="fr-proof"><b>30 min → ~5 sec</b> RF limit checks on 1M+ records · UL Solutions</span></li><li><span class="fr-need">APIs and backends</span><span class="fr-proof">FastAPI services and Django REST APIs with JWT login</span></li><li><span class="fr-need">Testing and CI</span><span class="fr-proof">pytest suites, GitHub Actions CI and Databricks Asset Bundles</span></li><li><span class="fr-need">Frontend</span><span class="fr-proof">React apps with Vite, Tailwind and Redux</span></li></ul>
+          <ul class="fit-rows"><li><span class="fr-need">Production apps</span><span class="fr-proof"><b>30 min → ~5 sec</b> RF limit checks on 1M+ records<span class="fr-dot" aria-hidden="true"> · </span><span class="fr-src">UL Solutions</span></span></li><li><span class="fr-need">APIs and backends</span><span class="fr-proof">Django REST API with JWT login, token blacklisting and OpenAPI docs<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#more-projects" data-open="taxi-booking-web-app">Taxi Booking</a></span></li><li><span class="fr-need">Testing and CI</span><span class="fr-proof">pytest tests, GitHub Actions CI and a Databricks Asset Bundle deploy<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#p-real-time-ride-analytics">Ride Analytics</a></span></li><li><span class="fr-need">Frontend</span><span class="fr-proof">React 18 and Redux, shipped in Docker on Kubernetes<span class="fr-dot" aria-hidden="true"> · </span><a class="fr-src fr-link" href="#more-projects" data-open="food-delivery-platform">Food Delivery</a></span></li></ul>
         </div>
         <div class="fit-foot">
           <p class="fit-start"><span class="fit-lab">Start with</span> <a href="#more-projects" data-open="taxi-booking-web-app">Taxi Booking Web App</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#more-projects" data-open="food-delivery-platform">Food Delivery Platform</a> <span class="fit-sep" aria-hidden="true">·</span> <a href="#p-ai-data-agent">AI Data Agent</a></p>
@@ -1937,16 +1951,40 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
     fromHash();
     window.addEventListener('hashchange', fromHash);
 
-    /* "Start with" links to projects in the More projects rail open that project's popup */
+    /* Every project link goes to that project on the page, then the project glows gold for a few seconds.
+       Featured projects scroll into view; More projects cards also slide the rail to the card. */
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function glow(el) {
+      document.querySelectorAll('.project.glow, .card.glow').forEach(function (g) { if (g !== el) g.classList.remove('glow'); });
+      el.classList.remove('glow'); void el.offsetWidth; el.classList.add('glow');
+      clearTimeout(el._glowT); el._glowT = setTimeout(function () { el.classList.remove('glow'); }, 4800);
+    }
+    function whenSettled(cb) {            /* run cb once the page has stopped scrolling */
+      var done = false, t;
+      function fin() { if (done) return; done = true; window.removeEventListener('scroll', on); cb(); }
+      function on() { clearTimeout(t); t = setTimeout(fin, 160); }
+      window.addEventListener('scroll', on, { passive: true });
+      t = setTimeout(fin, 350);
+    }
     document.querySelectorAll('[data-open]').forEach(function (a) {
       a.addEventListener('click', function (ev) {
         var card = document.querySelector('.card:not(.clone)[data-slug="' + a.getAttribute('data-open') + '"]');
         if (!card) return;
         ev.preventDefault();
         if (card.hidden) { var all = document.querySelector('.chip[data-filter="all"]'); if (all) all.click(); }
-        var b = card.querySelector('.c-open');
-        if (b) b.click();
+        var sec = document.getElementById('more-projects');
+        if (sec) [sec].concat([].slice.call(sec.querySelectorAll('.reveal'))).forEach(function (el) {
+          if (el.classList.contains('reveal') && !el.classList.contains('in')) { el.style.transition = 'none'; el.classList.add('in'); void el.offsetWidth; el.style.transition = ''; }
+        });
+        card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center', inline: 'center' });
+        whenSettled(function () { glow(card); });
       });
+    });
+    document.addEventListener('click', function (ev) {
+      var a = ev.target.closest && ev.target.closest('a[href^="#p-"]');
+      if (!a) return;
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t && t.classList.contains('feat')) whenSettled(function () { glow(t); });
     });
   })();
 
