@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I took text-to-SQL accuracy from 89.4% to 99.3% | Darpan Jiyani</title>
+<meta name="description" content="How I built an AI data agent that non-technical teammates can trust: 47 questions written first, measured fixes, held-out tests, a read-only database user, and 20.8 million real trips.">
+<link rel="canonical" href="https://darpanjiyani.com/text-to-sql-accuracy.html">
+<meta name="author" content="Darpan Jiyani">
+<meta name="theme-color" content="#f6efe0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How I took text-to-SQL accuracy from 89.4% to 99.3%">
+<meta property="og:description" content="Measure first, don't trust the prompt for safety, and check your tests too. Lessons from building an AI data agent.">
+<meta property="og:url" content="https://darpanjiyani.com/text-to-sql-accuracy.html">
+<meta property="og:image" content="https://darpanjiyani.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","headline":"How I took text-to-SQL accuracy from 89.4% to 99.3%","datePublished":"2026-11-21","author":{"@type":"Person","name":"Darpan Jiyani","url":"https://darpanjiyani.com/"},"mainEntityOfPage":"https://darpanjiyani.com/text-to-sql-accuracy.html","image":"https://darpanjiyani.com/og-image.jpg"}
+</script>
+<style>
+:root { --ground: #f6efe0; --panel: #fbf7ee; --ink: #1d1913; --muted: #463e31; --rule: #ddcfb2; --gold: #b0852f; --gold-ink: #7d5a12; --pad: clamp(20px, 4vw, 56px); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { background: var(--ground); color: var(--ink); font: 400 19px/1.7 "Source Sans 3", system-ui, sans-serif; }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+  background: repeating-linear-gradient(90deg, transparent 0 131px, rgba(176, 133, 47, .07) 131px 132px); }
+a { color: inherit; }
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px var(--pad);
+  background: rgba(246, 239, 224, .94); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+.name { font-family: Fraunces, Georgia, serif; font-size: 22px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+.name em { color: var(--gold-ink); }
+.top nav { display: flex; align-items: center; gap: 18px; }
+.back { font-weight: 600; font-size: 16px; text-decoration: none; }
+.back:hover { color: var(--gold-ink); }
+.cv { font-weight: 600; font-size: 16px; text-decoration: none; padding: 7px 16px; border: 1.5px solid var(--ink); border-radius: 999px; }
+.cv:hover { background: var(--ink); color: var(--ground); }
+article { max-width: 740px; margin: 0 auto; padding: clamp(40px, 7vw, 84px) var(--pad) 40px; }
+.kick { font-weight: 700; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-ink); }
+h1 { font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: clamp(36px, 5.4vw, 58px); line-height: 1.08; letter-spacing: -.015em; margin-top: 14px; text-wrap: balance; }
+h1 em { font-style: italic; font-weight: 400; color: var(--gold-ink); }
+.dek { font-size: 21px; color: var(--muted); margin-top: 18px; text-wrap: pretty; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 22px; padding-top: 16px; border-top: 1.5px solid var(--gold); font-size: 16px; color: var(--muted); }
+.meta a { color: var(--ink); font-weight: 600; text-decoration-color: var(--gold); text-underline-offset: 4px; }
+h2 { font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: clamp(26px, 3.4vw, 34px); line-height: 1.2; margin: 54px 0 14px; text-wrap: balance; }
+h2 .n { display: block; font-family: "Source Sans 3", sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-ink); margin-bottom: 6px; }
+p { margin: 14px 0; text-wrap: pretty; }
+strong { font-weight: 700; }
+code, .flow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .86em; }
+code { background: rgba(176, 133, 47, .12); padding: 1px 5px; border-radius: 4px; }
+.flow { display: block; margin: 20px 0; padding: 14px 18px; background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--gold); line-height: 1.8; font-size: 15px; }
+.flow i { color: var(--gold); font-style: normal; }
+ul.plain { margin: 14px 0 14px 4px; list-style: none; }
+ul.plain li { position: relative; padding-left: 22px; margin: 8px 0; }
+ul.plain li::before { content: ""; position: absolute; left: 2px; top: .7em; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.big { display: grid; grid-template-columns: auto 1fr; gap: 6px 22px; align-items: center; margin: 26px 0; padding: 22px 24px; background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--gold); }
+.big b { font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: clamp(36px, 6vw, 52px); line-height: 1; color: var(--gold-ink); white-space: nowrap; }
+.big span { color: var(--muted); font-size: 17.5px; line-height: 1.5; }
+figure { margin: 30px 0; padding: 22px 22px 16px; background: var(--panel); border: 1px solid var(--rule); }
+figure h3 { font-family: "Source Sans 3", sans-serif; font-size: 17px; font-weight: 700; }
+figure .sub { font-size: 15px; color: var(--muted); margin: 2px 0 10px; }
+figure svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+.ax { font: 500 12px "Source Sans 3", sans-serif; fill: #6b604d; }
+.lab { font: 700 13px "Source Sans 3", sans-serif; fill: var(--ink); }
+.grid { stroke: #e6dbc4; stroke-width: 1; }
+.ln { fill: none; stroke: var(--gold); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.pt { fill: var(--panel); stroke: var(--gold-ink); stroke-width: 2.5; pointer-events: none; }
+.nw { white-space: nowrap; }
+.hit { fill: transparent; cursor: default; }
+.hit:hover + .pt, .hit:focus + .pt { fill: var(--gold); }
+figcaption { font-size: 14.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+details.tbl { margin-top: 8px; font-size: 15px; }
+details.tbl summary { cursor: pointer; font-weight: 600; color: var(--gold-ink); }
+details.tbl table { border-collapse: collapse; margin-top: 8px; width: 100%; }
+details.tbl td, details.tbl th { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--rule); }
+.tip { position: fixed; pointer-events: none; z-index: 9; background: var(--ink); color: var(--ground); font-size: 14px; line-height: 1.4; padding: 7px 10px; border-radius: 6px; max-width: 240px; opacity: 0; transition: opacity .12s; }
+.lesson { font-family: Fraunces, Georgia, serif; font-size: clamp(24px, 3.2vw, 30px); line-height: 1.3; font-style: italic; margin: 40px 0 10px; padding: 26px 0; border-top: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold); text-wrap: balance; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 10px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; text-decoration: none; padding: 12px 22px; border-radius: 999px; border: 1.5px solid var(--ink); }
+.btn.primary { background: var(--ink); color: var(--ground); }
+.btn.primary:hover { background: var(--gold-ink); border-color: var(--gold-ink); }
+.btn:not(.primary):hover { background: rgba(176, 133, 47, .12); }
+footer { max-width: 740px; margin: 0 auto; padding: 22px var(--pad) 40px; border-top: 1px solid var(--rule); font-size: 15.5px; color: var(--muted); }
+footer a { color: var(--gold-ink); font-weight: 600; }
+@media (max-width: 520px) { body { font-size: 18px; } .back .bk-l { display: none; } .back .bk-p { text-transform: capitalize; } .big { grid-template-columns: 1fr; } .btn { flex: 1 1 100%; justify-content: center; } .name { font-size: 20px; } }
+@media (max-width: 350px) { .name { display: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="name" href="index.html">Darpan <em>Jiyani</em></a>
+  <nav aria-label="Site">
+    <a class="back" href="index.html#p-ai-data-agent"><span aria-hidden="true">&larr;</span> <span class="bk-l">Back to </span><span class="bk-p">portfolio</span></a>
+    <a class="cv" href="Darpan_Jiyani_Resume.pdf" download>Resume</a>
+  </nav>
+</header>
+
+<article>
+  <p class="kick">Project story · AI Data Agent</p>
+  <h1>How I took <span class="nw">text-to-SQL</span> accuracy from 89.4% to <em>99.3%</em></h1>
+  <p class="dek">Building an AI data agent that people outside tech can trust, one measured change at a time.</p>
+  <p class="meta"><span>Darpan Jiyani</span><span>November 2026</span><span>7 min read</span><a href="https://ai-data-agent-darpan.streamlit.app/" target="_blank" rel="noopener">Live demo ↗</a><a href="https://github.com/Darpanjiyani/AI-Data-Agent" target="_blank" rel="noopener">Code ↗</a></p>
+
+  <h2><span class="n">Why I built it</span>I wanted AI to do work, not just answer questions</h2>
+  <p>Most of us use AI to look things up. I wanted to use it to automate the work I do every day as a data engineer. And I kept noticing the same thing at work: many people who need data aren't technical. To get one number, they have to ask someone and wait.</p>
+  <p>So I built an agent they can talk to in plain English. A router reads each request and sends it to one of two specialists: an <strong>SQL Analyst</strong> that answers questions from the database, and an <strong>ETL Analyst</strong> that pulls in new data and loads it, with a person's approval.</p>
+  <p class="flow">question <i>→</i> Claude router <i>→</i> SQL Analyst or ETL Analyst <i>→</i> SQL guard <i>+</i> LLM judge <i>→</i> PostgreSQL (read-only) <i>→</i> answer, chart and the exact SQL</p>
+  <p>The first version crashed before I could even score it. That's where the real work started.</p>
+
+  <h2><span class="n">Lesson 1</span>Measure first</h2>
+  <p>Before changing anything, I wrote <strong>47 questions with verified answers</strong>: simple lookups, aggregations, joins, dates, and 13 hard ones. Each has a reference query. The agent only sees the question, and its result has to match the reference result.</p>
+  <div class="big"><b>89.4%</b><span>My first honest score: 42 of 47. The agent looked smart in a demo. The test said otherwise.</span></div>
+  <p>The five failures were more interesting than the score. One crash came from a reply format I hadn't handled. A prompt rule to "always limit output to 10 rows" cut a 12-month breakdown to 10 months, and the answer then told the user the data ended in October. Another query divided by rated rides instead of all completed rides and reported 61.85% instead of 46.18%.</p>
+  <p>I fixed causes, not questions: a compact schema description with allowed values and sample rows, short notes about what the data means, and general SQL rules like "no filters nobody asked for" and "a percentage's denominator is the whole group." The SQL prompt even got 41% smaller. The next run scored 47 of 47.</p>
+  <p>Then I ran the same agent three times. Two runs scored 100% and one scored 97.9%: one query returned 56 rows that each said "1" instead of one row that said "56". <strong>A single run would have reported either 100% or 97.9%. The average of three, 99.3%, is the honest number.</strong> A later round added a check for results with the wrong shape, and it caught that query every time it slipped.</p>
+
+  <figure>
+    <h3>Execution accuracy on the 47-question main set</h3>
+    <p class="sub">Each improvement round, measured before the next one started</p>
+    <svg id="acc" viewBox="0 0 640 250" role="img" aria-labelledby="acc-desc">
+      <desc id="acc-desc">Line chart. Baseline 89.4%. Round 2, schema context and SQL rules: 100%. Round 3, clear refusals and self-correction: 99.3%, the average of 3 runs. Round 6: 100%. Round 7, prompt caching: 97.9% in one run. Round 8, result sanity check: 100%.</desc>
+    </svg>
+    <figcaption>Single runs, except Round 3 (average of 3). Both held-out sets of 20 unseen questions scored 100%, including one written after the last change.</figcaption>
+    <details class="tbl"><summary>Show the numbers as a table</summary>
+      <table><thead><tr><th>Round</th><th>Change</th><th>Accuracy</th></tr></thead><tbody>
+        <tr><td>Baseline</td><td>First honest score</td><td>89.4%</td></tr>
+        <tr><td>Round 2</td><td>Schema context and SQL rules</td><td>100%</td></tr>
+        <tr><td>Round 3</td><td>Clear refusals, self-correcting SQL</td><td>99.3% (avg of 3)</td></tr>
+        <tr><td>Round 6</td><td>Clearer follow-ups, retry on invalid SQL</td><td>100%</td></tr>
+        <tr><td>Round 7</td><td>Prompt caching (−59% billed input)</td><td>97.9%</td></tr>
+        <tr><td>Round 8</td><td>Result sanity check</td><td>100%</td></tr>
+      </tbody></table>
+    </details>
+  </figure>
+
+  <p>Because I'd written the fixes after seeing the failures, I needed proof they generalized. So I kept <strong>20 held-out questions</strong> I never tuned on, and later wrote <strong>a second set of 20 after the last change</strong>. Both scored 100%.</p>
+
+  <h2><span class="n">Lesson 2</span>Don't rely on the prompt for safety</h2>
+  <p>A prompt that says "never change data" is a request, not a guarantee. My agent has three layers. It connects as a <strong>read-only database user</strong>. A rule-based guard (<code>sqlglot</code>) allows exactly one read-only <code>SELECT</code>. An LLM judge reviews what's left. Data loads need a person's approval.</p>
+  <div class="big"><b>0 of 22</b><span>requests to change data ever ran. Every one was refused with a clear message, including vague follow-ups like "delete them."</span></div>
+  <p>Measuring safety taught me something too. After one prompt change, nothing unsafe ran, but some refusals got confusing: asked to update users, the agent quietly wrote a read query instead. "Nothing executed" was the wrong test. I added "clearly refused" as its own metric and fixed it.</p>
+
+  <h2><span class="n">Lesson 3</span>Your tests can be wrong too</h2>
+  <p>The scorer for my ETL agent compared each column on its own. So a table with every value right but on the wrong rows passed, like Montreal's weather filed under Ottawa's name. I tested the scorer itself with 100 deliberately wrong outputs.</p>
+  <div class="big"><b>25 of 100</b><span>wrong outputs slipped past the old scorer. The new one compares whole rows and rejects all 100.</span></div>
+  <p>Even my very first run had this problem the other way around: four "failures" were the scorer being too strict, not the agent being wrong. Now I check the checker before I trust a number.</p>
+
+  <h2><span class="n">Lesson 4</span>Let it say "I can't answer that"</h2>
+  <p>I asked 15 questions the data couldn't answer, like tips or a driver's age. Only 2 replies handled it well. Some errored out. Worse, two answered a different question as if it were the one asked: the total of all fares was reported as the company's commission.</p>
+  <p>The surprise: in 8 of 15 cases the model already knew the data was missing. My own SQL guard turned its honest sentence into an error. I gave it a clear way to say what's missing, and checked 12 look-alike questions so it wouldn't start refusing good ones.</p>
+  <div class="big"><b>2 → 14</b><span>of 15 replies now say exactly what's missing, with 0 wrong-question answers, and all 12 look-alike questions still answered correctly.</span></div>
+
+  <h2><span class="n">The hardest part</span>Two agents that depend on each other</h2>
+  <p>Getting everything to work together was the hardest part. The ETL Analyst has to load data cleanly before the SQL Analyst can answer anything about it. A small mistake in the load quietly becomes a wrong answer later. Questions that mixed newly loaded weather data with rides went from <strong>0 of 12</strong> to <strong>11 of 12</strong> once the two halves really worked together.</p>
+
+  <h2><span class="n">The surprise</span>20.8 million real trips</h2>
+  <p>I pointed the agent at one month of real New York City Uber and Lyft trips: 20.8 million rows, a thousand times more than the data I built it on. I expected it to fall apart. It answered 27 of 28 new questions exactly, at the same cost per question, because the model only reads the schema and small results, never the table.</p>
+  <p>The model held up. The work was in the plumbing around it. Describing the schema took 42.7 seconds on that many rows, and now takes 0.1. And when one slow query hit the time limit, the retry quietly computed a median from a random 5% sample. Now the agent stays exact, and every heavy question in a new test set passes: 12 of 12, up from 8.</p>
+
+  <p class="lesson">Start small. Write the questions first. Then build.</p>
+  <p>If I could tell one thing to anyone building an AI tool: decide how you'll know it works before you make it work. The tests on this page were written before the fixes they measure.</p>
+
+  <nav class="cta" aria-label="Next">
+    <a class="btn primary" href="https://ai-data-agent-darpan.streamlit.app/" target="_blank" rel="noopener">Try the live demo ↗</a>
+    <a class="btn" href="https://github.com/Darpanjiyani/AI-Data-Agent" target="_blank" rel="noopener">Read the code ↗</a>
+    <a class="btn" href="index.html#p-ai-data-agent">See the project</a>
+  </nav>
+</article>
+<footer>Darpan Jiyani · AI Data Engineer · <a href="index.html">darpanjiyani.com</a> · <a href="index.html#contact">Get in touch</a></footer>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+  /* Accuracy chart: one gold line, axis 85-100%, hover or focus a point for its round */
+  (function () {
+    var svg = document.getElementById('acc'); if (!svg) return;
+    var D = [["Baseline", 89.4, "First honest score: 42 of 47"], ["Round 2", 100, "Schema context and SQL rules"],
+             ["Round 3", 99.3, "Clear refusals, self-correcting SQL (avg of 3 runs)"], ["Round 6", 100, "Clearer follow-ups, retry on invalid SQL"],
+             ["Round 7", 97.9, "Prompt caching cut billed input 59% (one run)"], ["Round 8", 100, "Result sanity check"]];
+    var tip = document.getElementById('tip'), NS = 'http://www.w3.org/2000/svg';
+    function draw() {
+      var W = Math.max(280, Math.round(svg.parentNode.clientWidth - 44)), narrow = W < 480, H = narrow ? 220 : 250;
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('width', W); svg.setAttribute('height', H);
+      while (svg.lastChild && svg.lastChild.nodeName !== 'desc') svg.removeChild(svg.lastChild);
+      var L = 42, R = W - 8, T = 26, B = H - 40, lo = 85, hi = 100;
+      function x(i) { return L + 18 + i * (R - L - 36) / (D.length - 1); }
+      function y(v) { return B - (v - lo) / (hi - lo) * (B - T); }
+      function el(n, a, t) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); if (t != null) e.textContent = t; svg.appendChild(e); return e; }
+      [85, 90, 95, 100].forEach(function (g) { el('line', { x1: L, x2: R, y1: y(g), y2: y(g), 'class': 'grid' }); el('text', { x: L - 8, y: y(g) + 4, 'text-anchor': 'end', 'class': 'ax' }, g + '%'); });
+      el('path', { d: D.map(function (d, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(d[1]); }).join(' '), 'class': 'ln' });
+      D.forEach(function (d, i) {
+        var name = narrow ? (i === 0 ? 'Start' : 'R' + d[0].split(' ')[1]) : d[0];
+        el('text', { x: x(i), y: B + 22, 'text-anchor': 'middle', 'class': 'ax' }, name);
+        if (i === 0) el('text', { x: x(i) + 12, y: y(d[1]) + 5, 'class': 'lab' }, d[1] + '%');
+        else if (i === 2 || i === D.length - 1) el('text', { x: x(i), y: y(d[1]) - 14, 'text-anchor': 'middle', 'class': 'lab' }, d[1] + '%');
+        var hit = el('circle', { cx: x(i), cy: y(d[1]), r: 18, 'class': 'hit', tabindex: 0, 'aria-label': d[0] + ': ' + d[1] + '%. ' + d[2] });
+        el('circle', { cx: x(i), cy: y(d[1]), r: 5.5, 'class': 'pt' });
+        function show() {
+          tip.innerHTML = '<b>' + d[0] + ': ' + d[1] + '%</b><br>' + d[2];
+          var r = hit.getBoundingClientRect(), w = 240;
+          tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + 'px';
+          tip.style.top = Math.max(64, r.top - 72) + 'px'; tip.style.opacity = 1;
+        }
+        hit.addEventListener('pointerenter', show); hit.addEventListener('focus', show);
+        hit.addEventListener('pointerleave', function () { tip.style.opacity = 0; }); hit.addEventListener('blur', function () { tip.style.opacity = 0; });
+      });
+    }
+    draw();
+    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(draw, 120); });
+    window.addEventListener('scroll', function () { tip.style.opacity = 0; }, { passive: true });
+  })();
+
+  /* GoatCounter, on the live site only */
+  if (location.hostname === 'darpanjiyani.com' || location.hostname === 'www.darpanjiyani.com') {
+    var s = document.createElement('script');
+    s.async = true; s.src = 'https://gc.zgo.at/count.js';
+    s.setAttribute('data-goatcounter', 'https://darpanjiyani.goatcounter.com/count');
+    document.body.appendChild(s);
+  }
+</script>
+</body>
+</html>
