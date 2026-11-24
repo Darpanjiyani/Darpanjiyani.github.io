@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Darpan Jiyani | AI Data Engineer</title>
-<meta name="description" content="Darpan Jiyani, AI Data Engineer in San Jose, CA. Data pipelines, lakehouses and LLM tools: 14 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
+<meta name="description" content="Darpan Jiyani, AI Data Engineer in San Jose, CA. Data pipelines, lakehouses and LLM tools: 15 projects with code, plus work at UL Solutions, Keysight and Cerebulb.">
 <link rel="canonical" href="https://darpanjiyani.com/">
 <script type="application/ld+json">[
  {
@@ -58,7 +58,7 @@
 ]</script>
 
 <meta property="og:title" content="Darpan Jiyani, AI Data Engineer">
-<meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 14 projects with code.">
+<meta property="og:description" content="Data pipelines, lakehouses and LLM tools. 15 projects with code.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://darpanjiyani.com/">
 <meta property="og:site_name" content="Darpan Jiyani">
@@ -68,7 +68,7 @@
 <meta property="og:image:alt" content="Darpan Jiyani, AI Data Engineer. Data pipelines, lakehouses and the AI tools that run on top of them.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Darpan Jiyani, AI Data Engineer">
-<meta name="twitter:description" content="Data pipelines, lakehouses and LLM tools. 14 projects with code.">
+<meta name="twitter:description" content="Data pipelines, lakehouses and LLM tools. 15 projects with code.">
 <meta name="twitter:image" content="https://darpanjiyani.com/og-image.jpg">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -1254,15 +1254,32 @@ footer .sig { font-family: var(--font-display); font-style: italic; font-size: 1
       <div class="sec-head reveal">
         <span class="sec-num">03</span>
         <h2>More projects</h2>
-        <p>9 more, from lakehouse builds to full-stack apps. Use the arrows, swipe, or drag to browse. Open any card for the full story.</p>
+        <p>10 more, from lakehouse builds to full-stack apps. Use the arrows, swipe, or drag to browse. Open any card for the full story.</p>
       </div>
       <div class="filters" role="group" aria-label="Filter projects by type">
-        <button type="button" class="chip" id="filter-all" data-filter="all" aria-pressed="true">All <span class="chip-n">9</span></button><button type="button" class="chip" id="filter-de" data-filter="de" aria-pressed="false">Data engineering <span class="chip-n">4</span></button><button type="button" class="chip" id="filter-ai" data-filter="ai" aria-pressed="false">AI and ML <span class="chip-n">3</span></button><button type="button" class="chip" id="filter-an" data-filter="an" aria-pressed="false">Analytics <span class="chip-n">3</span></button><button type="button" class="chip" id="filter-sw" data-filter="sw" aria-pressed="false">Software <span class="chip-n">2</span></button>
-        <span class="showing" id="showing" aria-live="polite">Showing 9 of 9</span>
+        <button type="button" class="chip" id="filter-all" data-filter="all" aria-pressed="true">All <span class="chip-n">10</span></button><button type="button" class="chip" id="filter-de" data-filter="de" aria-pressed="false">Data engineering <span class="chip-n">5</span></button><button type="button" class="chip" id="filter-ai" data-filter="ai" aria-pressed="false">AI and ML <span class="chip-n">3</span></button><button type="button" class="chip" id="filter-an" data-filter="an" aria-pressed="false">Analytics <span class="chip-n">4</span></button><button type="button" class="chip" id="filter-sw" data-filter="sw" aria-pressed="false">Software <span class="chip-n">2</span></button>
+        <span class="showing" id="showing" aria-live="polite">Showing 10 of 10</span>
       </div>
       <div class="rail-wrap">
         <div class="rail-stage">
           <div class="rail" id="project-list" tabindex="0" role="region" aria-label="More projects, scroll sideways">
+        <article class="card" data-cats="de an" data-slug="pricing-data-quality-monitor">
+          <p class="c-kind">Data quality monitoring</p>
+          <div class="c-fig"><span class="p-num">16</span><span class="p-cap">SQL and statistical checks, run every weekday</span></div>
+          <h3 class="c-title">Pricing Data Quality Monitor</h3>
+          <p class="c-sum">Daily data quality checks for stock prices and the U.S. Treasury yield curve, with a test that plants errors to score them.</p>
+          <div class="c-foot">
+            <button type="button" class="c-open" aria-haspopup="dialog">Read more <span aria-hidden="true">&rarr;</span></button>
+            <span class="p-links c-links"><a href="https://github.com/Darpanjiyani/pricing-data-quality-monitor" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></span>
+          </div>
+          <div class="c-detail" hidden>
+            <p class="p-kind">Data quality monitoring</p>
+            <h3 class="d-title">Pricing Data Quality Monitor</h3>
+            <p class="p-sum">Every weekday a GitHub Action loads end-of-day prices for 30 large-cap stocks and the Treasury yield curve from two publishers, runs 16 data quality checks, and writes an HTML report of every flag.</p>
+            <p class="flow" aria-label="Data flow"><span class="f-step">Yahoo Finance, Treasury, FRED</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">SQLite</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">16 SQL and statistical checks</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">HTML report + issues CSV</span><span class="f-arrow" aria-hidden="true">&rarr;</span><span class="f-step">plant errors, score recall and precision</span></p><ul class="bul"><li>Built <strong>16 checks</strong> in SQL and Python for stale prices, missing days, duplicates, bad prints, unadjusted splits and yield spikes across <strong>30 stocks</strong> and <strong>14 Treasury tenors</strong></li><li>Compared the yield curve from two publishers, Treasury and FRED, and flagged any tenor where they differ by more than <strong>2 bp</strong></li><li>Scored outliers with robust z-scores from the previous 60 days on market-adjusted returns, so a market-wide drop isn't flagged as 30 data errors</li><li>Wrote a detection test that plants known errors and reports recall, precision and false alarms for each error type</li></ul><p class="p-stack"><span class="lab">Stack</span> Python, SQL (SQLite, window functions), pandas, NumPy, matplotlib, pytest, GitHub Actions</p>
+            <p class="p-links"><a href="https://github.com/Darpanjiyani/pricing-data-quality-monitor" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&nearr;</span></a></p>
+          </div>
+        </article>
         <article class="card" data-cats="ai" data-slug="multimodal-llm-for-cancer-pathology-classification">
           <p class="c-kind">RAG and LoRA on public tissue images</p>
           <div class="c-fig"><span class="p-num">0.96</span><span class="p-cap">ROC-AUC with LoRA, training under 5% of the parameters</span></div>
